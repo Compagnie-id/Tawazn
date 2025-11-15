@@ -3,7 +3,9 @@ package id.compagnie.tawazn.feature.settings
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import co.touchlab.kermit.Logger
+import id.compagnie.tawazn.core.datastore.AppPreferences
 import id.compagnie.tawazn.data.service.PlatformSyncService
+import id.compagnie.tawazn.database.TawaznDatabase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,15 +15,24 @@ import org.koin.core.component.inject
 
 /**
  * Screen model for settings screen
- * Manages platform sync service and permissions
+ * Manages platform sync service, permissions, and user preferences
  */
 class SettingsScreenModel : ScreenModel, KoinComponent {
 
     private val platformSyncService: PlatformSyncService by inject()
+    private val appPreferences: AppPreferences by inject()
+    private val database: TawaznDatabase by inject()
     private val logger = Logger.withTag("SettingsScreenModel")
 
     private val _platformState = MutableStateFlow(PlatformState())
     val platformState: StateFlow<PlatformState> = _platformState.asStateFlow()
+
+    // Preferences flows
+    val darkMode = appPreferences.darkMode
+    val useSystemTheme = appPreferences.useSystemTheme
+    val notificationsEnabled = appPreferences.notificationsEnabled
+    val dailyReportEnabled = appPreferences.dailyReportEnabled
+    val weeklyReportEnabled = appPreferences.weeklyReportEnabled
 
     init {
         loadPlatformStatus()
@@ -136,6 +147,103 @@ class SettingsScreenModel : ScreenModel, KoinComponent {
             logger.i { "Background services stopped" }
         } catch (e: Exception) {
             logger.e(e) { "Failed to stop background services" }
+        }
+    }
+
+    // Preference management methods
+
+    /**
+     * Toggle dark mode
+     */
+    fun setDarkMode(enabled: Boolean) {
+        screenModelScope.launch {
+            try {
+                appPreferences.setDarkMode(enabled)
+                logger.i { "Dark mode ${if (enabled) "enabled" else "disabled"}" }
+            } catch (e: Exception) {
+                logger.e(e) { "Failed to set dark mode" }
+            }
+        }
+    }
+
+    /**
+     * Set use system theme
+     */
+    fun setUseSystemTheme(enabled: Boolean) {
+        screenModelScope.launch {
+            try {
+                appPreferences.setUseSystemTheme(enabled)
+                logger.i { "Use system theme ${if (enabled) "enabled" else "disabled"}" }
+            } catch (e: Exception) {
+                logger.e(e) { "Failed to set use system theme" }
+            }
+        }
+    }
+
+    /**
+     * Toggle notifications
+     */
+    fun setNotificationsEnabled(enabled: Boolean) {
+        screenModelScope.launch {
+            try {
+                appPreferences.setNotificationsEnabled(enabled)
+                logger.i { "Notifications ${if (enabled) "enabled" else "disabled"}" }
+            } catch (e: Exception) {
+                logger.e(e) { "Failed to set notifications" }
+            }
+        }
+    }
+
+    /**
+     * Toggle daily report
+     */
+    fun setDailyReportEnabled(enabled: Boolean) {
+        screenModelScope.launch {
+            try {
+                appPreferences.setDailyReportEnabled(enabled)
+                logger.i { "Daily report ${if (enabled) "enabled" else "disabled"}" }
+            } catch (e: Exception) {
+                logger.e(e) { "Failed to set daily report" }
+            }
+        }
+    }
+
+    /**
+     * Toggle weekly report
+     */
+    fun setWeeklyReportEnabled(enabled: Boolean) {
+        screenModelScope.launch {
+            try {
+                appPreferences.setWeeklyReportEnabled(enabled)
+                logger.i { "Weekly report ${if (enabled) "enabled" else "disabled"}" }
+            } catch (e: Exception) {
+                logger.e(e) { "Failed to set weekly report" }
+            }
+        }
+    }
+
+    /**
+     * Clear all app data (database + preferences)
+     */
+    suspend fun clearAllData() {
+        try {
+            logger.i { "Clearing all data..." }
+
+            // Clear database
+            database.apply {
+                appUsageQueries.deleteAll()
+                blockedAppQueries.deleteAll()
+                blockSessionQueries.deleteAll()
+                appQueries.deleteAll()
+            }
+
+            // Clear preferences
+            appPreferences.clearAll()
+
+            logger.i { "All data cleared successfully" }
+        } catch (e: Exception) {
+            logger.e(e) { "Failed to clear data" }
+            throw e
         }
     }
 }

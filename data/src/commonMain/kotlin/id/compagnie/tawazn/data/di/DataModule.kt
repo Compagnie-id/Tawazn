@@ -1,5 +1,7 @@
 package id.compagnie.tawazn.data.di
 
+import id.compagnie.tawazn.core.datastore.AppPreferences
+import id.compagnie.tawazn.core.datastore.DataStoreFactory
 import id.compagnie.tawazn.data.repository.AppRepositoryImpl
 import id.compagnie.tawazn.data.repository.BlockedAppRepositoryImpl
 import id.compagnie.tawazn.data.repository.BlockSessionRepositoryImpl
@@ -20,6 +22,9 @@ val dataModule = module {
     // Database
     single { DatabaseDriverFactory(get()).createDriver() }
     single { TawaznDatabaseFactory.createDatabase(get()) }
+
+    // DataStore & Preferences (DataStore created in platformModule)
+    single { AppPreferences(get()) }
 
     // Repositories
     single<AppRepository> { AppRepositoryImpl(get()) }
