@@ -21,12 +21,12 @@ kotlin {
 
             implementation(libs.kotlinx.coroutinesCore)
             implementation(libs.kotlinx.datetime)
+            implementation(libs.kermit)
         }
 
         androidMain.dependencies {
             implementation(libs.androidx.core.ktx)
             implementation(libs.androidx.workmanager)
-            implementation(libs.kermit)
         }
     }
 }
