@@ -293,5 +293,3 @@ fun InfoRow(icon: androidx.compose.ui.graphics.vector.ImageVector, label: String
         )
     }
 }
-
-expect fun getPlatformName(): String
