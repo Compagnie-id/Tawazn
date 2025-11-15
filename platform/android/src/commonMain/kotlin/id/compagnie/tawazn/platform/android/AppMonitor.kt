@@ -8,7 +8,7 @@ import kotlinx.datetime.LocalDate
 /**
  * Platform-specific interface for app monitoring
  */
-expect interface AppMonitor {
+interface AppMonitor {
     /**
      * Get list of installed apps
      */

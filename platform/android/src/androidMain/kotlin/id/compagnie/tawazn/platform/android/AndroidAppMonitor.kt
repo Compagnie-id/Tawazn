@@ -37,7 +37,7 @@ import kotlin.time.Duration.Companion.milliseconds
  * - <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />
  * - <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
  */
-actual class AndroidAppMonitor(
+class AndroidAppMonitor(
     private val context: Context
 ) : AppMonitor {
 

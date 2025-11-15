@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.todayIn
 
 /**
@@ -63,7 +64,7 @@ class AndroidPlatformSync(
             logger.i { "Syncing usage data for last $daysBack days..." }
 
             val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
-            val startDate = today.minus(daysBack, kotlinx.datetime.DateTimeUnit.DAY)
+            val startDate = today.minus(daysBack, DateTimeUnit.DAY)
 
             val usageData = appMonitor.getAppUsageStats(startDate, today)
             logger.i { "Found ${usageData.size} usage records" }
