@@ -199,34 +199,37 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                 }
 
                 item {
-                    if (uiState.bestDay != null) {
+                    val bestDay = uiState.bestDay
+                    if (bestDay != null) {
                         InsightCard(
                             icon = TawaznIcons.TrendingUp,
                             title = "Most Productive Day",
-                            description = "${uiState.bestDay.first} - Only ${uiState.bestDay.second.toHoursMinutesString()} screen time",
+                            description = "${bestDay.first} - Only ${bestDay.second.toHoursMinutesString()} screen time",
                             color = TawaznTheme.colors.success
                         )
                     }
                 }
 
                 item {
-                    if (uiState.weeklyStats != null && uiState.weeklyStats.totalScreenTime.inWholeMinutes > 0) {
+                    val weeklyStats = uiState.weeklyStats
+                    if (weeklyStats != null && weeklyStats.totalScreenTime.inWholeMinutes > 0) {
                         InsightCard(
                             icon = TawaznIcons.Schedule,
                             title = "Weekly Total",
-                            description = "${uiState.weeklyStats.totalScreenTime.toHoursMinutesString()} total screen time this week",
+                            description = "${weeklyStats.totalScreenTime.toHoursMinutesString()} total screen time this week",
                             color = TawaznTheme.colors.info
                         )
                     }
                 }
 
                 item {
-                    if (uiState.topDistraction != null) {
-                        val avgDaily = uiState.topDistraction.totalTime.inWholeMinutes / 7
+                    val topDistraction = uiState.topDistraction
+                    if (topDistraction != null) {
+                        val avgDaily = topDistraction.totalTime.inWholeMinutes / 7
                         InsightCard(
                             icon = TawaznIcons.Apps,
                             title = "Top App",
-                            description = "${uiState.topDistraction.appName} - ${avgDaily}m average daily",
+                            description = "${topDistraction.appName} - ${avgDaily}m average daily",
                             color = TawaznTheme.colors.warning
                         )
                     }
