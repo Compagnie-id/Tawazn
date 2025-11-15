@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalTime::class)
+
 package id.compagnie.tawazn.feature.settings
 
 import id.compagnie.tawazn.design.icons.TawaznIcons
@@ -23,6 +25,7 @@ import id.compagnie.tawazn.domain.model.BlockSession
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.ExperimentalTime
 
 class FocusSessionListScreen : Screen {
     @Composable
@@ -184,7 +187,7 @@ fun SessionCard(
                     )
                     if (!session.description.isNullOrBlank()) {
                         Text(
-                            text = session.description,
+                            text = session.description!!,
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )

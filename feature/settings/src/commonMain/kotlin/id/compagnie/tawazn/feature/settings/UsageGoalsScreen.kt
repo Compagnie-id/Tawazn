@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package id.compagnie.tawazn.feature.settings
 
 import id.compagnie.tawazn.design.icons.TawaznIcons
