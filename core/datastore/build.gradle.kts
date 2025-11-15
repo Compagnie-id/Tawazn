@@ -36,6 +36,7 @@ kotlin {
         }
 
         androidMain.dependencies {
+            implementation(libs.datastore.preferences.android)
         }
 
         iosMain.dependencies {

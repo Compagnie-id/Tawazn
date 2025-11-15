@@ -37,7 +37,7 @@ WHERE usageDate = ?
 ORDER BY totalTimeInForeground DESC;
 
 selectTopUsedApps:
-SELECT packageName, appName, SUM(totalTimeInForeground) as totalTime, SUM(launchCount) as totalLaunches
+SELECT packageName, appName, SUM(totalTimeInForeground) AS totalTime, SUM(launchCount) AS totalLaunches
 FROM AppUsage
 WHERE usageDate BETWEEN ? AND ?
 GROUP BY packageName
@@ -45,7 +45,7 @@ ORDER BY totalTime DESC
 LIMIT ?;
 
 selectTotalUsageByDate:
-SELECT usageDate, SUM(totalTimeInForeground) as totalTime, SUM(launchCount) as totalLaunches
+SELECT usageDate, SUM(totalTimeInForeground) AS totalTime, SUM(launchCount) AS totalLaunches
 FROM AppUsage
 WHERE usageDate BETWEEN ? AND ?
 GROUP BY usageDate

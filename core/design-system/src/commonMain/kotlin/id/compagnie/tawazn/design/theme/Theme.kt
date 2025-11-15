@@ -83,7 +83,9 @@ data class TawaznColors(
     val gradientEnd: Color,
     val success: Color,
     val warning: Color,
+    val error: Color,
     val info: Color,
+    val background: Color,
     val chartColors: List<Color>
 )
 
@@ -96,7 +98,9 @@ val LocalTawaznColors = staticCompositionLocalOf {
         gradientEnd = GradientEnd,
         success = Success,
         warning = Warning,
+        error = Error,
         info = Info,
+        background = BackgroundLight,
         chartColors = listOf(ChartColor1, ChartColor2, ChartColor3, ChartColor4, ChartColor5)
     )
 }
@@ -116,7 +120,9 @@ fun TawaznTheme(
         gradientEnd = GradientEnd,
         success = Success,
         warning = Warning,
+        error = Error,
         info = Info,
+        background = if (darkTheme) BackgroundDark else BackgroundLight,
         chartColors = listOf(ChartColor1, ChartColor2, ChartColor3, ChartColor4, ChartColor5)
     )
 

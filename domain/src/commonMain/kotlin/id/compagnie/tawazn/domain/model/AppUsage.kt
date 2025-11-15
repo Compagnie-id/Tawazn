@@ -2,6 +2,7 @@ package id.compagnie.tawazn.domain.model
 
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlin.time.Duration
 
@@ -10,17 +11,17 @@ data class AppUsage(
     val id: Long = 0,
     val packageName: String,
     val appName: String,
-    val usageDate: LocalDate,
-    val totalTimeInForeground: Duration,
+    @Contextual val usageDate: LocalDate,
+    @Contextual val totalTimeInForeground: Duration,
     val launchCount: Int = 0,
-    val lastTimeUsed: Instant? = null,
-    val createdAt: Instant,
-    val updatedAt: Instant
+    @Contextual val lastTimeUsed: Instant? = null,
+    @Contextual val createdAt: Instant,
+    @Contextual val updatedAt: Instant
 )
 
 @Serializable
 data class UsageStats(
-    val totalScreenTime: Duration,
+    @Contextual val totalScreenTime: Duration,
     val totalLaunches: Int,
     val topApps: List<AppUsageSummary>,
     val dailyUsage: List<DailyUsage>
@@ -30,14 +31,14 @@ data class UsageStats(
 data class AppUsageSummary(
     val packageName: String,
     val appName: String,
-    val totalTime: Duration,
+    @Contextual val totalTime: Duration,
     val totalLaunches: Int,
     val percentage: Float
 )
 
 @Serializable
 data class DailyUsage(
-    val date: LocalDate,
-    val totalTime: Duration,
+    @Contextual val date: LocalDate,
+    @Contextual val totalTime: Duration,
     val totalLaunches: Int
 )

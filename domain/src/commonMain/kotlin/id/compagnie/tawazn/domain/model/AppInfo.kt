@@ -1,6 +1,7 @@
 package id.compagnie.tawazn.domain.model
 
 import kotlinx.datetime.Instant
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -10,8 +11,8 @@ data class AppInfo(
     val iconPath: String? = null,
     val category: AppCategory = AppCategory.OTHER,
     val isSystemApp: Boolean = false,
-    val installDate: Instant,
-    val lastUpdated: Instant
+    @Contextual val installDate: Instant,
+    @Contextual val lastUpdated: Instant
 )
 
 @Serializable
