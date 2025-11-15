@@ -114,11 +114,11 @@ class BlockSessionRepositoryImpl(
     }
 
     override suspend fun getAppsForSession(sessionId: Long): List<String> {
-        return sessionQueries.selectAppsForSession(sessionId).executeAsList().map { it.packageName }
+        return sessionQueries.selectAppsForSession(sessionId).executeAsList()
     }
 
     private fun id.compagnie.tawazn.database.BlockSession.toBlockSession(): BlockSession {
-        val apps = sessionQueries.selectAppsForSession(id).executeAsList().map { it.packageName }
+        val apps = sessionQueries.selectAppsForSession(id).executeAsList()
         val days = try {
             Json.decodeFromString<List<String>>(repeatDays ?: "[]").map { DayOfWeek.valueOf(it) }
         } catch (e: Exception) {
