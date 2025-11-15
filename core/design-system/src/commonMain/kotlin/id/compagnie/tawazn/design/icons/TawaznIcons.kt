@@ -1057,8 +1057,308 @@ object TawaznIcons {
         }.build()
     }
 
-    // Continuing with remaining icons in similar glassmorphism style...
-    // For brevity, creating aliases for less commonly used icons
+    val Refresh: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "Refresh",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).apply {
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = strokeWidth,
+                strokeLineCap = strokeCap,
+                strokeLineJoin = strokeJoin,
+                pathFillType = PathFillType.NonZero
+            ) {
+                moveTo(21.5f, 2f)
+                verticalLineToRelative(6f)
+                horizontalLineToRelative(-6f)
+            }
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = strokeWidth,
+                strokeLineCap = strokeCap,
+                strokeLineJoin = strokeJoin,
+                pathFillType = PathFillType.NonZero
+            ) {
+                moveTo(2.5f, 22f)
+                verticalLineToRelative(-6f)
+                horizontalLineToRelative(6f)
+            }
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = strokeWidth,
+                strokeLineCap = strokeCap,
+                strokeLineJoin = strokeJoin,
+                pathFillType = PathFillType.NonZero
+            ) {
+                moveTo(22f, 12f)
+                arcTo(10f, 10f, 0f, isMoreThanHalf = false, isPositiveArc = true, 12f, 22f)
+                curveToRelative(-3.76f, 0f, -7f, -2.08f, -8.73f, -5.14f)
+            }
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = strokeWidth,
+                strokeLineCap = strokeCap,
+                strokeLineJoin = strokeJoin,
+                pathFillType = PathFillType.NonZero
+            ) {
+                moveTo(2f, 12f)
+                arcTo(10f, 10f, 0f, isMoreThanHalf = false, isPositiveArc = true, 12f, 2f)
+                curveToRelative(3.76f, 0f, 7f, 2.08f, 8.73f, 5.14f)
+            }
+        }.build()
+    }
+
+    val Sync: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "Sync",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).apply {
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = strokeWidth,
+                strokeLineCap = strokeCap,
+                strokeLineJoin = strokeJoin,
+                pathFillType = PathFillType.NonZero
+            ) {
+                moveTo(12f, 5f)
+                verticalLineTo(2f)
+                lineTo(9f, 5f)
+                lineToRelative(3f, 3f)
+                verticalLineTo(5f)
+                close()
+            }
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = strokeWidth,
+                strokeLineCap = strokeCap,
+                strokeLineJoin = strokeJoin,
+                pathFillType = PathFillType.NonZero
+            ) {
+                moveTo(12f, 19f)
+                verticalLineToRelative(3f)
+                lineToRelative(3f, -3f)
+                lineToRelative(-3f, -3f)
+                verticalLineTo(19f)
+                close()
+            }
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = strokeWidth,
+                strokeLineCap = strokeCap,
+                strokeLineJoin = strokeJoin,
+                pathFillType = PathFillType.NonZero
+            ) {
+                moveTo(18f, 12f)
+                arcTo(6f, 6f, 0f, isMoreThanHalf = true, isPositiveArc = true, 6f, 12f)
+            }
+        }.build()
+    }
+
+    val PhoneAndroid: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "PhoneAndroid",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).apply {
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = strokeWidth,
+                strokeLineCap = strokeCap,
+                strokeLineJoin = strokeJoin,
+                pathFillType = PathFillType.NonZero
+            ) {
+                moveTo(17f, 1f)
+                horizontalLineTo(7f)
+                arcToRelative(2f, 2f, 0f, isMoreThanHalf = false, isPositiveArc = false, -2f, 2f)
+                verticalLineToRelative(18f)
+                arcToRelative(2f, 2f, 0f, isMoreThanHalf = false, isPositiveArc = false, 2f, 2f)
+                horizontalLineToRelative(10f)
+                arcToRelative(2f, 2f, 0f, isMoreThanHalf = false, isPositiveArc = false, 2f, -2f)
+                verticalLineTo(3f)
+                arcToRelative(2f, 2f, 0f, isMoreThanHalf = false, isPositiveArc = false, -2f, -2f)
+                close()
+            }
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = strokeWidth,
+                strokeLineCap = strokeCap,
+                strokeLineJoin = strokeJoin,
+                pathFillType = PathFillType.NonZero
+            ) {
+                moveTo(10f, 20f)
+                horizontalLineToRelative(4f)
+            }
+        }.build()
+    }
+
+    val Devices: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "Devices",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).apply {
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = strokeWidth,
+                strokeLineCap = strokeCap,
+                strokeLineJoin = strokeJoin,
+                pathFillType = PathFillType.NonZero
+            ) {
+                moveTo(13f, 18f)
+                horizontalLineTo(3f)
+                arcToRelative(2f, 2f, 0f, isMoreThanHalf = false, isPositiveArc = true, -2f, -2f)
+                verticalLineTo(8f)
+                arcToRelative(2f, 2f, 0f, isMoreThanHalf = false, isPositiveArc = true, 2f, -2f)
+                horizontalLineToRelative(18f)
+                arcToRelative(2f, 2f, 0f, isMoreThanHalf = false, isPositiveArc = true, 2f, 2f)
+                verticalLineToRelative(2f)
+            }
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = strokeWidth,
+                strokeLineCap = strokeCap,
+                strokeLineJoin = strokeJoin,
+                pathFillType = PathFillType.NonZero
+            ) {
+                moveTo(18f, 12f)
+                horizontalLineToRelative(3f)
+                arcToRelative(1f, 1f, 0f, isMoreThanHalf = false, isPositiveArc = true, 1f, 1f)
+                verticalLineToRelative(8f)
+                arcToRelative(1f, 1f, 0f, isMoreThanHalf = false, isPositiveArc = true, -1f, 1f)
+                horizontalLineToRelative(-3f)
+                arcToRelative(1f, 1f, 0f, isMoreThanHalf = false, isPositiveArc = true, -1f, -1f)
+                verticalLineToRelative(-8f)
+                arcToRelative(1f, 1f, 0f, isMoreThanHalf = false, isPositiveArc = true, 1f, -1f)
+                close()
+            }
+        }.build()
+    }
+
+    val Description: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "Description",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).apply {
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = strokeWidth,
+                strokeLineCap = strokeCap,
+                strokeLineJoin = strokeJoin,
+                pathFillType = PathFillType.NonZero
+            ) {
+                moveTo(14f, 2f)
+                horizontalLineTo(6f)
+                arcToRelative(2f, 2f, 0f, isMoreThanHalf = false, isPositiveArc = false, -2f, 2f)
+                verticalLineToRelative(16f)
+                arcToRelative(2f, 2f, 0f, isMoreThanHalf = false, isPositiveArc = false, 2f, 2f)
+                horizontalLineToRelative(12f)
+                arcToRelative(2f, 2f, 0f, isMoreThanHalf = false, isPositiveArc = false, 2f, -2f)
+                verticalLineTo(8f)
+                close()
+            }
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = strokeWidth,
+                strokeLineCap = strokeCap,
+                strokeLineJoin = strokeJoin,
+                pathFillType = PathFillType.NonZero
+            ) {
+                moveTo(14f, 2f)
+                verticalLineToRelative(6f)
+                horizontalLineToRelative(6f)
+            }
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = strokeWidth,
+                strokeLineCap = strokeCap,
+                strokeLineJoin = strokeJoin,
+                pathFillType = PathFillType.NonZero
+            ) {
+                moveTo(8f, 13f)
+                horizontalLineToRelative(8f)
+            }
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = strokeWidth,
+                strokeLineCap = strokeCap,
+                strokeLineJoin = strokeJoin,
+                pathFillType = PathFillType.NonZero
+            ) {
+                moveTo(8f, 17f)
+                horizontalLineToRelative(8f)
+            }
+        }.build()
+    }
+
+    val LocalFireDepartment: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "LocalFireDepartment",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).apply {
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = strokeWidth,
+                strokeLineCap = strokeCap,
+                strokeLineJoin = strokeJoin,
+                pathFillType = PathFillType.NonZero
+            ) {
+                moveTo(12f, 2f)
+                reflectiveCurveToRelative(-8f, 8f, -8f, 12f)
+                arcToRelative(8f, 8f, 0f, isMoreThanHalf = false, isPositiveArc = false, 16f, 0f)
+                curveTo(20f, 10f, 12f, 2f, 12f, 2f)
+                close()
+            }
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = strokeWidth,
+                strokeLineCap = strokeCap,
+                strokeLineJoin = strokeJoin,
+                pathFillType = PathFillType.NonZero
+            ) {
+                moveTo(12f, 22f)
+                arcToRelative(4f, 4f, 0f, isMoreThanHalf = true, isPositiveArc = true, 0f, -8f)
+                reflectiveCurveToRelative(2f, 2f, 2f, 4f)
+                arcToRelative(2f, 2f, 0f, isMoreThanHalf = true, isPositiveArc = true, -2f, 4f)
+                close()
+            }
+        }.build()
+    }
+
+    // Aliases for remaining icons
     val Accessibility = Person
     val Balance = Analytics
     val BugReport = Warning
@@ -1068,26 +1368,20 @@ object TawaznIcons {
     val Code = Description
     val DarkMode = Settings
     val DeleteForever = Delete
-    val Description = Edit
-    val Devices = PhoneAndroid
-    val Download = CloudUpload
-    val EmojiEvents = Flag
+    val Download = Add
+    val EmojiEvents = Warning
     val EventBusy = CalendarToday
     val Flag = Warning
     val Gavel = Shield
     val History = AccessTime
     val Lightbulb = Info
-    val LocalFireDepartment = Warning
     val NotificationsNone = Notifications
     val OpenInNew = ArrowBack
     val PermDeviceInformation = PhoneAndroid
     val Phone = PhoneAndroid
-    val PhoneAndroid = Devices
-    val Refresh = Sync
     val Repeat = Sync
     val Schedule = AccessTime
     val Security = Shield
-    val Sync = Refresh
     val Timer = AccessTime
     val Today = CalendarToday
 }
