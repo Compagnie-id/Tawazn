@@ -18,6 +18,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import id.compagnie.tawazn.core.datastore.AppPreferences
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.theme.TawaznTheme
+import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 class PrivacySecurityScreen : Screen {
     @Composable
@@ -29,6 +30,7 @@ class PrivacySecurityScreen : Screen {
 fun PrivacySecurityContent() {
     val navigator = LocalNavigator.currentOrThrow
     val appPreferences: AppPreferences = koinInject()
+    val scope = rememberCoroutineScope()
     val analyticsEnabled by appPreferences.analyticsEnabled.collectAsState(initial = true)
     val crashReportsEnabled by appPreferences.crashReportsEnabled.collectAsState(initial = true)
     var showExportDialog by remember { mutableStateOf(false) }
@@ -65,7 +67,7 @@ fun PrivacySecurityContent() {
                         subtitle = "Help improve Tawazn with anonymous usage data",
                         checked = analyticsEnabled,
                         onCheckedChange = {
-                            kotlinx.coroutines.MainScope().kotlinx.coroutines.launch {
+                            scope.launch {
                                 appPreferences.setAnalyticsEnabled(it)
                             }
                         icon = TawaznIcons.BugReport,

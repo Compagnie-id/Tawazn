@@ -18,6 +18,7 @@ import id.compagnie.tawazn.core.datastore.AppPreferences
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.theme.TawaznTheme
+import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 class ProfileScreen : Screen {
     @Composable
@@ -29,6 +30,7 @@ class ProfileScreen : Screen {
 fun ProfileContent() {
     val navigator = LocalNavigator.currentOrThrow
     val appPreferences: AppPreferences = koinInject()
+    val scope = rememberCoroutineScope()
     // Profile state
     val username by appPreferences.username.collectAsState(initial = "")
     val email by appPreferences.email.collectAsState(initial = "")
@@ -56,7 +58,7 @@ fun ProfileContent() {
                         if (editMode) {
                             TextButton(
                                 onClick = {
-                                    kotlinx.coroutines.MainScope().kotlinx.coroutines.launch {
+                                    scope.launch {
                                         appPreferences.setUsername(editUsername)
                                         appPreferences.setEmail(editEmail)
                                         editMode = false
