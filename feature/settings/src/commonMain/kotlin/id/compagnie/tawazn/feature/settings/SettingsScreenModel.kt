@@ -224,7 +224,7 @@ class SettingsScreenModel : ScreenModel, KoinComponent {
                 database.apply {
                     appUsageQueries.deleteAll()
                     blockedAppQueries.deleteAll()
-                    blockSessionQueries.deleteAll()
+                    blockSessionQueries.deleteAllSessions()
                     appQueries.deleteAll()
                 }
                 // Clear preferences

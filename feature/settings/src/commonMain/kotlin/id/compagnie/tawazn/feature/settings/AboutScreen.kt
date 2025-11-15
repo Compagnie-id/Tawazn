@@ -386,15 +386,3 @@ fun LicenseItem(name: String, license: String) {
         )
     }
 }
-
-@Composable
-fun SectionHeader(text: String) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.titleMedium,
-        fontWeight = FontWeight.SemiBold,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp)
-    )
-}
