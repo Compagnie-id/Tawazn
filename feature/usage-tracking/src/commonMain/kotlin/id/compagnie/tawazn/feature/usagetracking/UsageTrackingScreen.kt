@@ -63,18 +63,24 @@ class UsageTrackingScreenModel : ScreenModel, KoinComponent {
     fun loadUsageStats() {
         screenModelScope.launch {
             val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
-            val dateRange: Pair<kotlinx.datetime.LocalDate, kotlinx.datetime.LocalDate> = when (_selectedPeriod.value) {
-                UsagePeriod.TODAY -> today to today
+
+            val startDate: kotlinx.datetime.LocalDate
+            val endDate: kotlinx.datetime.LocalDate
+
+            when (_selectedPeriod.value) {
+                UsagePeriod.TODAY -> {
+                    startDate = today
+                    endDate = today
+                }
                 UsagePeriod.WEEK -> {
-                    val weekAgo = today.minus(7, kotlinx.datetime.DateTimeUnit.DAY)
-                    weekAgo to today
+                    startDate = today.minus(7, kotlinx.datetime.DateTimeUnit.DAY)
+                    endDate = today
                 }
                 UsagePeriod.MONTH -> {
-                    val monthAgo = today.minus(30, kotlinx.datetime.DateTimeUnit.DAY)
-                    monthAgo to today
+                    startDate = today.minus(30, kotlinx.datetime.DateTimeUnit.DAY)
+                    endDate = today
                 }
             }
-            val (startDate, endDate) = dateRange
 
             try {
                 val stats = usageRepository.getUsageStats(startDate, endDate)
