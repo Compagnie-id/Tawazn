@@ -12,24 +12,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import id.compagnie.tawazn.design.component.GlassCard
+import id.compagnie.tawazn.design.component.PermissionStatusBadge
+import id.compagnie.tawazn.design.component.PlatformInfoCard
 import id.compagnie.tawazn.design.theme.TawaznTheme
 
 class SettingsScreen : Screen {
 
     @Composable
     override fun Content() {
-        SettingsContent()
+        val screenModel = rememberScreenModel { SettingsScreenModel() }
+        SettingsContent(screenModel)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsContent() {
+fun SettingsContent(screenModel: SettingsScreenModel) {
     val navigator = LocalNavigator.currentOrThrow
+    val platformState by screenModel.platformState.collectAsState()
     var notificationsEnabled by remember { mutableStateOf(true) }
     var dailyReportEnabled by remember { mutableStateOf(true) }
     var weeklyReportEnabled by remember { mutableStateOf(true) }
@@ -155,6 +160,83 @@ fun SettingsContent() {
                     )
                 }
 
+                // Platform Status Section
+                item {
+                    SectionHeader("Platform Status")
+                }
+
+                item {
+                    GlassCard(modifier = Modifier.fillMaxWidth()) {
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "Permissions",
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                                PermissionStatusBadge(isGranted = platformState.hasPermissions)
+                            }
+
+                            Divider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f))
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                Button(
+                                    onClick = { screenModel.requestPermissions() },
+                                    enabled = !platformState.isRequestingPermissions && !platformState.hasPermissions,
+                                    modifier = Modifier.weight(1f)
+                                ) {
+                                    if (platformState.isRequestingPermissions) {
+                                        CircularProgressIndicator(
+                                            modifier = Modifier.size(16.dp),
+                                            strokeWidth = 2.dp,
+                                            color = MaterialTheme.colorScheme.onPrimary
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                    }
+                                    Text(if (platformState.hasPermissions) "Granted" else "Grant Permissions")
+                                }
+
+                                OutlinedButton(
+                                    onClick = { screenModel.performSync() },
+                                    enabled = !platformState.isSyncing && platformState.hasPermissions,
+                                    modifier = Modifier.weight(1f)
+                                ) {
+                                    if (platformState.isSyncing) {
+                                        CircularProgressIndicator(
+                                            modifier = Modifier.size(16.dp),
+                                            strokeWidth = 2.dp
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                    }
+                                    Icon(
+                                        imageVector = Icons.Default.Sync,
+                                        contentDescription = "Sync",
+                                        modifier = Modifier.size(16.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(4.dp))
+                                    Text("Sync")
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Platform Info
+                if (platformState.platformInfo.isNotEmpty()) {
+                    item {
+                        PlatformInfoCard(platformInfo = platformState.platformInfo)
+                    }
+                }
+
                 // Permissions Section
                 item {
                     SectionHeader("Permissions")
@@ -165,7 +247,7 @@ fun SettingsContent() {
                         icon = Icons.Default.PermDeviceInformation,
                         title = "Usage Access",
                         subtitle = "Required for tracking",
-                        onClick = { /* TODO: Open settings */ }
+                        onClick = { screenModel.requestPermissions() }
                     )
                 }
 
@@ -173,8 +255,8 @@ fun SettingsContent() {
                     SettingsItem(
                         icon = Icons.Default.Accessibility,
                         title = "Accessibility Service",
-                        subtitle = "Required for blocking (Android)",
-                        onClick = { /* TODO: Open settings */ }
+                        subtitle = "Required for blocking",
+                        onClick = { screenModel.requestPermissions() }
                     )
                 }
 

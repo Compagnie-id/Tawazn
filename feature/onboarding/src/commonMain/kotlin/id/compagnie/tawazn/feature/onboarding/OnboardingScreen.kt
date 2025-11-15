@@ -21,11 +21,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
+import id.compagnie.tawazn.design.component.PermissionCard
 import id.compagnie.tawazn.design.theme.TawaznTheme
 import id.compagnie.tawazn.MainScreen
 
@@ -33,14 +35,16 @@ class OnboardingScreen : Screen {
 
     @Composable
     override fun Content() {
-        OnboardingContent()
+        val screenModel = rememberScreenModel { OnboardingScreenModel() }
+        OnboardingContent(screenModel)
     }
 }
 
 @Composable
-fun OnboardingContent() {
+fun OnboardingContent(screenModel: OnboardingScreenModel) {
     var currentPage by remember { mutableStateOf(0) }
     val navigator = LocalNavigator.currentOrThrow
+    val permissionState by screenModel.permissionState.collectAsState()
 
     TawaznTheme {
         Box(
@@ -97,8 +101,15 @@ fun OnboardingContent() {
                     when (currentPage) {
                         0 -> WelcomePage()
                         1 -> FeaturePage()
-                        2 -> PermissionPage()
-                        3 -> ReadyPage()
+                        2 -> PermissionPage(
+                            permissionState = permissionState,
+                            onRequestPermissions = { screenModel.requestPermissions() },
+                            onCheckPermissions = { screenModel.checkPermissions() }
+                        )
+                        3 -> ReadyPage(
+                            permissionState = permissionState,
+                            onStartServices = { screenModel.startBackgroundServices() }
+                        )
                     }
                 }
 
@@ -230,18 +241,22 @@ fun FeaturePage() {
 }
 
 @Composable
-fun PermissionPage() {
+fun PermissionPage(
+    permissionState: PermissionState,
+    onRequestPermissions: () -> Unit,
+    onCheckPermissions: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(24.dp)
+        verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         Icon(
             imageVector = Icons.Default.Security,
             contentDescription = "Permissions",
-            modifier = Modifier.size(100.dp),
+            modifier = Modifier.size(80.dp),
             tint = TawaznTheme.colors.gradientMiddle
         )
 
@@ -252,52 +267,115 @@ fun PermissionPage() {
             textAlign = TextAlign.Center
         )
 
-        GlassCard(useGradient = true) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+        // Status Banner
+        if (permissionState.hasAllPermissions) {
+            GlassCard(
+                useGradient = false,
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Text(
-                    text = "Usage Access",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold
-                )
-
-                Text(
-                    text = "To track your screen time and app usage, Tawazn needs access to usage statistics. This data stays on your device and is never shared.",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.padding(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Lock,
-                        contentDescription = "Privacy",
+                        imageVector = Icons.Default.CheckCircle,
+                        contentDescription = "Success",
                         tint = TawaznTheme.colors.success,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(24.dp)
                     )
                     Text(
-                        text = "Your data is private and secure",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = TawaznTheme.colors.success
+                        text = "All permissions granted!",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = TawaznTheme.colors.success,
+                        fontWeight = FontWeight.SemiBold
                     )
                 }
             }
         }
 
-        Text(
-            text = "You'll be asked to grant this permission in the next step",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center
+        // Permission Cards
+        PermissionCard(
+            title = "Screen Time Access",
+            description = "Track app usage and screen time statistics. Your data stays private on this device.",
+            icon = Icons.Default.Timer,
+            isGranted = permissionState.hasAllPermissions,
+            isRequired = true,
+            onRequestClick = onRequestPermissions
         )
+
+        PermissionCard(
+            title = "App Blocking",
+            description = "Allow Tawazn to block distracting apps and help you stay focused.",
+            icon = Icons.Default.Block,
+            isGranted = permissionState.hasAllPermissions,
+            isRequired = true,
+            onRequestClick = onRequestPermissions
+        )
+
+        // Loading indicator
+        if (permissionState.isRequesting) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(20.dp),
+                    strokeWidth = 2.dp
+                )
+                Text(
+                    text = "Requesting permissions...",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+
+        // Refresh permissions button
+        if (permissionState.permissionRequested && !permissionState.hasAllPermissions) {
+            TextButton(onClick = onCheckPermissions) {
+                Icon(
+                    imageVector = Icons.Default.Refresh,
+                    contentDescription = "Refresh",
+                    modifier = Modifier.size(16.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text("Check Again")
+            }
+        }
+
+        // Privacy note
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Default.Lock,
+                contentDescription = "Privacy",
+                tint = TawaznTheme.colors.success,
+                modifier = Modifier.size(16.dp)
+            )
+            Text(
+                text = "Your data is private and secure",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
     }
 }
 
 @Composable
-fun ReadyPage() {
+fun ReadyPage(
+    permissionState: PermissionState,
+    onStartServices: () -> Unit
+) {
+    // Start background services when page is shown
+    LaunchedEffect(Unit) {
+        if (permissionState.hasAllPermissions) {
+            onStartServices()
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -340,6 +418,40 @@ fun ReadyPage() {
                     QuickTip("Block distracting apps instantly")
                     QuickTip("Create focus sessions")
                     QuickTip("Track your progress")
+                }
+            }
+        }
+
+        // Show permission warning if not granted
+        if (!permissionState.hasAllPermissions) {
+            GlassCard(
+                useGradient = false,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Row(
+                    modifier = Modifier.padding(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = "Warning",
+                        tint = TawaznTheme.colors.warning,
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = "Limited Functionality",
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.SemiBold,
+                            color = TawaznTheme.colors.warning
+                        )
+                        Text(
+                            text = "Some features require permissions. You can grant them later in Settings.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
                 }
             }
         }
