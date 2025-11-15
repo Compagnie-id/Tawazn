@@ -382,7 +382,7 @@ object TawaznIcons {
             ) {
                 moveTo(12f, 22f)
                 arcTo(10f, 10f, 0f, isMoreThanHalf = true, isPositiveArc = false, 12f, 2f)
-                arcA(10f, 10f, 0f, isMoreThanHalf = false, isPositiveArc = false, 12f, 22f)
+                arcTo(10f, 10f, 0f, isMoreThanHalf = false, isPositiveArc = false, 12f, 22f)
                 close()
             }
             path(
@@ -627,7 +627,7 @@ object TawaznIcons {
             ) {
                 moveTo(11f, 19f)
                 arcTo(8f, 8f, 0f, isMoreThanHalf = true, isPositiveArc = false, 11f, 3f)
-                arcA(8f, 8f, 0f, isMoreThanHalf = false, isPositiveArc = false, 11f, 19f)
+                arcTo(8f, 8f, 0f, isMoreThanHalf = false, isPositiveArc = false, 11f, 19f)
                 close()
             }
             path(
@@ -698,7 +698,7 @@ object TawaznIcons {
             ) {
                 moveTo(12f, 22f)
                 arcTo(10f, 10f, 0f, isMoreThanHalf = true, isPositiveArc = false, 12f, 2f)
-                arcA(10f, 10f, 0f, isMoreThanHalf = false, isPositiveArc = false, 12f, 22f)
+                arcTo(10f, 10f, 0f, isMoreThanHalf = false, isPositiveArc = false, 12f, 22f)
                 close()
             }
             path(
@@ -797,7 +797,7 @@ object TawaznIcons {
             ) {
                 moveTo(12f, 22f)
                 arcTo(10f, 10f, 0f, isMoreThanHalf = true, isPositiveArc = false, 12f, 2f)
-                arcA(10f, 10f, 0f, isMoreThanHalf = false, isPositiveArc = false, 12f, 22f)
+                arcTo(10f, 10f, 0f, isMoreThanHalf = false, isPositiveArc = false, 12f, 22f)
                 close()
             }
             path(
@@ -819,7 +819,7 @@ object TawaznIcons {
             ) {
                 moveTo(12f, 8f)
                 arcTo(0.5f, 0.5f, 0f, isMoreThanHalf = true, isPositiveArc = false, 12f, 7f)
-                arcA(0.5f, 0.5f, 0f, isMoreThanHalf = false, isPositiveArc = false, 12f, 8f)
+                arcTo(0.5f, 0.5f, 0f, isMoreThanHalf = false, isPositiveArc = false, 12f, 8f)
                 close()
             }
         }.build()
@@ -868,8 +868,8 @@ object TawaznIcons {
                 pathFillType = PathFillType.NonZero
             ) {
                 moveTo(12f, 17f)
-                arcA(0.5f, 0.5f, 0f, isMoreThanHalf = true, isPositiveArc = false, 12f, 16f)
-                arcA(0.5f, 0.5f, 0f, isMoreThanHalf = false, isPositiveArc = false, 12f, 17f)
+                arcTo(0.5f, 0.5f, 0f, isMoreThanHalf = true, isPositiveArc = false, 12f, 16f)
+                arcTo(0.5f, 0.5f, 0f, isMoreThanHalf = false, isPositiveArc = false, 12f, 17f)
                 close()
             }
         }.build()
@@ -1050,8 +1050,8 @@ object TawaznIcons {
                 pathFillType = PathFillType.NonZero
             ) {
                 moveTo(12f, 15f)
-                arcA(3f, 3f, 0f, isMoreThanHalf = true, isPositiveArc = false, 12f, 9f)
-                arcA(3f, 3f, 0f, isMoreThanHalf = false, isPositiveArc = false, 12f, 15f)
+                arcTo(3f, 3f, 0f, isMoreThanHalf = true, isPositiveArc = false, 12f, 9f)
+                arcTo(3f, 3f, 0f, isMoreThanHalf = false, isPositiveArc = false, 12f, 15f)
                 close()
             }
         }.build()
