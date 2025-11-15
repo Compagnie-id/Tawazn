@@ -135,6 +135,15 @@ fun SettingsContent(screenModel: SettingsScreenModel) {
 
                 item {
                     SettingsItem(
+                        icon = Icons.Default.Flag,
+                        title = "Usage Goals",
+                        subtitle = "Set daily and weekly screen time goals",
+                        onClick = { navigator.push(UsageGoalsScreen()) }
+                    )
+                }
+
+                item {
+                    SettingsItem(
                         icon = Icons.Default.LocalFireDepartment,
                         title = "Focus Sessions",
                         subtitle = "Manage scheduled blocking sessions",

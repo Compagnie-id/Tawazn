@@ -11,24 +11,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.StatsCard
 import id.compagnie.tawazn.design.theme.TawaznTheme
+import id.compagnie.tawazn.feature.settings.FocusSessionListScreen
 
 class AnalyticsScreen : Screen {
 
     @Composable
     override fun Content() {
-        AnalyticsContent()
+        val screenModel = koinScreenModel<AnalyticsScreenModel>()
+        AnalyticsContent(screenModel)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AnalyticsContent() {
+fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
     val navigator = LocalNavigator.currentOrThrow
+    val uiState by screenModel.uiState.collectAsState()
 
     TawaznTheme {
         Scaffold(
@@ -64,24 +68,28 @@ fun AnalyticsContent() {
                 }
 
                 item {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        StatsCard(
-                            title = "Avg Daily",
-                            value = "3h 12m",
-                            subtitle = "↓ 15% vs last week",
-                            modifier = Modifier.weight(1f),
-                            useGradient = true
-                        )
+                    if (uiState.isLoading) {
+                        CircularProgressIndicator(modifier = Modifier.padding(16.dp))
+                    } else {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            StatsCard(
+                                title = "Avg Daily",
+                                value = uiState.averageDailyTime.toHoursMinutesString(),
+                                subtitle = "This week",
+                                modifier = Modifier.weight(1f),
+                                useGradient = true
+                            )
 
-                        StatsCard(
-                            title = "Best Day",
-                            value = "2h 8m",
-                            subtitle = "Wednesday",
-                            modifier = Modifier.weight(1f)
-                        )
+                            StatsCard(
+                                title = "Best Day",
+                                value = uiState.bestDay?.second?.toHoursMinutesString() ?: "No data",
+                                subtitle = uiState.bestDay?.first ?: "",
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
                     }
                 }
 
@@ -107,28 +115,30 @@ fun AnalyticsContent() {
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = "Goal Progress",
+                                    text = "Today's Goal Progress",
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.SemiBold
                                 )
                                 Icon(
-                                    imageVector = Icons.Default.TrendingDown,
+                                    imageVector = if (uiState.goalProgress < 0.8f) Icons.Default.TrendingDown else Icons.Default.TrendingUp,
                                     contentDescription = "Trending",
-                                    tint = TawaznTheme.colors.success
+                                    tint = if (uiState.goalProgress < 0.8f) TawaznTheme.colors.success else TawaznTheme.colors.warning
                                 )
                             }
 
                             LinearProgressIndicator(
-                                progress = { 0.65f },
+                                progress = { uiState.goalProgress },
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(8.dp),
-                                color = TawaznTheme.colors.success,
+                                color = if (uiState.goalProgress < 0.8f) TawaznTheme.colors.success else TawaznTheme.colors.warning,
                                 trackColor = MaterialTheme.colorScheme.surfaceVariant,
                             )
 
+                            val progressPercent = (uiState.goalProgress * 100).toInt()
+                            val goalHours = uiState.dailyGoal / 60f
                             Text(
-                                text = "65% towards your daily goal of 3 hours",
+                                text = "$progressPercent% towards your daily goal of ${formatGoalHours(goalHours)} (${uiState.todayUsage.toHoursMinutesString()} used)",
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -157,22 +167,24 @@ fun AnalyticsContent() {
 
                                 Column {
                                     Text(
-                                        text = "7 Day Streak",
+                                        text = if (uiState.currentStreak > 0) "${uiState.currentStreak} Day Streak" else "No Active Streak",
                                         style = MaterialTheme.typography.titleMedium,
                                         fontWeight = FontWeight.SemiBold
                                     )
                                     Text(
-                                        text = "Keep it up!",
+                                        text = if (uiState.currentStreak > 0) "Keep it up! Best: ${uiState.longestStreak} days" else "Start by meeting your daily goal",
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 }
                             }
 
-                            Text(
-                                text = "🔥",
-                                style = MaterialTheme.typography.displaySmall
-                            )
+                            if (uiState.currentStreak > 0) {
+                                Text(
+                                    text = "🔥",
+                                    style = MaterialTheme.typography.displaySmall
+                                )
+                            }
                         }
                     }
                 }
@@ -188,30 +200,37 @@ fun AnalyticsContent() {
                 }
 
                 item {
-                    InsightCard(
-                        icon = Icons.Default.TrendingUp,
-                        title = "Most Productive Day",
-                        description = "Wednesday - Only 2h 8m screen time",
-                        color = TawaznTheme.colors.success
-                    )
+                    if (uiState.bestDay != null) {
+                        InsightCard(
+                            icon = Icons.Default.TrendingUp,
+                            title = "Most Productive Day",
+                            description = "${uiState.bestDay.first} - Only ${uiState.bestDay.second.toHoursMinutesString()} screen time",
+                            color = TawaznTheme.colors.success
+                        )
+                    }
                 }
 
                 item {
-                    InsightCard(
-                        icon = Icons.Default.Schedule,
-                        title = "Peak Usage Time",
-                        description = "You use your phone most between 8-10 PM",
-                        color = TawaznTheme.colors.info
-                    )
+                    if (uiState.weeklyStats != null && uiState.weeklyStats.totalScreenTime.inWholeMinutes > 0) {
+                        InsightCard(
+                            icon = Icons.Default.Schedule,
+                            title = "Weekly Total",
+                            description = "${uiState.weeklyStats.totalScreenTime.toHoursMinutesString()} total screen time this week",
+                            color = TawaznTheme.colors.info
+                        )
+                    }
                 }
 
                 item {
-                    InsightCard(
-                        icon = Icons.Default.Apps,
-                        title = "Top Distraction",
-                        description = "Instagram - 1h 15m average daily",
-                        color = TawaznTheme.colors.warning
-                    )
+                    if (uiState.topDistraction != null) {
+                        val avgDaily = uiState.topDistraction.totalTime.inWholeMinutes / 7
+                        InsightCard(
+                            icon = Icons.Default.Apps,
+                            title = "Top App",
+                            description = "${uiState.topDistraction.appName} - ${avgDaily}m average daily",
+                            color = TawaznTheme.colors.warning
+                        )
+                    }
                 }
 
                 // Recommendations
@@ -242,12 +261,12 @@ fun AnalyticsContent() {
                             )
 
                             Button(
-                                onClick = { /* TODO: Create session */ },
+                                onClick = { navigator.push(FocusSessionListScreen()) },
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = TawaznTheme.colors.gradientMiddle
                                 )
                             ) {
-                                Text("Create Session")
+                                Text("Manage Sessions")
                             }
                         }
                     }
@@ -355,5 +374,17 @@ fun AchievementBadge(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
+    }
+}
+
+fun formatGoalHours(hours: Float): String {
+    val wholeHours = hours.toInt()
+    val minutes = ((hours - wholeHours) * 60).toInt()
+
+    return when {
+        wholeHours > 0 && minutes > 0 -> "${wholeHours}h ${minutes}m"
+        wholeHours > 0 -> "${wholeHours}h"
+        minutes > 0 -> "${minutes}m"
+        else -> "0m"
     }
 }
