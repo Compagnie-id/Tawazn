@@ -38,6 +38,7 @@ kotlin {
             implementation(libs.kotlinx.coroutinesCore)
             implementation(libs.kotlinx.datetime)
             implementation(libs.koin.core)
+            implementation(libs.kermit)
         }
 
         androidMain.dependencies {
