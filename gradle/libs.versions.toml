@@ -26,7 +26,7 @@ koin = "4.1.0"
 ktor = "3.3.2"
 
 # Navigation
-voyager = "1.1.0"
+voyager = "1.0.0"
 
 # Serialization & DateTime
 kotlinx-serialization = "1.7.3"
