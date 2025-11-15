@@ -8,7 +8,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.SlideTransition
 import id.compagnie.tawazn.core.datastore.AppPreferences
 import id.compagnie.tawazn.design.theme.TawaznTheme
-import id.compagnie.tawazn.feature.dashboard.DashboardScreen
+import id.compagnie.tawazn.feature.main.MainScreen
 import id.compagnie.tawazn.feature.onboarding.OnboardingScreen
 import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
@@ -26,8 +26,8 @@ fun App() {
         val darkTheme = if (useSystemTheme) systemInDarkTheme else darkModeEnabled
 
         TawaznTheme(darkTheme = darkTheme) {
-            // Show onboarding screen if not completed, otherwise show dashboard
-            val initialScreen = if (onboardingCompleted) DashboardScreen() else OnboardingScreen()
+            // Show onboarding screen if not completed, otherwise show main screen with tabs
+            val initialScreen = if (onboardingCompleted) MainScreen() else OnboardingScreen()
             Navigator(initialScreen) { navigator ->
                 SlideTransition(navigator)
             }

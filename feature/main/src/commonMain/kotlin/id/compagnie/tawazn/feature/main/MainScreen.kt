@@ -1,18 +1,22 @@
-package id.compagnie.tawazn
+package id.compagnie.tawazn.feature.main
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.tab.*
 import id.compagnie.tawazn.design.icons.TawaznIcons
 import id.compagnie.tawazn.design.theme.TawaznTheme
 
+/**
+ * Main application screen with tab-based navigation
+ * Provides bottom navigation bar with 4 main tabs
+ */
 class MainScreen : Screen {
 
     @Composable

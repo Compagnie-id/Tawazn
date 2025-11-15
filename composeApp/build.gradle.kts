@@ -53,11 +53,9 @@ kotlin {
             implementation(project(":core:network"))
             implementation(project(":domain"))
             implementation(project(":data"))
-            implementation(project(":feature:dashboard"))
-            implementation(project(":feature:app-blocking"))
-            implementation(project(":feature:usage-tracking"))
-            implementation(project(":feature:analytics"))
-            implementation(project(":feature:settings"))
+
+            // Feature modules
+            implementation(project(":feature:main"))
             implementation(project(":feature:onboarding"))
 
             // Koin

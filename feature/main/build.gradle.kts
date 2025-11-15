@@ -22,7 +22,7 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "FeatureOnboarding"
+            baseName = "FeatureMain"
             isStatic = true
         }
     }
@@ -37,31 +37,25 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
 
-            implementation(project(":core:common"))
+            // Core modules
             implementation(project(":core:design-system"))
-            implementation(project(":core:datastore"))
-            implementation(project(":domain"))
-            implementation(project(":data"))
-            implementation(project(":feature:main"))
 
-            implementation(libs.kotlinx.coroutinesCore)
-            implementation(libs.kotlinx.datetime)
-            implementation(libs.androidx.lifecycle.viewmodelCompose)
-            implementation(libs.androidx.lifecycle.runtimeCompose)
-
-            // Logging
-            implementation(libs.kermit)
+            // Feature modules for tab content
+            implementation(project(":feature:dashboard"))
+            implementation(project(":feature:app-blocking"))
+            implementation(project(":feature:analytics"))
+            implementation(project(":feature:settings"))
 
             // Navigation
             implementation(libs.voyager.navigator)
             implementation(libs.voyager.screenmodel)
             implementation(libs.voyager.transitions)
             implementation(libs.voyager.koin)
+            implementation(libs.voyager.tabNavigator)
 
             // DI
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
-            implementation(libs.koin.composeViewModel)
         }
 
         androidMain.dependencies {
@@ -71,7 +65,7 @@ kotlin {
 }
 
 android {
-    namespace = "id.compagnie.tawazn.feature.onboarding"
+    namespace = "id.compagnie.tawazn.feature.main"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
