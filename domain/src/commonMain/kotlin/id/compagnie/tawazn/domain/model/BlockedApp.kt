@@ -1,22 +1,22 @@
 package id.compagnie.tawazn.domain.model
 
-import kotlinx.datetime.Instant
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlin.time.Duration
+import kotlin.time.ExperimentalTime
 
 @Serializable
-data class BlockedApp(
+data class BlockedApp @OptIn(ExperimentalTime::class) constructor(
     val id: Long = 0,
     val packageName: String,
     val appName: String,
     val iconPath: String? = null,
     val isBlocked: Boolean = true,
-    @Contextual val blockedAt: Instant,
-    @Contextual val blockedUntil: Instant? = null,
+    @Contextual val blockedAt: kotlin.time.Instant,
+    @Contextual val blockedUntil: kotlin.time.Instant? = null,
     @Contextual val blockDuration: Duration? = null,
-    @Contextual val createdAt: Instant,
-    @Contextual val updatedAt: Instant
+    @Contextual val createdAt: kotlin.time.Instant,
+    @Contextual val updatedAt: kotlin.time.Instant
 )
 
 @Serializable

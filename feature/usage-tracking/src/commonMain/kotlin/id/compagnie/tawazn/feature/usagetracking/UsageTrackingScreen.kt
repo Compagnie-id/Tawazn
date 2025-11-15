@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package id.compagnie.tawazn.feature.usagetracking
 
 import androidx.compose.foundation.layout.*
@@ -25,13 +27,14 @@ import id.compagnie.tawazn.domain.repository.UsageRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.minus
 import kotlinx.datetime.todayIn
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.ExperimentalTime
 
 class UsageTrackingScreen : Screen {
 
@@ -62,7 +65,7 @@ class UsageTrackingScreenModel : ScreenModel, KoinComponent {
 
     fun loadUsageStats() {
         screenModelScope.launch {
-            val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
+            val today = kotlin.time.Clock.System.todayIn(TimeZone.currentSystemDefault())
 
             val startDate: kotlinx.datetime.LocalDate
             val endDate: kotlinx.datetime.LocalDate

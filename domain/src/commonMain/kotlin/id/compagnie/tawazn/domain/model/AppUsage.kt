@@ -1,10 +1,12 @@
+@file:OptIn(ExperimentalTime::class)
+
 package id.compagnie.tawazn.domain.model
 
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlin.time.Duration
+import kotlin.time.ExperimentalTime
 
 @Serializable
 data class AppUsage(
@@ -14,9 +16,9 @@ data class AppUsage(
     @Contextual val usageDate: LocalDate,
     @Contextual val totalTimeInForeground: Duration,
     val launchCount: Int = 0,
-    @Contextual val lastTimeUsed: Instant? = null,
-    @Contextual val createdAt: Instant,
-    @Contextual val updatedAt: Instant
+    @Contextual val lastTimeUsed: kotlin.time.Instant? = null,
+    @Contextual val createdAt: kotlin.time.Instant,
+    @Contextual val updatedAt: kotlin.time.Instant
 )
 
 @Serializable

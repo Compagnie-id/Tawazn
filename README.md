@@ -67,17 +67,17 @@ For detailed architecture documentation, see [ARCHITECTURE.md](ARCHITECTURE.md).
 
 | Technology | Version | Purpose |
 |-----------|---------|---------|
-| **Kotlin** | 2.2.20 | Programming language |
-| **Compose Multiplatform** | 1.9.0 | UI framework |
-| **SQLDelight** | 2.1.0 | Type-safe database |
-| **Koin** | 4.1.0 | Dependency injection |
-| **Ktor** | 3.3.2 | HTTP client |
-| **Voyager** | 1.1.0 | Navigation |
-| **Coroutines** | 1.10.2 | Async programming |
-| **kotlinx.datetime** | 0.7.1 | Date/time handling |
-| **kotlinx.serialization** | 1.7.3 | JSON serialization |
-| **DataStore** | 1.1.1 | Preferences storage |
-| **Kermit** | 2.0.4 | Logging |
+| **Kotlin** | 2.2.20  | Programming language |
+| **Compose Multiplatform** | 1.9.0   | UI framework |
+| **SQLDelight** | 2.1.0   | Type-safe database |
+| **Koin** | 4.1.0   | Dependency injection |
+| **Ktor** | 3.3.2   | HTTP client |
+| **Voyager** | 1.0.1   | Navigation |
+| **Coroutines** | 1.10.2  | Async programming |
+| **kotlinx.datetime** | 0.7.1   | Date/time handling |
+| **kotlinx.serialization** | 1.7.3   | JSON serialization |
+| **DataStore** | 1.1.1   | Preferences storage |
+| **Kermit** | 2.0.4   | Logging |
 
 ### Design System
 

@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package id.compagnie.tawazn.platform.android
 
 import android.content.Context
@@ -8,10 +10,11 @@ import id.compagnie.tawazn.domain.repository.UsageRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
-import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.minus
 import kotlinx.datetime.todayIn
+import kotlin.time.ExperimentalTime
 
 /**
  * Synchronizes Android platform data with repositories
@@ -63,7 +66,7 @@ class AndroidPlatformSync(
 
             logger.i { "Syncing usage data for last $daysBack days..." }
 
-            val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
+            val today = kotlin.time.Clock.System.todayIn(TimeZone.currentSystemDefault())
             val startDate = today.minus(daysBack, DateTimeUnit.DAY)
 
             val usageData = appMonitor.getAppUsageStats(startDate, today)

@@ -1,9 +1,11 @@
+@file:OptIn(ExperimentalTime::class)
+
 package id.compagnie.tawazn.domain.repository
 
 import id.compagnie.tawazn.domain.model.BlockSession
 import id.compagnie.tawazn.domain.model.CreateBlockSessionRequest
 import kotlinx.coroutines.flow.Flow
-import kotlinx.datetime.Instant
+import kotlin.time.ExperimentalTime
 
 interface BlockSessionRepository {
     /**
@@ -24,7 +26,7 @@ interface BlockSessionRepository {
     /**
      * Get currently active sessions based on time
      */
-    suspend fun getCurrentActiveSessions(currentTime: Instant): List<BlockSession>
+    suspend fun getCurrentActiveSessions(currentTime: kotlin.time.Instant): List<BlockSession>
 
     /**
      * Create new block session

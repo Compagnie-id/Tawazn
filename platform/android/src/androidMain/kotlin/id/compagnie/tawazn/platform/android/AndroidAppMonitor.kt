@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package id.compagnie.tawazn.platform.android
 
 import android.app.AppOpsManager
@@ -15,7 +17,6 @@ import id.compagnie.tawazn.domain.model.AppInfo
 import id.compagnie.tawazn.domain.model.AppUsage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -24,6 +25,7 @@ import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.ExperimentalTime
 
 /**
  * Android implementation of AppMonitor using UsageStatsManager API
@@ -131,7 +133,7 @@ class AndroidAppMonitor(
                         packageName
                     }
 
-                    val now = Clock.System.now()
+                    val now = kotlin.time.Clock.System.now()
                     AppUsage(
                         packageName = packageName,
                         appName = appName,
@@ -229,7 +231,7 @@ class AndroidAppMonitor(
 
     private fun categorizeApp(appInfo: ApplicationInfo): AppCategory {
         // Basic categorization - could be enhanced with ML or API
-        val packageName = appInfo.packageName.toLowerCase()
+        val packageName = appInfo.packageName.lowercase()
 
         return when {
             packageName.contains("facebook") || packageName.contains("twitter") ||

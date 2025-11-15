@@ -1,9 +1,11 @@
+@file:OptIn(ExperimentalTime::class)
+
 package id.compagnie.tawazn.domain.repository
 
 import id.compagnie.tawazn.domain.model.BlockRequest
 import id.compagnie.tawazn.domain.model.BlockedApp
 import kotlinx.coroutines.flow.Flow
-import kotlinx.datetime.Instant
+import kotlin.time.ExperimentalTime
 
 interface BlockedAppRepository {
     /**
@@ -14,7 +16,7 @@ interface BlockedAppRepository {
     /**
      * Get currently active blocked apps
      */
-    fun getActiveBlockedApps(currentTime: Instant): Flow<List<BlockedApp>>
+    fun getActiveBlockedApps(currentTime: kotlin.time.Instant): Flow<List<BlockedApp>>
 
     /**
      * Get blocked app by package name

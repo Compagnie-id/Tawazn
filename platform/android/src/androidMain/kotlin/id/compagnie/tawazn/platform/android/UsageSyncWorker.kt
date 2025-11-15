@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package id.compagnie.tawazn.platform.android
 
 import android.content.Context
@@ -9,6 +11,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.*
 import java.util.concurrent.TimeUnit
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 /**
  * Background worker to sync usage data from Android to database
