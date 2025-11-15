@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package id.compagnie.tawazn.data.repository
 
 import app.cash.sqldelight.coroutines.asFlow
@@ -9,9 +11,10 @@ import id.compagnie.tawazn.domain.repository.BlockedAppRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
+import kotlin.time.Clock
+import kotlin.time.Instant
 import kotlin.time.Duration
+import kotlin.time.ExperimentalTime
 
 class BlockedAppRepositoryImpl(
     private val database: TawaznDatabase

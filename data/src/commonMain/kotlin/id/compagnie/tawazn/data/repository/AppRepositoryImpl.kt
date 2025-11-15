@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package id.compagnie.tawazn.data.repository
 
 import id.compagnie.tawazn.database.TawaznDatabase
@@ -6,10 +8,11 @@ import id.compagnie.tawazn.domain.model.AppInfo
 import id.compagnie.tawazn.domain.repository.AppRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import kotlinx.coroutines.Dispatchers
+import kotlin.time.ExperimentalTime
 
 class AppRepositoryImpl(
     private val database: TawaznDatabase
