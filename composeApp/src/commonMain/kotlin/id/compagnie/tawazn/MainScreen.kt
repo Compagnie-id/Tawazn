@@ -1,0 +1,158 @@
+package id.compagnie.tawazn
+
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.tab.*
+import id.compagnie.tawazn.design.theme.TawaznTheme
+
+class MainScreen : Screen {
+
+    @Composable
+    override fun Content() {
+        MainContent()
+    }
+}
+
+@Composable
+fun MainContent() {
+    TawaznTheme {
+        TabNavigator(DashboardTab) {
+            Scaffold(
+                containerColor = MaterialTheme.colorScheme.background,
+                bottomBar = {
+                    NavigationBar(
+                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f)
+                    ) {
+                        TabNavigationItem(DashboardTab)
+                        TabNavigationItem(AppsTab)
+                        TabNavigationItem(AnalyticsTab)
+                        TabNavigationItem(SettingsTab)
+                    }
+                }
+            ) { paddingValues ->
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                ) {
+                    CurrentTab()
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun RowScope.TabNavigationItem(tab: Tab) {
+    val tabNavigator = LocalTabNavigator.current
+
+    NavigationBarItem(
+        selected = tabNavigator.current == tab,
+        onClick = { tabNavigator.current = tab },
+        icon = {
+            Icon(
+                painter = tab.options.icon!!,
+                contentDescription = tab.options.title
+            )
+        },
+        label = { Text(tab.options.title) },
+        colors = NavigationBarItemDefaults.colors(
+            selectedIconColor = MaterialTheme.colorScheme.primary,
+            selectedTextColor = MaterialTheme.colorScheme.primary,
+            indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    )
+}
+
+// Tab Objects
+object DashboardTab : Tab {
+    override val options: TabOptions
+        @Composable
+        get() {
+            val icon = rememberVectorPainter(Icons.Default.Home)
+            return remember {
+                TabOptions(
+                    index = 0u,
+                    title = "Home",
+                    icon = icon
+                )
+            }
+        }
+
+    @Composable
+    override fun Content() {
+        id.compagnie.tawazn.feature.dashboard.DashboardContent()
+    }
+}
+
+object AppsTab : Tab {
+    override val options: TabOptions
+        @Composable
+        get() {
+            val icon = rememberVectorPainter(Icons.Default.Apps)
+            return remember {
+                TabOptions(
+                    index = 1u,
+                    title = "Apps",
+                    icon = icon
+                )
+            }
+        }
+
+    @Composable
+    override fun Content() {
+        id.compagnie.tawazn.feature.appblocking.AppBlockingContent(
+            cafe.adriel.voyager.koin.koinScreenModel()
+        )
+    }
+}
+
+object AnalyticsTab : Tab {
+    override val options: TabOptions
+        @Composable
+        get() {
+            val icon = rememberVectorPainter(Icons.Default.Analytics)
+            return remember {
+                TabOptions(
+                    index = 2u,
+                    title = "Insights",
+                    icon = icon
+                )
+            }
+        }
+
+    @Composable
+    override fun Content() {
+        id.compagnie.tawazn.feature.analytics.AnalyticsContent()
+    }
+}
+
+object SettingsTab : Tab {
+    override val options: TabOptions
+        @Composable
+        get() {
+            val icon = rememberVectorPainter(Icons.Default.Settings)
+            return remember {
+                TabOptions(
+                    index = 3u,
+                    title = "Settings",
+                    icon = icon
+                )
+            }
+        }
+
+    @Composable
+    override fun Content() {
+        id.compagnie.tawazn.feature.settings.SettingsContent()
+    }
+}

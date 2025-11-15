@@ -1,6 +1,9 @@
 package id.compagnie.tawazn.data.di
 
 import id.compagnie.tawazn.data.repository.AppRepositoryImpl
+import id.compagnie.tawazn.data.repository.BlockedAppRepositoryImpl
+import id.compagnie.tawazn.data.repository.BlockSessionRepositoryImpl
+import id.compagnie.tawazn.data.repository.UsageRepositoryImpl
 import id.compagnie.tawazn.database.DatabaseDriverFactory
 import id.compagnie.tawazn.database.TawaznDatabase
 import id.compagnie.tawazn.database.TawaznDatabaseFactory
@@ -20,7 +23,7 @@ val dataModule = module {
 
     // Repositories
     single<AppRepository> { AppRepositoryImpl(get()) }
-    // single<BlockedAppRepository> { BlockedAppRepositoryImpl(get()) }
-    // single<UsageRepository> { UsageRepositoryImpl(get(), get()) }
-    // single<BlockSessionRepository> { BlockSessionRepositoryImpl(get()) }
+    single<BlockedAppRepository> { BlockedAppRepositoryImpl(get()) }
+    single<UsageRepository> { UsageRepositoryImpl(get()) }
+    single<BlockSessionRepository> { BlockSessionRepositoryImpl(get()) }
 }
