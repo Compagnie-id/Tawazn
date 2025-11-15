@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.core.model.rememberScreenModel
+import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import id.compagnie.tawazn.design.component.GlassCard
@@ -22,7 +22,7 @@ class AnalyticsScreen : Screen {
 
     @Composable
     override fun Content() {
-        val screenModel = rememberScreenModel { AnalyticsScreenModel() }
+        val screenModel = getScreenModel<AnalyticsScreenModel>()
         AnalyticsContent(screenModel)
     }
 }

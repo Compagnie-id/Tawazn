@@ -11,7 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import id.compagnie.tawazn.design.icons.TawaznIcons
 import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.rememberScreenModel
+import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -37,7 +37,7 @@ class UsageTrackingScreen : Screen {
 
     @Composable
     override fun Content() {
-        val screenModel = rememberScreenModel { UsageTrackingScreenModel() }
+        val screenModel = getScreenModel<UsageTrackingScreenModel>()
         UsageTrackingContent(screenModel)
     }
 }

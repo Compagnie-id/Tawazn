@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.core.model.rememberScreenModel
+import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -22,7 +22,7 @@ import id.compagnie.tawazn.design.theme.TawaznTheme
 class SettingsScreen : Screen {
     @Composable
     override fun Content() {
-        val screenModel = rememberScreenModel { SettingsScreenModel() }
+        val screenModel = getScreenModel<SettingsScreenModel>()
         SettingsContent(screenModel)
     }
 }
