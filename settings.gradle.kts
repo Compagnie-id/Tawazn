@@ -54,8 +54,3 @@ include(":feature:usage-tracking")
 include(":feature:analytics")
 include(":feature:settings")
 include(":feature:onboarding")
-
-// Platform-Specific
-include(":platform:android")
-include(":platform:ios")
-include(":platform:desktop")
