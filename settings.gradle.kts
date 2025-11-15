@@ -47,6 +47,11 @@ include(":domain")
 // Data Layer
 include(":data")
 
+// Platform Modules
+include(":platform:android")
+include(":platform:ios")
+include(":platform:desktop")
+
 // Feature Modules
 include(":feature:dashboard")
 include(":feature:app-blocking")
