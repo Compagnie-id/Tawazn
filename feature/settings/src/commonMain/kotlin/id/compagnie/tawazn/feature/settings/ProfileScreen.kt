@@ -20,30 +20,37 @@ import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.theme.TawaznTheme
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
+
 class ProfileScreen : Screen {
     @Composable
     override fun Content() {
         ProfileContent()
     }
 }
+
 @Composable
 fun ProfileContent() {
     val navigator = LocalNavigator.currentOrThrow
     val appPreferences: AppPreferences = koinInject()
     val scope = rememberCoroutineScope()
+
     // Profile state
     val username by appPreferences.username.collectAsState(initial = "")
     val email by appPreferences.email.collectAsState(initial = "")
     val currentStreak by appPreferences.currentStreak.collectAsState(initial = 0)
     val longestStreak by appPreferences.longestStreak.collectAsState(initial = 0)
+
     var editMode by remember { mutableStateOf(false) }
     var editUsername by remember { mutableStateOf(username) }
     var editEmail by remember { mutableStateOf(email) }
+
     LaunchedEffect(username, email) {
         if (!editMode) {
             editUsername = username
             editEmail = email
         }
+    }
+
     TawaznTheme {
         Scaffold(
             topBar = {
@@ -73,9 +80,13 @@ fun ProfileContent() {
                                 editMode = false
                             }) {
                                 Text("Cancel")
+                            }
                         } else {
                             IconButton(onClick = { editMode = true }) {
                                 Icon(TawaznIcons.Edit, "Edit")
+                            }
+                        }
+                    },
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = MaterialTheme.colorScheme.background
                     )
@@ -112,6 +123,10 @@ fun ProfileContent() {
                                     modifier = Modifier.size(48.dp),
                                     tint = MaterialTheme.colorScheme.onPrimaryContainer
                                 )
+                            }
+                        }
+
+                        if (editMode) {
                             OutlinedTextField(
                                 value = editUsername,
                                 onValueChange = { editUsername = it },
@@ -119,51 +134,103 @@ fun ProfileContent() {
                                 modifier = Modifier.fillMaxWidth(0.8f),
                                 singleLine = true
                             )
+                            OutlinedTextField(
+                                value = editEmail,
+                                onValueChange = { editEmail = it },
+                                placeholder = { Text("your.email@example.com") },
+                                modifier = Modifier.fillMaxWidth(0.8f),
+                                singleLine = true
+                            )
+                        } else {
                             Text(
                                 text = username.ifBlank { "Set your name" },
                                 style = MaterialTheme.typography.headlineSmall,
                                 fontWeight = FontWeight.Bold
-                                value = editEmail,
-                                onValueChange = { editEmail = it },
-                                placeholder = { Text("your.email@example.com") },
+                            )
+                            Text(
                                 text = email.ifBlank { "Add email" },
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
                     }
                 }
+
                 // Stats Section
                 Text(
                     text = "Your Progress",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = TawaznTheme.colors.gradientMiddle
+                )
+
                 Row(
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
                     // Current Streak
                     GlassCard(modifier = Modifier.weight(1f)) {
                         Column(
+                            modifier = Modifier.fillMaxWidth(),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
                             Icon(
                                 imageVector = TawaznIcons.LocalFireDepartment,
                                 contentDescription = "Streak",
                                 tint = TawaznTheme.colors.warning,
                                 modifier = Modifier.size(32.dp)
+                            )
+                            Text(
                                 text = currentStreak.toString(),
                                 style = MaterialTheme.typography.headlineMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = TawaznTheme.colors.warning
+                            )
+                            Text(
                                 text = "Day Streak",
                                 style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+
                     // Longest Streak
+                    GlassCard(modifier = Modifier.weight(1f)) {
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Icon(
                                 imageVector = TawaznIcons.EmojiEvents,
                                 contentDescription = "Best",
                                 tint = TawaznTheme.colors.success,
+                                modifier = Modifier.size(32.dp)
+                            )
+                            Text(
                                 text = longestStreak.toString(),
+                                style = MaterialTheme.typography.headlineMedium,
+                                fontWeight = FontWeight.Bold,
                                 color = TawaznTheme.colors.success
+                            )
+                            Text(
                                 text = "Best Streak",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                }
+
                 // Account Information
+                Text(
                     text = "Account Information",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = TawaznTheme.colors.gradientMiddle
+                )
+
                 GlassCard(modifier = Modifier.fillMaxWidth()) {
                     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         InfoRow(
@@ -172,15 +239,29 @@ fun ProfileContent() {
                             value = "January 2024"
                         )
                         Divider()
+                        InfoRow(
                             icon = TawaznIcons.Devices,
                             label = "Platform",
                             value = getPlatformName()
+                        )
+                    }
+                }
+
                 Spacer(Modifier.height(8.dp))
+
                 // Note about data
+                Text(
                     text = "Your profile data is stored locally on your device and is never shared with third parties.",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(horizontal = 8.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
 fun InfoRow(icon: androidx.compose.ui.graphics.vector.ImageVector, label: String, value: String) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -201,6 +282,8 @@ fun InfoRow(icon: androidx.compose.ui.graphics.vector.ImageVector, label: String
                 text = label,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
         Text(
             text = value,
             style = MaterialTheme.typography.bodyMedium,
@@ -208,3 +291,5 @@ fun InfoRow(icon: androidx.compose.ui.graphics.vector.ImageVector, label: String
         )
     }
 }
+
+expect fun getPlatformName(): String
