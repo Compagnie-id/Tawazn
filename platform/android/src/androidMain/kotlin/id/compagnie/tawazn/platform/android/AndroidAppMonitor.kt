@@ -17,15 +17,13 @@ import id.compagnie.tawazn.domain.model.AppInfo
 import id.compagnie.tawazn.domain.model.AppUsage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
-import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
-import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 /**
  * Android implementation of AppMonitor using UsageStatsManager API
@@ -109,12 +107,12 @@ class AndroidAppMonitor(
                 val usageData = packageMap.getOrPut(date) { UsageData() }
 
                 when (event.eventType) {
-                    UsageEvents.Event.MOVE_TO_FOREGROUND -> {
+                    UsageEvents.Event.ACTIVITY_RESUMED -> {
                         usageData.foregroundTime = event.timeStamp
                         usageData.launchCount++
                         usageData.lastTimeUsed = event.timeStamp
                     }
-                    UsageEvents.Event.MOVE_TO_BACKGROUND -> {
+                    UsageEvents.Event.ACTIVITY_PAUSED -> {
                         if (usageData.foregroundTime > 0) {
                             usageData.totalTime += (event.timeStamp - usageData.foregroundTime)
                             usageData.foregroundTime = 0
@@ -196,8 +194,8 @@ class AndroidAppMonitor(
 
                 if (event.packageName == packageName) {
                     when (event.eventType) {
-                        UsageEvents.Event.MOVE_TO_FOREGROUND -> isInForeground = true
-                        UsageEvents.Event.MOVE_TO_BACKGROUND -> isInForeground = false
+                        UsageEvents.Event.ACTIVITY_RESUMED -> isInForeground = true
+                        UsageEvents.Event.ACTIVITY_PAUSED -> isInForeground = false
                     }
                 }
             }
