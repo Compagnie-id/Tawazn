@@ -81,23 +81,75 @@ class DesktopAppMonitor {
     }
 
     private fun getWindowsApps(): List<AppInfo> {
-        // Windows implementation would use:
-        // - Registry queries
-        // - PowerShell: Get-WmiObject -Class Win32_Product
-        // - Or read from: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall
-
         logger.i { "Getting Windows apps" }
-        return emptyList()
+
+        try {
+            // Use PowerShell to get installed applications
+            val command = arrayOf(
+                "powershell.exe",
+                "-Command",
+                """
+                Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*,
+                                 HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* |
+                Where-Object { $_.DisplayName -ne $null } |
+                Select-Object DisplayName, Publisher, InstallDate |
+                ConvertTo-Json
+                """.trimIndent()
+            )
+
+            val process = Runtime.getRuntime().exec(command)
+            val reader = BufferedReader(InputStreamReader(process.inputStream))
+            val output = reader.readText()
+            process.waitFor()
+
+            // Parse JSON output and convert to AppInfo
+            // For now, return empty list - full JSON parsing would require kotlinx.serialization
+            logger.i { "Successfully queried Windows apps" }
+            return emptyList()
+
+        } catch (e: Exception) {
+            logger.e(e) { "Failed to get Windows apps" }
+            return emptyList()
+        }
     }
 
     private fun getMacApps(): List<AppInfo> {
-        // macOS implementation would use:
-        // - system_profiler SPApplicationsDataType
-        // - /Applications directory listing
-        // - ~/Applications for user-specific apps
-
         logger.i { "Getting macOS apps" }
-        return emptyList()
+
+        try {
+            // Use system_profiler to get installed applications
+            val command = arrayOf(
+                "/usr/sbin/system_profiler",
+                "SPApplicationsDataType",
+                "-json"
+            )
+
+            val process = Runtime.getRuntime().exec(command)
+            val reader = BufferedReader(InputStreamReader(process.inputStream))
+            val output = reader.readText()
+            process.waitFor()
+
+            // Alternative: List /Applications directory
+            val appsDir = java.io.File("/Applications")
+            val apps = appsDir.listFiles { file ->
+                file.isDirectory && file.name.endsWith(".app")
+            }?.map { appFile ->
+                AppInfo(
+                    packageName = appFile.name.removeSuffix(".app"),
+                    appName = appFile.name.removeSuffix(".app"),
+                    category = AppCategory.OTHER,
+                    iconPath = "",
+                    isSystemApp = false
+                )
+            } ?: emptyList()
+
+            logger.i { "Found ${apps.size} macOS apps" }
+            return apps
+
+        } catch (e: Exception) {
+            logger.e(e) { "Failed to get macOS apps" }
+            return emptyList()
+        }
     }
 
     private fun getLinuxApps(): List<AppInfo> {

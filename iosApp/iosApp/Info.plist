@@ -4,5 +4,13 @@
 <dict>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+
+	<!-- Family Controls (Screen Time API) -->
+	<key>NSFamilyControlsUsageDescription</key>
+	<string>Tawazn needs access to Screen Time to help you manage your app usage, block distracting apps, and achieve digital wellness. Your data stays private on your device.</string>
+
+	<!-- Notifications -->
+	<key>NSUserNotificationsUsageDescription</key>
+	<string>Tawazn sends you helpful reminders about your screen time goals and focus sessions.</string>
 </dict>
 </plist>

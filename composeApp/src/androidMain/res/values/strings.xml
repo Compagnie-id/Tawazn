@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Tawazn</string>
+    <string name="accessibility_service_description">Tawazn uses this service to block distracting apps and help you maintain focus. The service monitors when apps are opened and can block them according to your settings. Your privacy is protected - no data is collected or shared.</string>
 </resources>
