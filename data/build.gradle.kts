@@ -34,9 +34,6 @@ kotlin {
             implementation(project(":core:datastore"))
             implementation(project(":core:network"))
             implementation(project(":domain"))
-            implementation(project(":platform:android"))
-            implementation(project(":platform:ios"))
-            implementation(project(":platform:desktop"))
 
             implementation(libs.kotlinx.coroutinesCore)
             implementation(libs.kotlinx.datetime)
