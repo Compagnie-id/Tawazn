@@ -88,7 +88,7 @@ class AndroidPlatformSync(
         try {
             logger.i { "Syncing blocked apps to accessibility service..." }
 
-            val blockedApps = blockedAppRepository.getBlockedApps().first()
+            val blockedApps = blockedAppRepository.getAllBlockedApps().first()
             val packageNames = blockedApps.map { it.packageName }.toSet()
 
             logger.i { "Found ${packageNames.size} blocked apps" }
