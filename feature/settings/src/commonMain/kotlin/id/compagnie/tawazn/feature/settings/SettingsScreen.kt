@@ -35,10 +35,16 @@ class SettingsScreen : Screen {
 fun SettingsContent(screenModel: SettingsScreenModel) {
     val navigator = LocalNavigator.currentOrThrow
     val platformState by screenModel.platformState.collectAsState()
-    var notificationsEnabled by remember { mutableStateOf(true) }
-    var dailyReportEnabled by remember { mutableStateOf(true) }
-    var weeklyReportEnabled by remember { mutableStateOf(true) }
-    var darkModeEnabled by remember { mutableStateOf(false) }
+
+    // Collect preference flows
+    val useSystemTheme by screenModel.useSystemTheme.collectAsState(initial = true)
+    val darkModeEnabled by screenModel.darkMode.collectAsState(initial = false)
+    val notificationsEnabled by screenModel.notificationsEnabled.collectAsState(initial = true)
+    val dailyReportEnabled by screenModel.dailyReportEnabled.collectAsState(initial = true)
+    val weeklyReportEnabled by screenModel.weeklyReportEnabled.collectAsState(initial = true)
+
+    // Clear data dialog state
+    var showClearDataDialog by remember { mutableStateOf(false) }
 
     TawaznTheme {
         Scaffold(
@@ -98,7 +104,7 @@ fun SettingsContent(screenModel: SettingsScreenModel) {
                         title = "Notifications",
                         subtitle = "Enable notifications",
                         checked = notificationsEnabled,
-                        onCheckedChange = { notificationsEnabled = it }
+                        onCheckedChange = { screenModel.setNotificationsEnabled(it) }
                     )
                 }
 
@@ -108,7 +114,7 @@ fun SettingsContent(screenModel: SettingsScreenModel) {
                         title = "Daily Report",
                         subtitle = "Get daily screen time summary",
                         checked = dailyReportEnabled,
-                        onCheckedChange = { dailyReportEnabled = it }
+                        onCheckedChange = { screenModel.setDailyReportEnabled(it) }
                     )
                 }
 
@@ -118,7 +124,7 @@ fun SettingsContent(screenModel: SettingsScreenModel) {
                         title = "Weekly Report",
                         subtitle = "Get weekly insights",
                         checked = weeklyReportEnabled,
-                        onCheckedChange = { weeklyReportEnabled = it }
+                        onCheckedChange = { screenModel.setWeeklyReportEnabled(it) }
                     )
                 }
 
@@ -129,11 +135,22 @@ fun SettingsContent(screenModel: SettingsScreenModel) {
 
                 item {
                     SettingsSwitchItem(
+                        icon = Icons.Default.Settings,
+                        title = "Use System Theme",
+                        subtitle = "Follow system dark mode setting",
+                        checked = useSystemTheme,
+                        onCheckedChange = { screenModel.setUseSystemTheme(it) }
+                    )
+                }
+
+                item {
+                    SettingsSwitchItem(
                         icon = Icons.Default.DarkMode,
                         title = "Dark Mode",
-                        subtitle = "Use dark theme",
+                        subtitle = if (useSystemTheme) "Disabled (using system theme)" else "Use dark theme",
                         checked = darkModeEnabled,
-                        onCheckedChange = { darkModeEnabled = it }
+                        onCheckedChange = { screenModel.setDarkMode(it) },
+                        enabled = !useSystemTheme
                     )
                 }
 
@@ -156,7 +173,7 @@ fun SettingsContent(screenModel: SettingsScreenModel) {
                         icon = Icons.Default.DeleteForever,
                         title = "Clear Data",
                         subtitle = "Delete all usage data",
-                        onClick = { /* TODO: Show confirmation */ }
+                        onClick = { showClearDataDialog = true }
                     )
                 }
 
@@ -317,6 +334,50 @@ fun SettingsContent(screenModel: SettingsScreenModel) {
                 }
             }
         }
+
+        // Clear Data Confirmation Dialog
+        if (showClearDataDialog) {
+            AlertDialog(
+                onDismissRequest = { showClearDataDialog = false },
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = "Warning",
+                        tint = MaterialTheme.colorScheme.error
+                    )
+                },
+                title = {
+                    Text(
+                        text = "Clear All Data?",
+                        style = MaterialTheme.typography.headlineSmall
+                    )
+                },
+                text = {
+                    Text(
+                        text = "This will permanently delete all your usage history, blocked apps, and settings. This action cannot be undone.",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            screenModel.clearAllData()
+                            showClearDataDialog = false
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.error
+                        )
+                    ) {
+                        Text("Clear All Data")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showClearDataDialog = false }) {
+                        Text("Cancel")
+                    }
+                }
+            )
+        }
     }
 }
 
@@ -384,7 +445,8 @@ fun SettingsSwitchItem(
     title: String,
     subtitle: String,
     checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
+    onCheckedChange: (Boolean) -> Unit,
+    enabled: Boolean = true
 ) {
     GlassCard(modifier = Modifier.fillMaxWidth()) {
         Row(
@@ -395,7 +457,7 @@ fun SettingsSwitchItem(
             Icon(
                 imageVector = icon,
                 contentDescription = title,
-                tint = TawaznTheme.colors.gradientMiddle,
+                tint = if (enabled) TawaznTheme.colors.gradientMiddle else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f),
                 modifier = Modifier.size(24.dp)
             )
 
@@ -403,23 +465,29 @@ fun SettingsSwitchItem(
                 Text(
                     text = title,
                     style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
+                    color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
                 )
                 Text(
                     text = subtitle,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = if (enabled) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
                 )
             }
 
             Switch(
                 checked = checked,
                 onCheckedChange = onCheckedChange,
+                enabled = enabled,
                 colors = SwitchDefaults.colors(
                     checkedThumbColor = androidx.compose.ui.graphics.Color.White,
                     checkedTrackColor = TawaznTheme.colors.gradientMiddle,
                     uncheckedThumbColor = MaterialTheme.colorScheme.outline,
-                    uncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant
+                    uncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant,
+                    disabledCheckedThumbColor = androidx.compose.ui.graphics.Color.White.copy(alpha = 0.38f),
+                    disabledCheckedTrackColor = TawaznTheme.colors.gradientMiddle.copy(alpha = 0.38f),
+                    disabledUncheckedThumbColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.38f),
+                    disabledUncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.38f)
                 )
             )
         }
