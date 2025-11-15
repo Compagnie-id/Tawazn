@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS AppUsage (
     lastTimeUsed INTEGER,
     createdAt INTEGER NOT NULL,
     updatedAt INTEGER NOT NULL,
+    UNIQUE(packageName, usageDate),
     FOREIGN KEY (packageName) REFERENCES App(packageName) ON DELETE CASCADE
 );
 
@@ -66,7 +67,7 @@ WHERE id = ?;
 upsert:
 INSERT INTO AppUsage(packageName, appName, usageDate, totalTimeInForeground, launchCount, lastTimeUsed, createdAt, updatedAt)
 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-ON CONFLICT(id) DO UPDATE SET
+ON CONFLICT(packageName, usageDate) DO UPDATE SET
     totalTimeInForeground = totalTimeInForeground + excluded.totalTimeInForeground,
     launchCount = launchCount + excluded.launchCount,
     lastTimeUsed = excluded.lastTimeUsed,
