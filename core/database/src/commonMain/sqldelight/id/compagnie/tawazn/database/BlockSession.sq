@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS BlockSessionApp (
 selectAllSessions:
 SELECT * FROM BlockSession ORDER BY createdAt DESC;
 
-selectActiveSessionsessions:
+selectActiveSessions:
 SELECT * FROM BlockSession WHERE isActive = 1 ORDER BY startTime ASC;
 
 selectSessionById:

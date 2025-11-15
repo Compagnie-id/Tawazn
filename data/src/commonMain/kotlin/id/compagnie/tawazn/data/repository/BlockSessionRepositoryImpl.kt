@@ -29,7 +29,7 @@ class BlockSessionRepositoryImpl(
     }
 
     override fun getActiveSessions(): Flow<List<BlockSession>> {
-        return sessionQueries.selectActiveSessionsessions()
+        return sessionQueries.selectActiveSessions()
             .asFlow()
             .mapToList(Dispatchers.Default)
             .map { sessions -> sessions.map { it.toBlockSession() } }
