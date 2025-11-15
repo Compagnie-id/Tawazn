@@ -14,7 +14,6 @@ CREATE TABLE IF NOT EXISTS AppUsage (
 );
 
 -- Index for better query performance
-CREATE INDEX IF NOT EXISTS idx_usage_package_date ON AppUsage(packageName, usageDate);
 CREATE INDEX IF NOT EXISTS idx_usage_date ON AppUsage(usageDate);
 
 -- Queries
