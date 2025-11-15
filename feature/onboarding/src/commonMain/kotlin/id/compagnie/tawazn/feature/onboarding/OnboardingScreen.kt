@@ -27,6 +27,7 @@ import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.component.PermissionCard
 import id.compagnie.tawazn.design.icons.TawaznIcons
 import id.compagnie.tawazn.design.theme.TawaznTheme
+import id.compagnie.tawazn.feature.dashboard.DashboardScreen
 
 class OnboardingScreen : Screen {
     @Composable
@@ -124,7 +125,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                             } else {
                                 // Complete onboarding and navigate to main screen
                                 screenModel.completeOnboarding()
-                                navigator.pop()
+                                navigator.replaceAll(DashboardScreen())
                             }
                         },
                         modifier = Modifier.fillMaxWidth()
@@ -143,7 +144,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                         TextButton(
                             onClick = {
                                 screenModel.completeOnboarding()
-                                navigator.pop()
+                                navigator.replaceAll(DashboardScreen())
                             },
                             modifier = Modifier.fillMaxWidth()
                         ) {

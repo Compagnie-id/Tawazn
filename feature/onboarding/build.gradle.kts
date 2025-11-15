@@ -39,8 +39,10 @@ kotlin {
 
             implementation(project(":core:common"))
             implementation(project(":core:design-system"))
+            implementation(project(":core:datastore"))
             implementation(project(":domain"))
             implementation(project(":data"))
+            implementation(project(":feature:dashboard"))
 
             implementation(libs.kotlinx.coroutinesCore)
             implementation(libs.kotlinx.datetime)
