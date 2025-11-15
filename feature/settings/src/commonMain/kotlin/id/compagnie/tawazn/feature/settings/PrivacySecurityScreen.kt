@@ -1,10 +1,9 @@
+import id.compagnie.tawazn.design.icons.TawaznIcons
 package id.compagnie.tawazn.feature.settings
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,24 +18,19 @@ import id.compagnie.tawazn.core.datastore.AppPreferences
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.theme.TawaznTheme
 import org.koin.compose.koinInject
-
 class PrivacySecurityScreen : Screen {
     @Composable
     override fun Content() {
         PrivacySecurityContent()
     }
 }
-
 @Composable
 fun PrivacySecurityContent() {
     val navigator = LocalNavigator.currentOrThrow
     val appPreferences: AppPreferences = koinInject()
-
     val analyticsEnabled by appPreferences.analyticsEnabled.collectAsState(initial = true)
     val crashReportsEnabled by appPreferences.crashReportsEnabled.collectAsState(initial = true)
-
     var showExportDialog by remember { mutableStateOf(false) }
-
     TawaznTheme {
         Scaffold(
             topBar = {
@@ -44,7 +38,7 @@ fun PrivacySecurityContent() {
                     title = { Text("Privacy & Security") },
                     navigationIcon = {
                         IconButton(onClick = { navigator.pop() }) {
-                            Icon(Icons.Default.ArrowBack, "Back")
+                            Icon(TawaznIcons.ArrowBack, "Back")
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -64,10 +58,8 @@ fun PrivacySecurityContent() {
                 item {
                     SectionHeader("Data Privacy")
                 }
-
-                item {
                     PrivacySwitchItem(
-                        icon = Icons.Default.Analytics,
+                        icon = TawaznIcons.Analytics,
                         title = "Analytics",
                         subtitle = "Help improve Tawazn with anonymous usage data",
                         checked = analyticsEnabled,
@@ -75,53 +67,24 @@ fun PrivacySecurityContent() {
                             kotlinx.coroutines.MainScope().kotlinx.coroutines.launch {
                                 appPreferences.setAnalyticsEnabled(it)
                             }
-                        }
-                    )
-                }
-
-                item {
-                    PrivacySwitchItem(
-                        icon = Icons.Default.BugReport,
+                        icon = TawaznIcons.BugReport,
                         title = "Crash Reports",
                         subtitle = "Automatically send crash reports",
                         checked = crashReportsEnabled,
-                        onCheckedChange = {
-                            kotlinx.coroutines.MainScope().kotlinx.coroutines.launch {
                                 appPreferences.setCrashReportsEnabled(it)
-                            }
-                        }
-                    )
-                }
-
                 // Data Management Section
-                item {
                     SectionHeader("Data Management")
-                }
-
-                item {
                     PrivacyActionItem(
-                        icon = Icons.Default.Download,
+                        icon = TawaznIcons.Download,
                         title = "Export Data",
                         subtitle = "Download all your data",
                         onClick = { showExportDialog = true }
-                    )
-                }
-
-                item {
-                    PrivacyActionItem(
-                        icon = Icons.Default.History,
+                        icon = TawaznIcons.History,
                         title = "View Data Usage",
                         subtitle = "See what data is collected",
                         onClick = { /* TODO: Show data usage details */ }
-                    )
-                }
-
                 // Security Section
-                item {
                     SectionHeader("Security")
-                }
-
-                item {
                     GlassCard(modifier = Modifier.fillMaxWidth()) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -129,7 +92,7 @@ fun PrivacySecurityContent() {
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Icon(
-                                imageVector = Icons.Default.Shield,
+                                imageVector = TawaznIcons.Shield,
                                 contentDescription = "Security",
                                 tint = TawaznTheme.colors.success,
                                 modifier = Modifier.size(24.dp)
@@ -140,149 +103,66 @@ fun PrivacySecurityContent() {
                                     style = MaterialTheme.typography.bodyLarge,
                                     fontWeight = FontWeight.Medium
                                 )
-                                Text(
                                     text = "Your data is encrypted at rest",
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                            Icon(
-                                imageVector = Icons.Default.CheckCircle,
+                                imageVector = TawaznIcons.CheckCircle,
                                 contentDescription = "Enabled",
                                 tint = TawaznTheme.colors.success
-                            )
-                        }
                     }
-                }
-
-                item {
-                    GlassCard(modifier = Modifier.fillMaxWidth()) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(12.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Lock,
+                                imageVector = TawaznIcons.Lock,
                                 contentDescription = "Local Storage",
                                 tint = TawaznTheme.colors.info,
-                                modifier = Modifier.size(24.dp)
-                            )
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
                                     text = "Local Storage Only",
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    fontWeight = FontWeight.Medium
-                                )
-                                Text(
                                     text = "All data stays on your device",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                            Icon(
-                                imageVector = Icons.Default.CheckCircle,
-                                contentDescription = "Enabled",
                                 tint = TawaznTheme.colors.info
-                            )
-                        }
-                    }
-                }
-
                 // Permissions Section
-                item {
                     SectionHeader("Permissions")
-                }
-
-                item {
                     Text(
                         text = "Tawazn requires certain permissions to function properly. All permissions are used solely for app functionality and never for tracking.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(horizontal = 8.dp)
-                    )
-                }
-
-                item {
                     PermissionInfoCard(
-                        icon = Icons.Default.Visibility,
+                        icon = TawaznIcons.Visibility,
                         title = "Usage Access",
                         description = "Required to track app usage time and provide insights"
-                    )
-                }
-
-                item {
-                    PermissionInfoCard(
-                        icon = Icons.Default.Notifications,
+                        icon = TawaznIcons.Notifications,
                         title = "Notifications",
                         description = "Send you reminders and usage reports"
-                    )
-                }
-
-                item {
-                    PermissionInfoCard(
-                        icon = Icons.Default.PhoneAndroid,
+                        icon = TawaznIcons.PhoneAndroid,
                         title = "Accessibility (Android)",
                         description = "Block apps during focus sessions"
-                    )
-                }
-
                 // Privacy Policy
-                item {
                     Spacer(Modifier.height(8.dp))
-                }
-
-                item {
-                    Text(
                         text = "Privacy Commitment",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = TawaznTheme.colors.gradientMiddle
-                    )
-                }
-
-                item {
-                    Text(
                         text = "Tawazn is designed with privacy in mind:\n\n" +
                                 "• All data is stored locally on your device\n" +
                                 "• No personal information is collected\n" +
                                 "• No third-party analytics or tracking\n" +
                                 "• No ads or data selling\n" +
                                 "• Open source and transparent",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(horizontal = 8.dp)
-                    )
-                }
-            }
         }
-
         // Export Dialog
         if (showExportDialog) {
             AlertDialog(
                 onDismissRequest = { showExportDialog = false },
                 icon = {
                     Icon(
-                        imageVector = Icons.Default.Info,
+                        imageVector = TawaznIcons.Info,
                         contentDescription = "Info",
                         tint = TawaznTheme.colors.info
-                    )
                 },
                 title = { Text("Export Data") },
                 text = {
                     Text("Data export feature coming soon! You'll be able to export all your usage history, sessions, and settings to a JSON file.")
-                },
                 confirmButton = {
                     Button(onClick = { showExportDialog = false }) {
                         Text("OK")
-                    }
-                }
             )
-        }
-    }
-}
-
-@Composable
 fun PrivacySwitchItem(
     icon: ImageVector,
     title: String,
@@ -301,104 +181,35 @@ fun PrivacySwitchItem(
                 contentDescription = title,
                 tint = TawaznTheme.colors.gradientMiddle,
                 modifier = Modifier.size(24.dp)
-            )
-
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = title,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Medium
-                )
-                Text(
                     text = subtitle,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-
             Switch(
                 checked = checked,
                 onCheckedChange = onCheckedChange,
                 colors = SwitchDefaults.colors(
                     checkedThumbColor = androidx.compose.ui.graphics.Color.White,
                     checkedTrackColor = TawaznTheme.colors.gradientMiddle
-                )
-            )
-        }
-    }
-}
-
-@Composable
 fun PrivacyActionItem(
-    icon: ImageVector,
-    title: String,
-    subtitle: String,
     onClick: () -> Unit
-) {
     GlassCard(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = title,
-                tint = TawaznTheme.colors.gradientMiddle,
-                modifier = Modifier.size(24.dp)
-            )
-
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Medium
-                )
-                Text(
-                    text = subtitle,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-
-            Icon(
-                imageVector = Icons.Default.ChevronRight,
+                imageVector = TawaznIcons.ChevronRight,
                 contentDescription = "Navigate",
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-    }
-}
-
-@Composable
 fun PermissionInfoCard(icon: ImageVector, title: String, description: String) {
-    GlassCard(modifier = Modifier.fillMaxWidth()) {
-        Row(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.Top
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = title,
                 tint = TawaznTheme.colors.info,
                 modifier = Modifier.size(20.dp)
-            )
             Column {
-                Text(
-                    text = title,
                     style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Medium
-                )
-                Text(
                     text = description,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        }
-    }
-}

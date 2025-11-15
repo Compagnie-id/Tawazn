@@ -4,14 +4,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import id.compagnie.tawazn.design.icons.TawaznIcons
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.core.screen.Screen
@@ -108,7 +108,7 @@ fun AppBlockingContent(screenModel: AppBlockingScreenModel) {
                     title = { Text("Block Apps") },
                     navigationIcon = {
                         IconButton(onClick = { navigator.pop() }) {
-                            Icon(Icons.Default.ArrowBack, "Back")
+                            Icon(TawaznIcons.ArrowBack, "Back")
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -131,11 +131,11 @@ fun AppBlockingContent(screenModel: AppBlockingScreenModel) {
                         .fillMaxWidth()
                         .padding(16.dp),
                     placeholder = { Text("Search apps...") },
-                    leadingIcon = { Icon(Icons.Default.Search, "Search") },
+                    leadingIcon = { Icon(TawaznIcons.Search, "Search") },
                     trailingIcon = {
                         if (searchQuery.isNotEmpty()) {
                             IconButton(onClick = { screenModel.updateSearch("") }) {
-                                Icon(Icons.Default.Clear, "Clear")
+                                Icon(TawaznIcons.Clear, "Clear")
                             }
                         }
                     },
@@ -170,7 +170,7 @@ fun AppBlockingContent(screenModel: AppBlockingScreenModel) {
                         }
 
                         Icon(
-                            imageVector = Icons.Default.Block,
+                            imageVector = TawaznIcons.Block,
                             contentDescription = "Blocked",
                             tint = TawaznTheme.colors.gradientMiddle,
                             modifier = Modifier.size(40.dp)
@@ -223,7 +223,7 @@ fun AppBlockItem(
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Apps,
+                        imageVector = TawaznIcons.Apps,
                         contentDescription = appState.app.appName,
                         tint = if (appState.isBlocked)
                             TawaznTheme.colors.gradientMiddle

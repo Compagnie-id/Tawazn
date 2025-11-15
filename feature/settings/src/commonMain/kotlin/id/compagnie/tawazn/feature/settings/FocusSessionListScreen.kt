@@ -1,11 +1,10 @@
+import id.compagnie.tawazn.design.icons.TawaznIcons
 package id.compagnie.tawazn.feature.settings
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,7 +22,6 @@ import id.compagnie.tawazn.domain.model.BlockSession
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-
 class FocusSessionListScreen : Screen {
     @Composable
     override fun Content() {
@@ -31,13 +29,11 @@ class FocusSessionListScreen : Screen {
         FocusSessionListContent(screenModel)
     }
 }
-
 @Composable
 fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
     val navigator = LocalNavigator.currentOrThrow
     val sessions by screenModel.allSessions.collectAsState(initial = emptyList())
     var showDeleteDialog by remember { mutableStateOf<BlockSession?>(null) }
-
     TawaznTheme {
         Scaffold(
             topBar = {
@@ -45,7 +41,7 @@ fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
                     title = { Text("Focus Sessions") },
                     navigationIcon = {
                         IconButton(onClick = { navigator.pop() }) {
-                            Icon(Icons.Default.ArrowBack, "Back")
+                            Icon(TawaznIcons.ArrowBack, "Back")
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -58,7 +54,7 @@ fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
                     onClick = { navigator.push(CreateEditFocusSessionScreen()) },
                     containerColor = TawaznTheme.colors.gradientMiddle
                 ) {
-                    Icon(Icons.Default.Add, "Add Session", tint = MaterialTheme.colorScheme.onPrimary)
+                    Icon(TawaznIcons.Add, "Add Session", tint = MaterialTheme.colorScheme.onPrimary)
                 }
             }
         ) { padding ->
@@ -68,13 +64,12 @@ fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
                         .fillMaxSize()
                         .padding(padding),
                     contentAlignment = Alignment.Center
-                ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         Icon(
-                            imageVector = Icons.Default.EventBusy,
+                            imageVector = TawaznIcons.EventBusy,
                             contentDescription = "No Sessions",
                             modifier = Modifier.size(64.dp),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
@@ -83,54 +78,38 @@ fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
                             text = "No Focus Sessions",
                             style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                        Text(
                             text = "Create a session to schedule app blocking",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
                         GradientButton(
                             text = "Create Session",
                             onClick = { navigator.push(CreateEditFocusSessionScreen()) },
                             modifier = Modifier.padding(top = 16.dp)
-                        )
                     }
-                }
             } else {
                 LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
                         .padding(padding)
                         .padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
                     items(sessions) { session ->
                         SessionCard(
                             session = session,
                             onToggle = { screenModel.toggleSession(session.id, !session.isActive) },
                             onEdit = { navigator.push(CreateEditFocusSessionScreen(session)) },
                             onDelete = { showDeleteDialog = session }
-                        )
-                    }
-                }
-            }
         }
-
         // Delete confirmation dialog
         showDeleteDialog?.let { session ->
             AlertDialog(
                 onDismissRequest = { showDeleteDialog = null },
                 icon = {
                     Icon(
-                        imageVector = Icons.Default.Warning,
+                        imageVector = TawaznIcons.Warning,
                         contentDescription = "Warning",
                         tint = MaterialTheme.colorScheme.error
-                    )
                 },
                 title = { Text("Delete Session?") },
                 text = {
                     Text("Are you sure you want to delete \"${session.name}\"? This action cannot be undone.")
-                },
                 confirmButton = {
                     Button(
                         onClick = {
@@ -139,22 +118,11 @@ fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.error
-                        )
-                    ) {
                         Text("Delete")
-                    }
-                },
                 dismissButton = {
                     TextButton(onClick = { showDeleteDialog = null }) {
                         Text("Cancel")
-                    }
-                }
             )
-        }
-    }
-}
-
-@Composable
 fun SessionCard(
     session: BlockSession,
     onToggle: () -> Unit,
@@ -163,7 +131,6 @@ fun SessionCard(
 ) {
     val startTime = session.startTime.toLocalDateTime(TimeZone.currentSystemDefault())
     val endTime = session.endTime.toLocalDateTime(TimeZone.currentSystemDefault())
-
     GlassCard(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -182,55 +149,34 @@ fun SessionCard(
                         text = session.name,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold
-                    )
                     if (!session.description.isNullOrBlank()) {
-                        Text(
                             text = session.description,
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
                 Switch(
                     checked = session.isActive,
                     onCheckedChange = { onToggle() },
                     colors = SwitchDefaults.colors(
                         checkedThumbColor = androidx.compose.ui.graphics.Color.White,
                         checkedTrackColor = TawaznTheme.colors.gradientMiddle
-                    )
-                )
-            }
-
             // Time info
-            Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
                 Icon(
-                    imageVector = Icons.Default.Schedule,
+                    imageVector = TawaznIcons.Schedule,
                     contentDescription = "Time",
                     modifier = Modifier.size(16.dp),
                     tint = TawaznTheme.colors.gradientMiddle
-                )
                 Text(
                     text = "${startTime.hour.toString().padStart(2, '0')}:${startTime.minute.toString().padStart(2, '0')} - ${endTime.hour.toString().padStart(2, '0')}:${endTime.minute.toString().padStart(2, '0')}",
                     style = MaterialTheme.typography.bodyMedium
-                )
-            }
-
             // Repeat info
             if (session.repeatDaily || session.repeatWeekly || session.repeatDays.isNotEmpty()) {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Repeat,
+                        imageVector = TawaznIcons.Repeat,
                         contentDescription = "Repeat",
                         modifier = Modifier.size(16.dp),
                         tint = TawaznTheme.colors.info
-                    )
-                    Text(
                         text = when {
                             session.repeatDaily -> "Daily"
                             session.repeatWeekly -> "Weekly"
@@ -238,56 +184,23 @@ fun SessionCard(
                                 it.name.take(3)
                             }
                             else -> "Once"
-                        },
                         style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            }
-
             // Blocked apps count
             if (session.blockedApps.isNotEmpty()) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Block,
+                        imageVector = TawaznIcons.Block,
                         contentDescription = "Apps",
-                        modifier = Modifier.size(16.dp),
-                        tint = MaterialTheme.colorScheme.error
-                    )
-                    Text(
                         text = "${session.blockedApps.size} app${if (session.blockedApps.size != 1) "s" else ""} blocked",
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            }
-
             // Action buttons
-            Row(
-                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
                 OutlinedButton(
                     onClick = onEdit,
                     modifier = Modifier.weight(1f)
-                ) {
-                    Icon(Icons.Default.Edit, "Edit", modifier = Modifier.size(18.dp))
+                    Icon(TawaznIcons.Edit, "Edit", modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(4.dp))
                     Text("Edit")
-                }
-                OutlinedButton(
                     onClick = onDelete,
                     modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.outlinedButtonColors(
                         contentColor = MaterialTheme.colorScheme.error
-                    )
-                ) {
-                    Icon(Icons.Default.Delete, "Delete", modifier = Modifier.size(18.dp))
-                    Spacer(Modifier.width(4.dp))
+                    Icon(TawaznIcons.Delete, "Delete", modifier = Modifier.size(18.dp))
                     Text("Delete")
-                }
-            }
-        }
-    }
-}

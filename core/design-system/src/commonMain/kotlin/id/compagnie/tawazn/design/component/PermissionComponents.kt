@@ -1,8 +1,6 @@
 package id.compagnie.tawazn.design.component
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -10,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import id.compagnie.tawazn.design.icons.TawaznIcons
 import id.compagnie.tawazn.design.theme.TawaznTheme
 
 /**
@@ -112,7 +111,7 @@ fun PermissionCard(
             // Status/Action Button
             if (isGranted) {
                 Icon(
-                    imageVector = Icons.Default.CheckCircle,
+                    imageVector = TawaznIcons.CheckCircle,
                     contentDescription = "Granted",
                     tint = TawaznTheme.colors.success,
                     modifier = Modifier.size(24.dp)
@@ -155,7 +154,7 @@ fun PermissionStatusBadge(
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
         ) {
             Icon(
-                imageVector = if (isGranted) Icons.Default.CheckCircle else Icons.Default.Warning,
+                imageVector = if (isGranted) TawaznIcons.CheckCircle else TawaznIcons.Warning,
                 contentDescription = null,
                 tint = if (isGranted) TawaznTheme.colors.success else TawaznTheme.colors.error,
                 modifier = Modifier.size(14.dp)

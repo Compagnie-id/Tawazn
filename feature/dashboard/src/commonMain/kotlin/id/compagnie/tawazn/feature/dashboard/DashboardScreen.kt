@@ -2,8 +2,6 @@ package id.compagnie.tawazn.feature.dashboard
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -15,6 +13,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.component.StatsCard
+import id.compagnie.tawazn.design.icons.TawaznIcons
 import id.compagnie.tawazn.design.theme.TawaznTheme
 import id.compagnie.tawazn.feature.appblocking.AppBlockingScreen
 import id.compagnie.tawazn.feature.settings.FocusSessionListScreen
@@ -64,7 +63,7 @@ fun DashboardContent() {
                         }
 
                         Icon(
-                            imageVector = Icons.Default.NotificationsNone,
+                            imageVector = TawaznIcons.Notifications,
                             contentDescription = "Notifications",
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(28.dp)
@@ -90,7 +89,7 @@ fun DashboardContent() {
                             title = "Screen Time",
                             value = "2h 34m",
                             subtitle = "↓ 15% from yesterday",
-                            icon = Icons.Default.Timer,
+                            icon = TawaznIcons.AccessTime,
                             modifier = Modifier.weight(1f)
                         )
 
@@ -98,7 +97,7 @@ fun DashboardContent() {
                             title = "Apps Blocked",
                             value = "12",
                             subtitle = "Active now",
-                            icon = Icons.Default.Block,
+                            icon = TawaznIcons.Block,
                             modifier = Modifier.weight(1f),
                             useGradient = false
                         )
@@ -110,7 +109,7 @@ fun DashboardContent() {
                         title = "Most Used Today",
                         value = "Instagram",
                         subtitle = "45 minutes",
-                        icon = Icons.Default.Apps,
+                        icon = TawaznIcons.Apps,
                         useGradient = true
                     )
                 }
@@ -130,7 +129,7 @@ fun DashboardContent() {
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         QuickActionCard(
-                            icon = Icons.Default.Block,
+                            icon = TawaznIcons.Block,
                             title = "Block Apps",
                             onClick = {
                                 navigator?.push(AppBlockingScreen())
@@ -139,7 +138,7 @@ fun DashboardContent() {
                         )
 
                         QuickActionCard(
-                            icon = Icons.Default.Timer,
+                            icon = TawaznIcons.AccessTime,
                             title = "View Usage",
                             onClick = {
                                 navigator?.push(UsageTrackingScreen())
@@ -160,7 +159,7 @@ fun DashboardContent() {
                                 verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
                             ) {
                                 Icon(
-                                    imageVector = Icons.Default.LocalFireDepartment,
+                                    imageVector = TawaznIcons.LocalFireDepartment,
                                     contentDescription = "Focus",
                                     tint = TawaznTheme.colors.warning,
                                     modifier = Modifier.size(32.dp)
@@ -217,7 +216,7 @@ fun DashboardContent() {
                                 )
 
                                 Icon(
-                                    imageVector = Icons.Default.TrendingDown,
+                                    imageVector = TawaznIcons.TrendingDown,
                                     contentDescription = "Trending",
                                     tint = TawaznTheme.colors.success
                                 )

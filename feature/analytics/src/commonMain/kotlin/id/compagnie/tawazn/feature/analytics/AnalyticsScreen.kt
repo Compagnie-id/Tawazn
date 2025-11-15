@@ -2,8 +2,6 @@ package id.compagnie.tawazn.feature.analytics
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -16,6 +14,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.StatsCard
+import id.compagnie.tawazn.design.icons.TawaznIcons
 import id.compagnie.tawazn.design.theme.TawaznTheme
 import id.compagnie.tawazn.feature.settings.FocusSessionListScreen
 
@@ -41,7 +40,7 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                     title = { Text("Analytics & Insights") },
                     navigationIcon = {
                         IconButton(onClick = { navigator.pop() }) {
-                            Icon(Icons.Default.ArrowBack, "Back")
+                            Icon(TawaznIcons.ArrowBack, "Back")
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -120,7 +119,7 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                                     fontWeight = FontWeight.SemiBold
                                 )
                                 Icon(
-                                    imageVector = if (uiState.goalProgress < 0.8f) Icons.Default.TrendingDown else Icons.Default.TrendingUp,
+                                    imageVector = if (uiState.goalProgress < 0.8f) TawaznIcons.TrendingDown else TawaznIcons.TrendingUp,
                                     contentDescription = "Trending",
                                     tint = if (uiState.goalProgress < 0.8f) TawaznTheme.colors.success else TawaznTheme.colors.warning
                                 )
@@ -159,7 +158,7 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
-                                    imageVector = Icons.Default.LocalFireDepartment,
+                                    imageVector = TawaznIcons.LocalFireDepartment,
                                     contentDescription = "Streak",
                                     tint = TawaznTheme.colors.warning,
                                     modifier = Modifier.size(40.dp)
@@ -202,7 +201,7 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                 item {
                     if (uiState.bestDay != null) {
                         InsightCard(
-                            icon = Icons.Default.TrendingUp,
+                            icon = TawaznIcons.TrendingUp,
                             title = "Most Productive Day",
                             description = "${uiState.bestDay.first} - Only ${uiState.bestDay.second.toHoursMinutesString()} screen time",
                             color = TawaznTheme.colors.success
@@ -213,7 +212,7 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                 item {
                     if (uiState.weeklyStats != null && uiState.weeklyStats.totalScreenTime.inWholeMinutes > 0) {
                         InsightCard(
-                            icon = Icons.Default.Schedule,
+                            icon = TawaznIcons.Schedule,
                             title = "Weekly Total",
                             description = "${uiState.weeklyStats.totalScreenTime.toHoursMinutesString()} total screen time this week",
                             color = TawaznTheme.colors.info
@@ -225,7 +224,7 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                     if (uiState.topDistraction != null) {
                         val avgDaily = uiState.topDistraction.totalTime.inWholeMinutes / 7
                         InsightCard(
-                            icon = Icons.Default.Apps,
+                            icon = TawaznIcons.Apps,
                             title = "Top App",
                             description = "${uiState.topDistraction.appName} - ${avgDaily}m average daily",
                             color = TawaznTheme.colors.warning

@@ -3,14 +3,13 @@ package id.compagnie.tawazn.feature.usagetracking
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import id.compagnie.tawazn.design.icons.TawaznIcons
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.core.screen.Screen
@@ -115,12 +114,12 @@ fun UsageTrackingContent(screenModel: UsageTrackingScreenModel) {
                     title = { Text("Usage Tracking") },
                     navigationIcon = {
                         IconButton(onClick = { navigator.pop() }) {
-                            Icon(Icons.Default.ArrowBack, "Back")
+                            Icon(TawaznIcons.ArrowBack, "Back")
                         }
                     },
                     actions = {
                         IconButton(onClick = { /* Refresh */ screenModel.loadUsageStats() }) {
-                            Icon(Icons.Default.Refresh, "Refresh")
+                            Icon(TawaznIcons.Refresh, "Refresh")
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -211,7 +210,7 @@ fun UsageTrackingContent(screenModel: UsageTrackingScreenModel) {
                                     verticalArrangement = Arrangement.spacedBy(8.dp)
                                 ) {
                                     Icon(
-                                        imageVector = Icons.Default.Timer,
+                                        imageVector = TawaznIcons.AccessTime,
                                         contentDescription = "No data",
                                         modifier = Modifier.size(48.dp),
                                         tint = MaterialTheme.colorScheme.onSurfaceVariant
@@ -251,7 +250,7 @@ fun UsageAppItem(appUsage: AppUsageSummary) {
             ) {
                 // App Icon Placeholder
                 Icon(
-                    imageVector = Icons.Default.Apps,
+                    imageVector = TawaznIcons.Apps,
                     contentDescription = appUsage.appName,
                     tint = TawaznTheme.colors.chartColors.getOrElse(
                         appUsage.appName.hashCode() % TawaznTheme.colors.chartColors.size

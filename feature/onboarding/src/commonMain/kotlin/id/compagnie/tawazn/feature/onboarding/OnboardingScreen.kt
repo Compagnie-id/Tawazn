@@ -1,3 +1,4 @@
+import id.compagnie.tawazn.design.icons.TawaznIcons
 package id.compagnie.tawazn.feature.onboarding
 
 import androidx.compose.animation.AnimatedVisibility
@@ -9,8 +10,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -30,22 +29,18 @@ import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.component.PermissionCard
 import id.compagnie.tawazn.design.theme.TawaznTheme
 import id.compagnie.tawazn.MainScreen
-
 class OnboardingScreen : Screen {
-
     @Composable
     override fun Content() {
         val screenModel = rememberScreenModel { OnboardingScreenModel() }
         OnboardingContent(screenModel)
     }
 }
-
 @Composable
 fun OnboardingContent(screenModel: OnboardingScreenModel) {
     var currentPage by remember { mutableStateOf(0) }
     val navigator = LocalNavigator.currentOrThrow
     val permissionState by screenModel.permissionState.collectAsState()
-
     TawaznTheme {
         Box(
             modifier = Modifier
@@ -88,16 +83,13 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                                         MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f),
                                     shape = MaterialTheme.shapes.small
                                 )
-                        )
                     }
                 }
-
                 // Content
                 AnimatedVisibility(
                     visible = true,
                     enter = slideInHorizontally() + fadeIn(),
                     exit = slideOutHorizontally() + fadeOut()
-                ) {
                     when (currentPage) {
                         0 -> WelcomePage()
                         1 -> FeaturePage()
@@ -105,21 +97,13 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                             permissionState = permissionState,
                             onRequestPermissions = { screenModel.requestPermissions() },
                             onCheckPermissions = { screenModel.checkPermissions() }
-                        )
                         3 -> ReadyPage(
-                            permissionState = permissionState,
                             onStartServices = { screenModel.startBackgroundServices() }
-                        )
-                    }
-                }
-
                 Spacer(modifier = Modifier.weight(1f))
-
                 // Navigation Buttons
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
                     GradientButton(
                         text = if (currentPage == 3) "Get Started" else "Continue",
                         onClick = {
@@ -131,8 +115,6 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                             }
                         },
                         modifier = Modifier.fillMaxWidth()
-                    )
-
                     if (currentPage > 0 && currentPage < 3) {
                         TextButton(
                             onClick = { currentPage-- },
@@ -140,25 +122,12 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                         ) {
                             Text("Back")
                         }
-                    }
-
                     if (currentPage < 3) {
-                        TextButton(
                             onClick = {
-                                navigator.replace(MainScreen())
                             },
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
                             Text("Skip", color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        }
-                    }
-                }
             }
         }
-    }
-}
-
-@Composable
 fun WelcomePage() {
     Column(
         modifier = Modifier
@@ -168,189 +137,105 @@ fun WelcomePage() {
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         Icon(
-            imageVector = Icons.Default.Phone,
+            imageVector = TawaznIcons.Phone,
             contentDescription = "Tawazn",
             modifier = Modifier.size(120.dp),
             tint = TawaznTheme.colors.gradientMiddle
         )
-
         Text(
             text = "Welcome to Tawazn",
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
-        )
-
-        Text(
             text = "توازن",
             style = MaterialTheme.typography.headlineSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center
-        )
-
-        Text(
             text = "Find balance in your digital life. Track your screen time, block distracting apps, and achieve digital wellness.",
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(horizontal = 16.dp)
-        )
-    }
-}
-
-@Composable
 fun FeaturePage() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
             .padding(vertical = 16.dp),
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Text(
             text = "Powerful Features",
             style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(bottom = 8.dp)
-        )
-
         FeatureItem(
-            icon = Icons.Default.Timer,
+            icon = TawaznIcons.AccessTime,
             title = "Usage Tracking",
             description = "Monitor your screen time with detailed statistics and insights"
-        )
-
-        FeatureItem(
-            icon = Icons.Default.Block,
+            icon = TawaznIcons.Block,
             title = "App Blocking",
             description = "Block distracting apps and create focus sessions"
-        )
-
-        FeatureItem(
-            icon = Icons.Default.Schedule,
+            icon = TawaznIcons.Schedule,
             title = "Smart Scheduling",
             description = "Set up automatic blocking schedules for better productivity"
-        )
-
-        FeatureItem(
-            icon = Icons.Default.Analytics,
+            icon = TawaznIcons.Analytics,
             title = "Insights & Analytics",
             description = "Understand your digital habits with weekly reports"
-        )
-    }
-}
-
-@Composable
 fun PermissionPage(
     permissionState: PermissionState,
     onRequestPermissions: () -> Unit,
     onCheckPermissions: () -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(20.dp)
-    ) {
-        Icon(
-            imageVector = Icons.Default.Security,
+            imageVector = TawaznIcons.Security,
             contentDescription = "Permissions",
             modifier = Modifier.size(80.dp),
-            tint = TawaznTheme.colors.gradientMiddle
-        )
-
-        Text(
             text = "Required Permissions",
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center
-        )
-
         // Status Banner
         if (permissionState.hasAllPermissions) {
             GlassCard(
                 useGradient = false,
                 modifier = Modifier.fillMaxWidth()
-            ) {
-                Row(
                     modifier = Modifier.padding(16.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
                     Icon(
-                        imageVector = Icons.Default.CheckCircle,
+                        imageVector = TawaznIcons.CheckCircle,
                         contentDescription = "Success",
                         tint = TawaznTheme.colors.success,
                         modifier = Modifier.size(24.dp)
-                    )
                     Text(
                         text = "All permissions granted!",
                         style = MaterialTheme.typography.titleMedium,
                         color = TawaznTheme.colors.success,
                         fontWeight = FontWeight.SemiBold
-                    )
-                }
-            }
-        }
-
         // Permission Cards
         PermissionCard(
             title = "Screen Time Access",
             description = "Track app usage and screen time statistics. Your data stays private on this device.",
-            icon = Icons.Default.Timer,
             isGranted = permissionState.hasAllPermissions,
             isRequired = true,
             onRequestClick = onRequestPermissions
-        )
-
-        PermissionCard(
-            title = "App Blocking",
             description = "Allow Tawazn to block distracting apps and help you stay focused.",
-            icon = Icons.Default.Block,
-            isGranted = permissionState.hasAllPermissions,
-            isRequired = true,
-            onRequestClick = onRequestPermissions
-        )
-
         // Loading indicator
         if (permissionState.isRequesting) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically
-            ) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(20.dp),
                     strokeWidth = 2.dp
-                )
                 Text(
                     text = "Requesting permissions...",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        }
-
         // Refresh permissions button
         if (permissionState.permissionRequested && !permissionState.hasAllPermissions) {
             TextButton(onClick = onCheckPermissions) {
                 Icon(
-                    imageVector = Icons.Default.Refresh,
+                    imageVector = TawaznIcons.Refresh,
                     contentDescription = "Refresh",
                     modifier = Modifier.size(16.dp)
-                )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text("Check Again")
-            }
-        }
-
         // Privacy note
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
-        ) {
             Icon(
-                imageVector = Icons.Default.Lock,
+                imageVector = TawaznIcons.Lock,
                 contentDescription = "Privacy",
                 tint = TawaznTheme.colors.success,
                 modifier = Modifier.size(16.dp)
@@ -359,154 +244,60 @@ fun PermissionPage(
                 text = "Your data is private and secure",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-    }
-}
-
-@Composable
 fun ReadyPage(
-    permissionState: PermissionState,
     onStartServices: () -> Unit
-) {
     // Start background services when page is shown
     LaunchedEffect(Unit) {
-        if (permissionState.hasAllPermissions) {
             onStartServices()
-        }
-    }
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(24.dp)
-    ) {
-        Icon(
-            imageVector = Icons.Default.CheckCircle,
+            imageVector = TawaznIcons.CheckCircle,
             contentDescription = "Ready",
-            modifier = Modifier.size(120.dp),
             tint = TawaznTheme.colors.success
-        )
-
-        Text(
             text = "You're All Set!",
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center
-        )
-
         GlassCard(useGradient = true) {
-            Column(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                Text(
                     text = "Start Your Journey",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold
-                )
-
-                Text(
                     text = "Tawazn is ready to help you achieve digital wellness. Here's what you can do:",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     QuickTip("View your daily screen time")
                     QuickTip("Block distracting apps instantly")
                     QuickTip("Create focus sessions")
                     QuickTip("Track your progress")
-                }
-            }
-        }
-
         // Show permission warning if not granted
         if (!permissionState.hasAllPermissions) {
-            GlassCard(
-                useGradient = false,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Row(
-                    modifier = Modifier.padding(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Warning,
+                        imageVector = TawaznIcons.Warning,
                         contentDescription = "Warning",
                         tint = TawaznTheme.colors.warning,
-                        modifier = Modifier.size(24.dp)
-                    )
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
                             text = "Limited Functionality",
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = TawaznTheme.colors.warning
-                        )
-                        Text(
                             text = "Some features require permissions. You can grant them later in Settings.",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
 fun FeatureItem(
     icon: ImageVector,
     title: String,
     description: String
-) {
     GlassCard {
-        Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
                 imageVector = icon,
                 contentDescription = title,
                 tint = TawaznTheme.colors.gradientMiddle,
                 modifier = Modifier.size(40.dp)
-            )
-
             Column {
-                Text(
                     text = title,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Text(
                     text = description,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        }
-    }
-}
-
-@Composable
 fun QuickTip(text: String) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            imageVector = Icons.Default.Check,
+            imageVector = TawaznIcons.Check,
             contentDescription = null,
             tint = TawaznTheme.colors.gradientMiddle,
             modifier = Modifier.size(16.dp)
-        )
-        Text(
             text = text,
             style = MaterialTheme.typography.bodyMedium
-        )
-    }
-}
