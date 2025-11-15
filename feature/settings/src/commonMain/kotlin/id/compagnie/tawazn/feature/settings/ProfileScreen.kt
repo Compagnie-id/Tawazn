@@ -204,4 +204,5 @@ fun InfoRow(icon: androidx.compose.ui.graphics.vector.ImageVector, label: String
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Medium
         )
-expect fun getPlatformName(): String
+    }
+}
