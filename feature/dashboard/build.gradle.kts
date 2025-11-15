@@ -41,6 +41,11 @@ kotlin {
             implementation(project(":core:design-system"))
             implementation(project(":domain"))
 
+            // Feature module dependencies
+            implementation(project(":feature:app-blocking"))
+            implementation(project(":feature:settings"))
+            implementation(project(":feature:usage-tracking"))
+
             implementation(libs.kotlinx.coroutinesCore)
             implementation(libs.kotlinx.datetime)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
