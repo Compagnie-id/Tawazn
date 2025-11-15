@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS BlockedApp (
     packageName TEXT NOT NULL,
     appName TEXT NOT NULL,
     iconPath TEXT,
-    isBlocked INTEGER AS Boolean NOT NULL DEFAULT 1,
+    isBlocked INTEGER NOT NULL DEFAULT 1,
     blockedAt INTEGER NOT NULL,
     blockedUntil INTEGER,
     blockDurationMinutes INTEGER,
