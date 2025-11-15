@@ -39,6 +39,7 @@ kotlin {
             implementation(libs.kotlinx.datetime)
             implementation(libs.koin.core)
             implementation(libs.kermit)
+            implementation(libs.sqldelight.coroutines)
         }
 
         androidMain.dependencies {
