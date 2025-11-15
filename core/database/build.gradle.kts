@@ -69,6 +69,7 @@ sqldelight {
     databases {
         create("TawaznDatabase") {
             packageName.set("id.compagnie.tawazn.database")
+            dialect("app.cash.sqldelight:sqlite-3-24-dialect:2.0.2")
         }
     }
 }
