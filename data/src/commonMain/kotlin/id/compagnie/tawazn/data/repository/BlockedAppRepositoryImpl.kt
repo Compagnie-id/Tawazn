@@ -45,7 +45,7 @@ class BlockedAppRepositoryImpl(
             packageName = request.packageName,
             appName = request.appName,
             iconPath = request.iconPath,
-            isBlocked = true,
+            isBlocked = 1L,
             blockedAt = now.toEpochMilliseconds(),
             blockedUntil = blockedUntil?.toEpochMilliseconds(),
             blockDurationMinutes = request.duration?.inWholeMinutes,
@@ -56,7 +56,7 @@ class BlockedAppRepositoryImpl(
 
     override suspend fun unblockApp(packageName: String) {
         queries.updateBlockStatus(
-            isBlocked = false,
+            isBlocked = 0L,
             updatedAt = Clock.System.now().toEpochMilliseconds(),
             packageName = packageName
         )
@@ -64,14 +64,14 @@ class BlockedAppRepositoryImpl(
 
     override suspend fun updateBlockStatus(packageName: String, isBlocked: Boolean) {
         queries.updateBlockStatus(
-            isBlocked = isBlocked,
+            isBlocked = if (isBlocked) 1L else 0L,
             updatedAt = Clock.System.now().toEpochMilliseconds(),
             packageName = packageName
         )
     }
 
     override suspend fun isAppBlocked(packageName: String): Boolean {
-        return queries.selectByPackageName(packageName).executeAsOneOrNull()?.isBlocked ?: false
+        return queries.selectByPackageName(packageName).executeAsOneOrNull()?.isBlocked == 1L
     }
 
     override suspend fun deleteBlockedApp(packageName: String) {
@@ -83,7 +83,7 @@ class BlockedAppRepositoryImpl(
         packageName = packageName,
         appName = appName,
         iconPath = iconPath,
-        isBlocked = isBlocked,
+        isBlocked = isBlocked == 1L,
         blockedAt = Instant.fromEpochMilliseconds(blockedAt),
         blockedUntil = blockedUntil?.let { Instant.fromEpochMilliseconds(it) },
         blockDuration = blockDurationMinutes?.let { Duration.parse("${it}m") },

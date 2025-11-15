@@ -59,7 +59,7 @@ class AppRepositoryImpl(
             appName = app.appName,
             iconPath = app.iconPath,
             category = app.category.name,
-            isSystemApp = app.isSystemApp,
+            isSystemApp = if (app.isSystemApp) 1L else 0L,
             installDate = app.installDate.toEpochMilliseconds(),
             lastUpdated = app.lastUpdated.toEpochMilliseconds()
         )
@@ -74,7 +74,7 @@ class AppRepositoryImpl(
         appName = appName,
         iconPath = iconPath,
         category = AppCategory.valueOf(category ?: "OTHER"),
-        isSystemApp = isSystemApp,
+        isSystemApp = isSystemApp == 1L,
         installDate = Instant.fromEpochMilliseconds(installDate),
         lastUpdated = Instant.fromEpochMilliseconds(lastUpdated)
     )

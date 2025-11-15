@@ -31,12 +31,12 @@ kotlin {
         commonMain.dependencies {
             implementation(project(":core:common"))
 
-            implementation(libs.datastore.preferences)
+            api(libs.datastore.preferences)
             implementation(libs.kotlinx.coroutinesCore)
         }
 
         androidMain.dependencies {
-            implementation(libs.datastore.preferences.android)
+            api(libs.datastore.preferences.android)
         }
 
         iosMain.dependencies {

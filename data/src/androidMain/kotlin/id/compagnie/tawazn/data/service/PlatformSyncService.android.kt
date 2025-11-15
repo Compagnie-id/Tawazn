@@ -8,6 +8,9 @@ import id.compagnie.tawazn.domain.repository.UsageRepository
 import id.compagnie.tawazn.platform.android.AndroidPlatformSync
 import id.compagnie.tawazn.platform.android.PermissionHelper
 import id.compagnie.tawazn.platform.android.UsageSyncWorker
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * Android implementation of PlatformSyncService
@@ -94,7 +97,7 @@ actual class PlatformSyncService(private val context: Context) {
         UsageSyncWorker.schedule(context)
 
         // Sync blocked apps immediately
-        kotlinx.coroutines.MainScope().launch {
+        CoroutineScope(Dispatchers.Main).launch {
             syncBlockedApps()
         }
 
@@ -141,8 +144,4 @@ actual fun createPlatformSyncService(): PlatformSyncService {
  */
 fun createPlatformSyncService(context: Context): PlatformSyncService {
     return PlatformSyncService(context)
-}
-
-private fun kotlinx.coroutines.MainScope(): kotlinx.coroutines.CoroutineScope {
-    return kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.Main)
 }

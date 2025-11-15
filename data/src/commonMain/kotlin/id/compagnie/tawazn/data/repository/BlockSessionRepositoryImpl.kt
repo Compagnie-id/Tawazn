@@ -52,11 +52,11 @@ class BlockSessionRepositoryImpl(
         sessionQueries.insertSession(
             name = request.name,
             description = request.description,
-            isActive = true,
+            isActive = 1L,
             startTime = request.startTime.toEpochMilliseconds(),
             endTime = request.endTime.toEpochMilliseconds(),
-            repeatDaily = request.repeatDaily,
-            repeatWeekly = request.repeatWeekly,
+            repeatDaily = if (request.repeatDaily) 1L else 0L,
+            repeatWeekly = if (request.repeatWeekly) 1L else 0L,
             repeatDays = Json.encodeToString(request.repeatDays.map { it.name }),
             createdAt = now.toEpochMilliseconds(),
             updatedAt = now.toEpochMilliseconds()
@@ -76,11 +76,11 @@ class BlockSessionRepositoryImpl(
         sessionQueries.updateSession(
             name = session.name,
             description = session.description,
-            isActive = session.isActive,
+            isActive = if (session.isActive) 1L else 0L,
             startTime = session.startTime.toEpochMilliseconds(),
             endTime = session.endTime.toEpochMilliseconds(),
-            repeatDaily = session.repeatDaily,
-            repeatWeekly = session.repeatWeekly,
+            repeatDaily = if (session.repeatDaily) 1L else 0L,
+            repeatWeekly = if (session.repeatWeekly) 1L else 0L,
             repeatDays = Json.encodeToString(session.repeatDays.map { it.name }),
             updatedAt = Clock.System.now().toEpochMilliseconds(),
             id = session.id
@@ -95,7 +95,7 @@ class BlockSessionRepositoryImpl(
 
     override suspend fun updateSessionStatus(id: Long, isActive: Boolean) {
         sessionQueries.updateSessionStatus(
-            isActive = isActive,
+            isActive = if (isActive) 1L else 0L,
             updatedAt = Clock.System.now().toEpochMilliseconds(),
             id = id
         )
@@ -129,11 +129,11 @@ class BlockSessionRepositoryImpl(
             id = id,
             name = name,
             description = description,
-            isActive = isActive,
+            isActive = isActive == 1L,
             startTime = Instant.fromEpochMilliseconds(startTime),
             endTime = Instant.fromEpochMilliseconds(endTime),
-            repeatDaily = repeatDaily,
-            repeatWeekly = repeatWeekly,
+            repeatDaily = repeatDaily == 1L,
+            repeatWeekly = repeatWeekly == 1L,
             repeatDays = days,
             blockedApps = apps,
             createdAt = Instant.fromEpochMilliseconds(createdAt),
