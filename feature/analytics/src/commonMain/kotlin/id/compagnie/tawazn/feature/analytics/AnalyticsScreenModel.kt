@@ -11,8 +11,9 @@ import id.compagnie.tawazn.domain.repository.UsageRepository
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
-import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.minus
 import kotlinx.datetime.toLocalDateTime
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -55,7 +56,7 @@ class AnalyticsScreenModel : ScreenModel, KoinComponent {
 
                 val now = Clock.System.now()
                 val today = now.toLocalDateTime(TimeZone.currentSystemDefault()).date
-                val weekAgo = today.minus(7, DateTimeUnit.DAY)
+                val weekAgo = today.minus(DatePeriod(days = 7))
 
                 // Get daily goal from preferences
                 val dailyGoalMinutes = appPreferences.dailyUsageGoalMinutes.first()
