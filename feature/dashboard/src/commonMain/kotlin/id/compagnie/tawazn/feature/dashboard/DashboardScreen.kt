@@ -17,6 +17,7 @@ import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.component.StatsCard
 import id.compagnie.tawazn.design.theme.TawaznTheme
 import id.compagnie.tawazn.feature.appblocking.AppBlockingScreen
+import id.compagnie.tawazn.feature.settings.FocusSessionListScreen
 import id.compagnie.tawazn.feature.usagetracking.UsageTrackingScreen
 
 class DashboardScreen : Screen {
@@ -181,8 +182,8 @@ fun DashboardContent() {
                             }
 
                             GradientButton(
-                                text = "Start Now",
-                                onClick = { /* TODO: Start focus mode */ },
+                                text = "Manage Sessions",
+                                onClick = { navigator?.push(FocusSessionListScreen()) },
                                 modifier = Modifier.fillMaxWidth()
                             )
                         }

@@ -80,7 +80,7 @@ fun SettingsContent(screenModel: SettingsScreenModel) {
                         icon = Icons.Default.Person,
                         title = "Profile",
                         subtitle = "Manage your profile",
-                        onClick = { /* TODO */ }
+                        onClick = { navigator.push(ProfileScreen()) }
                     )
                 }
 
@@ -89,7 +89,7 @@ fun SettingsContent(screenModel: SettingsScreenModel) {
                         icon = Icons.Default.Security,
                         title = "Privacy & Security",
                         subtitle = "Control your data",
-                        onClick = { /* TODO */ }
+                        onClick = { navigator.push(PrivacySecurityScreen()) }
                     )
                 }
 
@@ -125,6 +125,20 @@ fun SettingsContent(screenModel: SettingsScreenModel) {
                         subtitle = "Get weekly insights",
                         checked = weeklyReportEnabled,
                         onCheckedChange = { screenModel.setWeeklyReportEnabled(it) }
+                    )
+                }
+
+                // Focus & Productivity Section
+                item {
+                    SectionHeader("Focus & Productivity")
+                }
+
+                item {
+                    SettingsItem(
+                        icon = Icons.Default.LocalFireDepartment,
+                        title = "Focus Sessions",
+                        subtitle = "Manage scheduled blocking sessions",
+                        onClick = { navigator.push(FocusSessionListScreen()) }
                     )
                 }
 
@@ -287,7 +301,7 @@ fun SettingsContent(screenModel: SettingsScreenModel) {
                         icon = Icons.Default.Info,
                         title = "About Tawazn",
                         subtitle = "Version 1.0.0",
-                        onClick = { /* TODO */ }
+                        onClick = { navigator.push(AboutScreen()) }
                     )
                 }
 

@@ -36,10 +36,12 @@ class AppPreferences(private val dataStore: DataStore<Preferences>) {
         val ONBOARDING_COMPLETED = booleanPreferencesKey("onboarding_completed")
         val FIRST_LAUNCH_TIME = longPreferencesKey("first_launch_time")
 
-        // Analytics
+        // Analytics & Privacy
         val CURRENT_STREAK = intPreferencesKey("current_streak")
         val LONGEST_STREAK = intPreferencesKey("longest_streak")
         val LAST_STREAK_UPDATE = longPreferencesKey("last_streak_update")
+        val ANALYTICS_ENABLED = booleanPreferencesKey("analytics_enabled")
+        val CRASH_REPORTS_ENABLED = booleanPreferencesKey("crash_reports_enabled")
 
         // User Profile
         val USER_NAME = stringPreferencesKey("user_name")
@@ -125,9 +127,25 @@ class AppPreferences(private val dataStore: DataStore<Preferences>) {
         dataStore.edit { it[CURRENT_STREAK] = 0 }
     }
 
+    // Analytics & Privacy
+    val analyticsEnabled: Flow<Boolean> = dataStore.data.map { it[ANALYTICS_ENABLED] ?: true }
+    val crashReportsEnabled: Flow<Boolean> = dataStore.data.map { it[CRASH_REPORTS_ENABLED] ?: true }
+
+    suspend fun setAnalyticsEnabled(enabled: Boolean) {
+        dataStore.edit { it[ANALYTICS_ENABLED] = enabled }
+    }
+
+    suspend fun setCrashReportsEnabled(enabled: Boolean) {
+        dataStore.edit { it[CRASH_REPORTS_ENABLED] = enabled }
+    }
+
     // User profile
     val userName: Flow<String> = dataStore.data.map { it[USER_NAME] ?: "" }
     val userEmail: Flow<String> = dataStore.data.map { it[USER_EMAIL] ?: "" }
+
+    // Aliases for consistency
+    val username: Flow<String> = userName
+    val email: Flow<String> = userEmail
 
     suspend fun setUserName(name: String) {
         dataStore.edit { it[USER_NAME] = name }
@@ -136,6 +154,9 @@ class AppPreferences(private val dataStore: DataStore<Preferences>) {
     suspend fun setUserEmail(email: String) {
         dataStore.edit { it[USER_EMAIL] = email }
     }
+
+    suspend fun setUsername(name: String) = setUserName(name)
+    suspend fun setEmail(email: String) = setUserEmail(email)
 
     // Clear all data
     suspend fun clearAll() {
