@@ -41,6 +41,8 @@ kotlin {
         }
 
         androidMain.dependencies {
+            implementation(project(":platform:android"))
+            implementation(libs.koin.android)
         }
 
         iosMain.dependencies {
