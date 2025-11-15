@@ -1,5 +1,6 @@
-import id.compagnie.tawazn.design.icons.TawaznIcons
 package id.compagnie.tawazn.feature.onboarding
+
+import id.compagnie.tawazn.design.icons.TawaznIcons
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn

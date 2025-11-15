@@ -1,4 +1,3 @@
-import id.compagnie.tawazn.design.icons.TawaznIcons
 package id.compagnie.tawazn.feature.settings
 
 import androidx.compose.foundation.clickable
@@ -18,6 +17,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.PermissionStatusBadge
 import id.compagnie.tawazn.design.component.PlatformInfoCard
+import id.compagnie.tawazn.design.icons.TawaznIcons
 import id.compagnie.tawazn.design.theme.TawaznTheme
 class SettingsScreen : Screen {
     @Composable

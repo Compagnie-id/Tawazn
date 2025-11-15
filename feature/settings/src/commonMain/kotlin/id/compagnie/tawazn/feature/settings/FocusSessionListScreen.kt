@@ -1,5 +1,6 @@
-import id.compagnie.tawazn.design.icons.TawaznIcons
 package id.compagnie.tawazn.feature.settings
+
+import id.compagnie.tawazn.design.icons.TawaznIcons
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
