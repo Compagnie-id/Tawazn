@@ -70,7 +70,6 @@ kotlin {
             implementation(libs.voyager.screenmodel)
             implementation(libs.voyager.tabNavigator)
             implementation(libs.voyager.transitions)
-            implementation(libs.voyager.koin)
 
             // Coroutines
             implementation(libs.kotlinx.coroutinesCore)
