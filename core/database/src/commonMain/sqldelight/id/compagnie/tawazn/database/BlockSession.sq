@@ -1,0 +1,89 @@
+-- BlockSession table: stores blocking session schedules
+CREATE TABLE IF NOT EXISTS BlockSession (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    description TEXT,
+    isActive INTEGER AS Boolean NOT NULL DEFAULT 1,
+    startTime INTEGER NOT NULL,
+    endTime INTEGER NOT NULL,
+    repeatDaily INTEGER AS Boolean NOT NULL DEFAULT 0,
+    repeatWeekly INTEGER AS Boolean NOT NULL DEFAULT 0,
+    repeatDays TEXT,
+    createdAt INTEGER NOT NULL,
+    updatedAt INTEGER NOT NULL
+);
+
+-- BlockSessionApp junction table: many-to-many relationship
+CREATE TABLE IF NOT EXISTS BlockSessionApp (
+    sessionId INTEGER NOT NULL,
+    packageName TEXT NOT NULL,
+    PRIMARY KEY (sessionId, packageName),
+    FOREIGN KEY (sessionId) REFERENCES BlockSession(id) ON DELETE CASCADE,
+    FOREIGN KEY (packageName) REFERENCES App(packageName) ON DELETE CASCADE
+);
+
+-- Queries for BlockSession
+selectAllSessions:
+SELECT * FROM BlockSession ORDER BY createdAt DESC;
+
+selectActiveSessionsessions:
+SELECT * FROM BlockSession WHERE isActive = 1 ORDER BY startTime ASC;
+
+selectSessionById:
+SELECT * FROM BlockSession WHERE id = ?;
+
+selectCurrentActiveSessions:
+SELECT * FROM BlockSession
+WHERE isActive = 1
+  AND startTime <= ?
+  AND endTime >= ?
+ORDER BY startTime ASC;
+
+insertSession:
+INSERT INTO BlockSession(name, description, isActive, startTime, endTime, repeatDaily, repeatWeekly, repeatDays, createdAt, updatedAt)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+updateSession:
+UPDATE BlockSession
+SET name = ?,
+    description = ?,
+    isActive = ?,
+    startTime = ?,
+    endTime = ?,
+    repeatDaily = ?,
+    repeatWeekly = ?,
+    repeatDays = ?,
+    updatedAt = ?
+WHERE id = ?;
+
+updateSessionStatus:
+UPDATE BlockSession
+SET isActive = ?,
+    updatedAt = ?
+WHERE id = ?;
+
+deleteSession:
+DELETE FROM BlockSession WHERE id = ?;
+
+deleteAllSessions:
+DELETE FROM BlockSession;
+
+-- Queries for BlockSessionApp
+selectAppsForSession:
+SELECT * FROM BlockSessionApp WHERE sessionId = ?;
+
+selectSessionsForApp:
+SELECT * FROM BlockSessionApp WHERE packageName = ?;
+
+insertSessionApp:
+INSERT OR REPLACE INTO BlockSessionApp(sessionId, packageName)
+VALUES (?, ?);
+
+deleteSessionApp:
+DELETE FROM BlockSessionApp WHERE sessionId = ? AND packageName = ?;
+
+deleteAllAppsForSession:
+DELETE FROM BlockSessionApp WHERE sessionId = ?;
+
+deleteAllSessionsForApp:
+DELETE FROM BlockSessionApp WHERE packageName = ?;

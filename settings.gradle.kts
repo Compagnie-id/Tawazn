@@ -33,3 +33,29 @@ plugins {
 }
 
 include(":composeApp")
+
+// Core Modules
+include(":core:common")
+include(":core:design-system")
+include(":core:database")
+include(":core:datastore")
+include(":core:network")
+
+// Domain Layer
+include(":domain")
+
+// Data Layer
+include(":data")
+
+// Feature Modules
+include(":feature:dashboard")
+include(":feature:app-blocking")
+include(":feature:usage-tracking")
+include(":feature:analytics")
+include(":feature:settings")
+include(":feature:onboarding")
+
+// Platform-Specific
+include(":platform:android")
+include(":platform:ios")
+include(":platform:desktop")

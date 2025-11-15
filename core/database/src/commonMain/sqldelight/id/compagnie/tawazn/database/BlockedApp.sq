@@ -1,0 +1,58 @@
+-- BlockedApp table: stores apps that are blocked
+CREATE TABLE IF NOT EXISTS BlockedApp (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    packageName TEXT NOT NULL,
+    appName TEXT NOT NULL,
+    iconPath TEXT,
+    isBlocked INTEGER AS Boolean NOT NULL DEFAULT 1,
+    blockedAt INTEGER NOT NULL,
+    blockedUntil INTEGER,
+    blockDurationMinutes INTEGER,
+    createdAt INTEGER NOT NULL,
+    updatedAt INTEGER NOT NULL,
+    FOREIGN KEY (packageName) REFERENCES App(packageName) ON DELETE CASCADE
+);
+
+-- Queries
+selectAll:
+SELECT * FROM BlockedApp ORDER BY appName ASC;
+
+selectBlocked:
+SELECT * FROM BlockedApp WHERE isBlocked = 1 ORDER BY appName ASC;
+
+selectByPackageName:
+SELECT * FROM BlockedApp WHERE packageName = ?;
+
+selectActiveBlocks:
+SELECT * FROM BlockedApp
+WHERE isBlocked = 1
+  AND (blockedUntil IS NULL OR blockedUntil > ?)
+ORDER BY appName ASC;
+
+insert:
+INSERT INTO BlockedApp(packageName, appName, iconPath, isBlocked, blockedAt, blockedUntil, blockDurationMinutes, createdAt, updatedAt)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+update:
+UPDATE BlockedApp
+SET isBlocked = ?,
+    blockedAt = ?,
+    blockedUntil = ?,
+    blockDurationMinutes = ?,
+    updatedAt = ?
+WHERE id = ?;
+
+updateBlockStatus:
+UPDATE BlockedApp
+SET isBlocked = ?,
+    updatedAt = ?
+WHERE packageName = ?;
+
+delete:
+DELETE FROM BlockedApp WHERE id = ?;
+
+deleteByPackageName:
+DELETE FROM BlockedApp WHERE packageName = ?;
+
+deleteAll:
+DELETE FROM BlockedApp;
