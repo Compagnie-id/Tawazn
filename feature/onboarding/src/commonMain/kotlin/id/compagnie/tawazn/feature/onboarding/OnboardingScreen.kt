@@ -29,7 +29,6 @@ import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.component.PermissionCard
 import id.compagnie.tawazn.design.theme.TawaznTheme
-import id.compagnie.tawazn.MainScreen
 class OnboardingScreen : Screen {
     @Composable
     override fun Content() {
@@ -111,8 +110,9 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                             if (currentPage < 3) {
                                 currentPage++
                             } else {
-                                // Navigate to dashboard
-                                navigator.replace(MainScreen())
+                                // Complete onboarding and return to main screen
+                                screenModel.startBackgroundServices()
+                                navigator.popAll()
                             }
                         },
                         modifier = Modifier.fillMaxWidth()

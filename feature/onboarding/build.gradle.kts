@@ -40,11 +40,15 @@ kotlin {
             implementation(project(":core:common"))
             implementation(project(":core:design-system"))
             implementation(project(":domain"))
+            implementation(project(":data"))
 
             implementation(libs.kotlinx.coroutinesCore)
             implementation(libs.kotlinx.datetime)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+
+            // Logging
+            implementation(libs.kermit)
 
             // Navigation
             implementation(libs.voyager.navigator)
