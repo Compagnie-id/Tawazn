@@ -70,10 +70,10 @@ DELETE FROM BlockSession;
 
 -- Queries for BlockSessionApp
 selectAppsForSession:
-SELECT * FROM BlockSessionApp WHERE sessionId = ?;
+SELECT packageName FROM BlockSessionApp WHERE sessionId = ?;
 
 selectSessionsForApp:
-SELECT * FROM BlockSessionApp WHERE packageName = ?;
+SELECT sessionId FROM BlockSessionApp WHERE packageName = ?;
 
 insertSessionApp:
 INSERT OR REPLACE INTO BlockSessionApp(sessionId, packageName)

@@ -71,8 +71,6 @@ sqldelight {
     databases {
         create("TawaznDatabase") {
             packageName.set("id.compagnie.tawazn.database")
-            srcDirs.setFrom("src/commonMain/sqldelight")
-            dialect("app.cash.sqldelight:sqlite-3-35-dialect:2.1.0")
         }
     }
 }
