@@ -4,6 +4,7 @@ import android.app.Application
 import id.compagnie.tawazn.data.di.dataModule
 import id.compagnie.tawazn.data.di.platformModule
 import id.compagnie.tawazn.domain.di.domainModule
+import id.compagnie.tawazn.feature.onboarding.di.onboardingModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -19,7 +20,8 @@ class TawaznApplication : Application() {
             modules(
                 platformModule(),
                 dataModule,
-                domainModule
+                domainModule,
+                onboardingModule
             )
         }
     }
