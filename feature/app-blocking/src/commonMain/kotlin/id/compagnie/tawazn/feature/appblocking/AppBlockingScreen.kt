@@ -35,7 +35,6 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.icons.TawaznIcons
 import id.compagnie.tawazn.design.theme.TawaznTheme
@@ -121,7 +120,7 @@ data class AppBlockingState(
 fun AppBlockingContent(screenModel: AppBlockingScreenModel) {
     val apps by screenModel.filteredApps.collectAsState()
     val searchQuery by screenModel.searchQuery.collectAsState()
-    val navigator = LocalNavigator.currentOrThrow
+    val navigator = LocalNavigator.current
 
     TawaznTheme {
         Scaffold(
@@ -129,7 +128,7 @@ fun AppBlockingContent(screenModel: AppBlockingScreenModel) {
                 TopAppBar(
                     title = { Text("Block Apps") },
                     navigationIcon = {
-                        IconButton(onClick = { navigator.pop() }) {
+                        IconButton(onClick = { navigator?.pop() }) {
                             Icon(TawaznIcons.ArrowBack, "Back")
                         }
                     },

@@ -46,7 +46,6 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.icons.TawaznIcons
@@ -77,7 +76,7 @@ fun CreateEditFocusSessionContent(
     screenModel: FocusSessionScreenModel,
     existingSession: BlockSession?
 ) {
-    val navigator = LocalNavigator.currentOrThrow
+    val navigator = LocalNavigator.current
     val isEditMode = existingSession != null
 
     // Form state
@@ -102,7 +101,7 @@ fun CreateEditFocusSessionContent(
                 TopAppBar(
                     title = { Text(if (isEditMode) "Edit Session" else "Create Session") },
                     navigationIcon = {
-                        IconButton(onClick = { navigator.pop() }) {
+                        IconButton(onClick = { navigator?.pop() }) {
                             Icon(TawaznIcons.ArrowBack, "Back")
                         }
                     },
@@ -370,7 +369,7 @@ fun CreateEditFocusSessionContent(
                                 updatedAt = now
                             )
                             screenModel.updateSession(updatedSession) {
-                                navigator.pop()
+                                navigator?.pop()
                             }
                         } else {
                             val request = CreateBlockSessionRequest(
@@ -384,7 +383,7 @@ fun CreateEditFocusSessionContent(
                                 appPackageNames = existingSession?.blockedApps ?: emptyList()
                             )
                             screenModel.createSession(request) {
-                                navigator.pop()
+                                navigator?.pop()
                             }
                         }
                     },
@@ -394,7 +393,7 @@ fun CreateEditFocusSessionContent(
 
                 if (isEditMode) {
                     OutlinedButton(
-                        onClick = { navigator.pop() },
+                        onClick = { navigator?.pop() },
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text("Cancel")

@@ -18,7 +18,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.theme.TawaznTheme
 
@@ -31,7 +30,7 @@ class AboutScreen : Screen {
 
 @Composable
 fun AboutContent() {
-    val navigator = LocalNavigator.currentOrThrow
+    val navigator = LocalNavigator.current
     var showLicensesDialog by remember { mutableStateOf(false) }
 
     TawaznTheme {
@@ -40,7 +39,7 @@ fun AboutContent() {
                 TopAppBar(
                     title = { Text("About") },
                     navigationIcon = {
-                        IconButton(onClick = { navigator.pop() }) {
+                        IconButton(onClick = { navigator?.pop() }) {
                             Icon(TawaznIcons.ArrowBack, "Back")
                         }
                     },

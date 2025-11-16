@@ -11,7 +11,6 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.StatsCard
 import id.compagnie.tawazn.design.icons.TawaznIcons
@@ -30,7 +29,7 @@ class AnalyticsScreen : Screen {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
-    val navigator = LocalNavigator.currentOrThrow
+    val navigator = LocalNavigator.current
     val uiState by screenModel.uiState.collectAsState()
 
     TawaznTheme {
@@ -39,7 +38,7 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                 TopAppBar(
                     title = { Text("Analytics & Insights") },
                     navigationIcon = {
-                        IconButton(onClick = { navigator.pop() }) {
+                        IconButton(onClick = { navigator?.pop() }) {
                             Icon(TawaznIcons.ArrowBack, "Back")
                         }
                     },
