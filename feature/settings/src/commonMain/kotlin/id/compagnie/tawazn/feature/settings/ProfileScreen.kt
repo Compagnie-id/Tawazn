@@ -240,7 +240,11 @@ fun ProfileContent() {
                             label = "Member Since",
                             value = "January 2024"
                         )
-                        Divider()
+                        HorizontalDivider(
+                            Modifier,
+                            DividerDefaults.Thickness,
+                            DividerDefaults.color
+                        )
                         InfoRow(
                             icon = TawaznIcons.Devices,
                             label = "Platform",
