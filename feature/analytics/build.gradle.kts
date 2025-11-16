@@ -39,6 +39,7 @@ kotlin {
 
             implementation(project(":core:common"))
             implementation(project(":core:design-system"))
+            implementation(project(":core:datastore"))
             implementation(project(":domain"))
 
             // Feature module dependencies
@@ -59,6 +60,9 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.composeViewModel)
+
+            // Logging
+            implementation(libs.kermit)
         }
 
         androidMain.dependencies {
