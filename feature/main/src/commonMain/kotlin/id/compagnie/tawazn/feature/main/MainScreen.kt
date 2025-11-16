@@ -118,8 +118,10 @@ object AppsTab : Tab {
 
     @Composable
     override fun Content() {
-        val screenModel = getScreenModel<id.compagnie.tawazn.feature.appblocking.AppBlockingScreenModel>()
-        id.compagnie.tawazn.feature.appblocking.AppBlockingContent(screenModel)
+        // Wrap in Navigator to enable navigation to sub-screens
+        Navigator(id.compagnie.tawazn.feature.appblocking.AppBlockingScreen()) { navigator ->
+            SlideTransition(navigator)
+        }
     }
 }
 
@@ -139,8 +141,10 @@ object AnalyticsTab : Tab {
 
     @Composable
     override fun Content() {
-        val screenModel = getScreenModel<id.compagnie.tawazn.feature.analytics.AnalyticsScreenModel>()
-        id.compagnie.tawazn.feature.analytics.AnalyticsContent(screenModel)
+        // Wrap in Navigator to enable navigation to sub-screens
+        Navigator(id.compagnie.tawazn.feature.analytics.AnalyticsScreen()) { navigator ->
+            SlideTransition(navigator)
+        }
     }
 }
 

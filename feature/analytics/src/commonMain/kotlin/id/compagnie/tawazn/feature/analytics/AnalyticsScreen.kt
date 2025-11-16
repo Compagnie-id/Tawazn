@@ -38,8 +38,10 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                 TopAppBar(
                     title = { Text("Analytics & Insights") },
                     navigationIcon = {
-                        IconButton(onClick = { navigator?.pop() }) {
-                            Icon(TawaznIcons.ArrowBack, "Back")
+                        if (navigator?.canPop == true) {
+                            IconButton(onClick = { navigator.pop() }) {
+                                Icon(TawaznIcons.ArrowBack, "Back")
+                            }
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -262,7 +264,7 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                             )
 
                             Button(
-                                onClick = { navigator.push(FocusSessionListScreen()) },
+                                onClick = { navigator?.push(FocusSessionListScreen()) },
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = TawaznTheme.colors.gradientMiddle
                                 )

@@ -128,8 +128,10 @@ fun AppBlockingContent(screenModel: AppBlockingScreenModel) {
                 TopAppBar(
                     title = { Text("Block Apps") },
                     navigationIcon = {
-                        IconButton(onClick = { navigator?.pop() }) {
-                            Icon(TawaznIcons.ArrowBack, "Back")
+                        if (navigator?.canPop == true) {
+                            IconButton(onClick = { navigator.pop() }) {
+                                Icon(TawaznIcons.ArrowBack, "Back")
+                            }
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
