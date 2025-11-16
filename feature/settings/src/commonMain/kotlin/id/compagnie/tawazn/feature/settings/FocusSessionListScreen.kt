@@ -41,9 +41,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.icons.TawaznIcons
@@ -56,14 +55,14 @@ import kotlin.time.ExperimentalTime
 class FocusSessionListScreen : Screen {
     @Composable
     override fun Content() {
-        val screenModel = getScreenModel<FocusSessionScreenModel>()
+        val screenModel = koinScreenModel<FocusSessionScreenModel>()
         FocusSessionListContent(screenModel)
     }
 }
 
 @Composable
 fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
-    val navigator = LocalNavigator.currentOrThrow
+    val navigator = LocalNavigator.current
     val sessions by screenModel.allSessions.collectAsState(initial = emptyList())
     var showDeleteDialog by remember { mutableStateOf<BlockSession?>(null) }
 
@@ -73,7 +72,7 @@ fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
                 TopAppBar(
                     title = { Text("Focus Sessions") },
                     navigationIcon = {
-                        IconButton(onClick = { navigator.pop() }) {
+                        IconButton(onClick = { navigator?.pop() }) {
                             Icon(TawaznIcons.ArrowBack, "Back")
                         }
                     },
@@ -84,7 +83,7 @@ fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
             },
             floatingActionButton = {
                 FloatingActionButton(
-                    onClick = { navigator.push(CreateEditFocusSessionScreen()) },
+                    onClick = { navigator?.push(CreateEditFocusSessionScreen()) },
                     containerColor = TawaznTheme.colors.gradientMiddle
                 ) {
                     Icon(TawaznIcons.Add, "Add Session", tint = MaterialTheme.colorScheme.onPrimary)
@@ -120,7 +119,7 @@ fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
                         )
                         GradientButton(
                             text = "Create Session",
-                            onClick = { navigator.push(CreateEditFocusSessionScreen()) },
+                            onClick = { navigator?.push(CreateEditFocusSessionScreen()) },
                             modifier = Modifier.padding(top = 16.dp)
                         )
                     }
@@ -132,11 +131,11 @@ fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
                         .padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    items(sessions) { session ->
+                    items(sessions, key = { it.id }) { session ->
                         SessionCard(
                             session = session,
                             onToggle = { screenModel.toggleSession(session.id, !session.isActive) },
-                            onEdit = { navigator.push(CreateEditFocusSessionScreen(session)) },
+                            onEdit = { navigator?.push(CreateEditFocusSessionScreen(session)) },
                             onDelete = { showDeleteDialog = session }
                         )
                     }

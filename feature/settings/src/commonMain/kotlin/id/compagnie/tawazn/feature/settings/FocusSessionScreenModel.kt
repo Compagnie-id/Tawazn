@@ -20,6 +20,7 @@ class FocusSessionScreenModel : ScreenModel, KoinComponent {
         .stateIn(screenModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     val activeSessions = repository.getActiveSessions()
+        .stateIn(screenModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     fun createSession(request: CreateBlockSessionRequest, onComplete: (Long) -> Unit) {
         screenModelScope.launch {

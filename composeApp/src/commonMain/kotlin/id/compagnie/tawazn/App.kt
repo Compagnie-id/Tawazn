@@ -4,8 +4,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.transitions.SlideTransition
 import id.compagnie.tawazn.core.datastore.AppPreferences
 import id.compagnie.tawazn.design.theme.TawaznTheme
 import id.compagnie.tawazn.feature.main.MainScreen
@@ -26,10 +24,12 @@ fun App() {
         val darkTheme = if (useSystemTheme) systemInDarkTheme else darkModeEnabled
 
         TawaznTheme(darkTheme = darkTheme) {
-            // Show onboarding screen if not completed, otherwise show main screen with tabs
-            val initialScreen = if (onboardingCompleted) MainScreen() else OnboardingScreen()
-            Navigator(initialScreen) { navigator ->
-                SlideTransition(navigator)
+            // Conditionally show screens without Navigator wrapper
+            // MainScreen contains TabNavigator, tabs contain their own Navigators
+            if (onboardingCompleted) {
+                MainScreen().Content()
+            } else {
+                OnboardingScreen().Content()
             }
         }
     }

@@ -24,7 +24,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,9 +35,8 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.icons.TawaznIcons
 import id.compagnie.tawazn.design.theme.TawaznTheme
@@ -57,7 +58,7 @@ class AppBlockingScreen : Screen {
 
     @Composable
     override fun Content() {
-        val screenModel = getScreenModel<AppBlockingScreenModel>()
+        val screenModel = koinScreenModel<AppBlockingScreenModel>()
         AppBlockingContent(screenModel)
     }
 }
@@ -121,7 +122,12 @@ data class AppBlockingState(
 fun AppBlockingContent(screenModel: AppBlockingScreenModel) {
     val apps by screenModel.filteredApps.collectAsState()
     val searchQuery by screenModel.searchQuery.collectAsState()
-    val navigator = LocalNavigator.currentOrThrow
+    val navigator = LocalNavigator.current
+
+    // Compute blocked count efficiently to prevent iterating list on every recomposition
+    val blockedCount = remember(apps) {
+        derivedStateOf { apps.count { it.isBlocked } }
+    }.value
 
     TawaznTheme {
         Scaffold(
@@ -129,8 +135,10 @@ fun AppBlockingContent(screenModel: AppBlockingScreenModel) {
                 TopAppBar(
                     title = { Text("Block Apps") },
                     navigationIcon = {
-                        IconButton(onClick = { navigator.pop() }) {
-                            Icon(TawaznIcons.ArrowBack, "Back")
+                        if (navigator?.canPop == true) {
+                            IconButton(onClick = { navigator.pop() }) {
+                                Icon(TawaznIcons.ArrowBack, "Back")
+                            }
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -166,7 +174,6 @@ fun AppBlockingContent(screenModel: AppBlockingScreenModel) {
                 )
 
                 // Stats
-                val blockedCount = apps.count { it.isBlocked }
                 GlassCard(
                     modifier = Modifier
                         .fillMaxWidth()

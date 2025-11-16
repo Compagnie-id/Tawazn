@@ -20,14 +20,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.component.PermissionCard
 import id.compagnie.tawazn.design.icons.TawaznIcons
 import id.compagnie.tawazn.design.theme.TawaznTheme
-import id.compagnie.tawazn.feature.main.MainScreen
 
 class OnboardingScreen : Screen {
     @Composable
@@ -40,7 +37,6 @@ class OnboardingScreen : Screen {
 @Composable
 fun OnboardingContent(screenModel: OnboardingScreenModel) {
     var currentPage by remember { mutableStateOf(0) }
-    val navigator = LocalNavigator.currentOrThrow
     val permissionState by screenModel.permissionState.collectAsState()
 
     TawaznTheme {
@@ -123,9 +119,8 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                             if (currentPage < 3) {
                                 currentPage++
                             } else {
-                                // Complete onboarding and navigate to main screen
+                                // Complete onboarding - App.kt will automatically navigate to MainScreen
                                 screenModel.completeOnboarding()
-                                navigator.replaceAll(MainScreen())
                             }
                         },
                         modifier = Modifier.fillMaxWidth()
@@ -143,8 +138,8 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                     if (currentPage < 3) {
                         TextButton(
                             onClick = {
+                                // Skip onboarding - App.kt will automatically navigate to MainScreen
                                 screenModel.completeOnboarding()
-                                navigator.replaceAll(MainScreen())
                             },
                             modifier = Modifier.fillMaxWidth()
                         ) {

@@ -57,6 +57,10 @@ kotlin {
             // Feature modules
             implementation(project(":feature:main"))
             implementation(project(":feature:onboarding"))
+            implementation(project(":feature:app-blocking"))
+            implementation(project(":feature:analytics"))
+            implementation(project(":feature:settings"))
+            implementation(project(":feature:usage-tracking"))
 
             // Koin
             implementation(libs.koin.core)

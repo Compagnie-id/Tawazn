@@ -15,7 +15,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import id.compagnie.tawazn.core.datastore.AppPreferences
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
@@ -33,7 +32,7 @@ class UsageGoalsScreen : Screen {
 
 @Composable
 fun UsageGoalsContent() {
-    val navigator = LocalNavigator.currentOrThrow
+    val navigator = LocalNavigator.current
     val appPreferences: AppPreferences = koinInject()
     val scope = rememberCoroutineScope()
 
@@ -60,7 +59,7 @@ fun UsageGoalsContent() {
                 TopAppBar(
                     title = { Text("Usage Goals") },
                     navigationIcon = {
-                        IconButton(onClick = { navigator.pop() }) {
+                        IconButton(onClick = { navigator?.pop() }) {
                             Icon(TawaznIcons.ArrowBack, "Back")
                         }
                     },

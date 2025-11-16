@@ -1,16 +1,31 @@
+@file:OptIn(ExperimentalVoyagerApi::class)
+
 package id.compagnie.tawazn.feature.main
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
-import cafe.adriel.voyager.navigator.tab.*
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.tab.CurrentTab
+import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
+import cafe.adriel.voyager.navigator.tab.Tab
+import cafe.adriel.voyager.navigator.tab.TabNavigator
+import cafe.adriel.voyager.navigator.tab.TabOptions
+import cafe.adriel.voyager.transitions.SlideTransition
 import id.compagnie.tawazn.design.icons.TawaznIcons
 import id.compagnie.tawazn.design.theme.TawaznTheme
 
@@ -96,7 +111,19 @@ object DashboardTab : Tab {
 
     @Composable
     override fun Content() {
-        id.compagnie.tawazn.feature.dashboard.DashboardContent()
+        // Wrap in Navigator to enable navigation to sub-screens
+        Navigator(
+            screen = id.compagnie.tawazn.feature.dashboard.DashboardScreen(),
+            disposeBehavior = cafe.adriel.voyager.navigator.NavigatorDisposeBehavior(
+                disposeNestedNavigators = false,
+                disposeSteps = false
+            )
+        ) { navigator ->
+            SlideTransition(
+                navigator = navigator,
+                disposeScreenAfterTransitionEnd = true
+            )
+        }
     }
 }
 
@@ -116,8 +143,19 @@ object AppsTab : Tab {
 
     @Composable
     override fun Content() {
-        val screenModel = getScreenModel<id.compagnie.tawazn.feature.appblocking.AppBlockingScreenModel>()
-        id.compagnie.tawazn.feature.appblocking.AppBlockingContent(screenModel)
+        // Wrap in Navigator to enable navigation to sub-screens
+        Navigator(
+            screen = id.compagnie.tawazn.feature.appblocking.AppBlockingScreen(),
+            disposeBehavior = cafe.adriel.voyager.navigator.NavigatorDisposeBehavior(
+                disposeNestedNavigators = false,
+                disposeSteps = false
+            )
+        ) { navigator ->
+            SlideTransition(
+                navigator = navigator,
+                disposeScreenAfterTransitionEnd = true
+            )
+        }
     }
 }
 
@@ -137,8 +175,19 @@ object AnalyticsTab : Tab {
 
     @Composable
     override fun Content() {
-        val screenModel = getScreenModel<id.compagnie.tawazn.feature.analytics.AnalyticsScreenModel>()
-        id.compagnie.tawazn.feature.analytics.AnalyticsContent(screenModel)
+        // Wrap in Navigator to enable navigation to sub-screens
+        Navigator(
+            screen = id.compagnie.tawazn.feature.analytics.AnalyticsScreen(),
+            disposeBehavior = cafe.adriel.voyager.navigator.NavigatorDisposeBehavior(
+                disposeNestedNavigators = false,
+                disposeSteps = false
+            )
+        ) { navigator ->
+            SlideTransition(
+                navigator = navigator,
+                disposeScreenAfterTransitionEnd = true
+            )
+        }
     }
 }
 
@@ -158,7 +207,19 @@ object SettingsTab : Tab {
 
     @Composable
     override fun Content() {
-        val screenModel = getScreenModel<id.compagnie.tawazn.feature.settings.SettingsScreenModel>()
-        id.compagnie.tawazn.feature.settings.SettingsContent(screenModel)
+        // Wrap in Navigator to enable navigation to sub-screens (Profile, Privacy, etc.)
+        Navigator(
+            screen = id.compagnie.tawazn.feature.settings.TabSettingsScreen(),
+            disposeBehavior = cafe.adriel.voyager.navigator.NavigatorDisposeBehavior(
+                disposeNestedNavigators = false,
+                disposeSteps = false
+            )
+        ) { navigator ->
+            // Display current screen in the navigation stack
+            SlideTransition(
+                navigator = navigator,
+                disposeScreenAfterTransitionEnd = true
+            )
+        }
     }
 }

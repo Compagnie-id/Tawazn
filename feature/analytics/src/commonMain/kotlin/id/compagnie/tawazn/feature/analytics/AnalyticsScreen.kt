@@ -1,17 +1,40 @@
 package id.compagnie.tawazn.feature.analytics
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.StatsCard
 import id.compagnie.tawazn.design.icons.TawaznIcons
@@ -22,7 +45,7 @@ class AnalyticsScreen : Screen {
 
     @Composable
     override fun Content() {
-        val screenModel = getScreenModel<AnalyticsScreenModel>()
+        val screenModel = koinScreenModel<AnalyticsScreenModel>()
         AnalyticsContent(screenModel)
     }
 }
@@ -30,8 +53,20 @@ class AnalyticsScreen : Screen {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
-    val navigator = LocalNavigator.currentOrThrow
+    val navigator = LocalNavigator.current
     val uiState by screenModel.uiState.collectAsState()
+
+    // Remember navigation callback to prevent unnecessary recompositions
+    val onManageSessionsClick = remember { { navigator?.push(FocusSessionListScreen()); Unit } }
+
+    // Compute derived values efficiently
+    val progressPercent = remember(uiState.goalProgress) {
+        derivedStateOf { (uiState.goalProgress * 100).toInt() }
+    }.value
+
+    val goalHours = remember(uiState.dailyGoal) {
+        derivedStateOf { uiState.dailyGoal / 60f }
+    }.value
 
     TawaznTheme {
         Scaffold(
@@ -39,8 +74,10 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                 TopAppBar(
                     title = { Text("Analytics & Insights") },
                     navigationIcon = {
-                        IconButton(onClick = { navigator.pop() }) {
-                            Icon(TawaznIcons.ArrowBack, "Back")
+                        if (navigator?.canPop == true) {
+                            IconButton(onClick = { navigator.pop() }) {
+                                Icon(TawaznIcons.ArrowBack, "Back")
+                            }
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -134,8 +171,6 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                                 trackColor = MaterialTheme.colorScheme.surfaceVariant,
                             )
 
-                            val progressPercent = (uiState.goalProgress * 100).toInt()
-                            val goalHours = uiState.dailyGoal / 60f
                             Text(
                                 text = "$progressPercent% towards your daily goal of ${formatGoalHours(goalHours)} (${uiState.todayUsage.toHoursMinutesString()} used)",
                                 style = MaterialTheme.typography.bodySmall,
@@ -263,7 +298,7 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                             )
 
                             Button(
-                                onClick = { navigator.push(FocusSessionListScreen()) },
+                                onClick = onManageSessionsClick,
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = TawaznTheme.colors.gradientMiddle
                                 )

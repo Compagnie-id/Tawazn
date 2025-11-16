@@ -17,7 +17,6 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.StatsCard
 import id.compagnie.tawazn.design.theme.TawaznTheme
@@ -115,7 +114,7 @@ enum class UsagePeriod {
 fun UsageTrackingContent(screenModel: UsageTrackingScreenModel) {
     val usageStats by screenModel.usageStats.collectAsState()
     val selectedPeriod by screenModel.selectedPeriod.collectAsState()
-    val navigator = LocalNavigator.currentOrThrow
+    val navigator = LocalNavigator.current
 
     TawaznTheme {
         Scaffold(
@@ -123,7 +122,7 @@ fun UsageTrackingContent(screenModel: UsageTrackingScreenModel) {
                 TopAppBar(
                     title = { Text("Usage Tracking") },
                     navigationIcon = {
-                        IconButton(onClick = { navigator.pop() }) {
+                        IconButton(onClick = { navigator?.pop() }) {
                             Icon(TawaznIcons.ArrowBack, "Back")
                         }
                     },
@@ -205,7 +204,7 @@ fun UsageTrackingContent(screenModel: UsageTrackingScreenModel) {
                         )
                     }
 
-                    items(stats.topApps) { appUsage ->
+                    items(stats.topApps, key = { it.packageName }) { appUsage ->
                         UsageAppItem(appUsage)
                     }
 
