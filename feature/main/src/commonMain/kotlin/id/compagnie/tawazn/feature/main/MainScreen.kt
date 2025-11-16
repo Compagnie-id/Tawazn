@@ -98,7 +98,19 @@ object DashboardTab : Tab {
 
     @Composable
     override fun Content() {
-        id.compagnie.tawazn.feature.dashboard.DashboardContent()
+        // Wrap in Navigator to enable navigation to sub-screens
+        Navigator(
+            screen = id.compagnie.tawazn.feature.dashboard.DashboardScreen(),
+            disposeBehavior = cafe.adriel.voyager.navigator.NavigatorDisposeBehavior(
+                disposeNestedNavigators = false,
+                disposeSteps = false
+            )
+        ) { navigator ->
+            SlideTransition(
+                navigator = navigator,
+                disposeScreenAfterTransitionEnd = true
+            )
+        }
     }
 }
 
