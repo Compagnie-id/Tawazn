@@ -119,8 +119,17 @@ object AppsTab : Tab {
     @Composable
     override fun Content() {
         // Wrap in Navigator to enable navigation to sub-screens
-        Navigator(id.compagnie.tawazn.feature.appblocking.AppBlockingScreen()) { navigator ->
-            SlideTransition(navigator)
+        Navigator(
+            screen = id.compagnie.tawazn.feature.appblocking.AppBlockingScreen(),
+            disposeBehavior = cafe.adriel.voyager.navigator.NavigatorDisposeBehavior(
+                disposeNestedNavigators = false,
+                disposeSteps = false
+            )
+        ) { navigator ->
+            SlideTransition(
+                navigator = navigator,
+                disposeScreenAfterTransitionEnd = true
+            )
         }
     }
 }
@@ -142,8 +151,17 @@ object AnalyticsTab : Tab {
     @Composable
     override fun Content() {
         // Wrap in Navigator to enable navigation to sub-screens
-        Navigator(id.compagnie.tawazn.feature.analytics.AnalyticsScreen()) { navigator ->
-            SlideTransition(navigator)
+        Navigator(
+            screen = id.compagnie.tawazn.feature.analytics.AnalyticsScreen(),
+            disposeBehavior = cafe.adriel.voyager.navigator.NavigatorDisposeBehavior(
+                disposeNestedNavigators = false,
+                disposeSteps = false
+            )
+        ) { navigator ->
+            SlideTransition(
+                navigator = navigator,
+                disposeScreenAfterTransitionEnd = true
+            )
         }
     }
 }
@@ -165,9 +183,18 @@ object SettingsTab : Tab {
     @Composable
     override fun Content() {
         // Wrap in Navigator to enable navigation to sub-screens (Profile, Privacy, etc.)
-        Navigator(id.compagnie.tawazn.feature.settings.TabSettingsScreen()) { navigator ->
+        Navigator(
+            screen = id.compagnie.tawazn.feature.settings.TabSettingsScreen(),
+            disposeBehavior = cafe.adriel.voyager.navigator.NavigatorDisposeBehavior(
+                disposeNestedNavigators = false,
+                disposeSteps = false
+            )
+        ) { navigator ->
             // Display current screen in the navigation stack
-            SlideTransition(navigator)
+            SlideTransition(
+                navigator = navigator,
+                disposeScreenAfterTransitionEnd = true
+            )
         }
     }
 }
