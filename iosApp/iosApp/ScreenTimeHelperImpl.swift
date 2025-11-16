@@ -1,39 +1,45 @@
 import Foundation
 import FamilyControls
-import ComposeApp
 
-/// Swift implementation of the IOSScreenTimeHelper protocol defined in Kotlin
+/// Swift implementation of the Screen Time helper
 /// This bridges the Screen Time APIs to the Kotlin Multiplatform code
+///
+/// NOTE: This class will be connected to Kotlin at runtime via IOSAppMonitorHelper
+/// No direct import of ComposeApp is needed here
 @available(iOS 15.0, *)
-class ScreenTimeHelperImpl: IOSScreenTimeHelper {
+public class ScreenTimeHelperImpl: NSObject {
 
     private let bridge = ScreenTimeBridge.shared
 
+    public override init() {
+        super.init()
+    }
+
     // MARK: - Authorization
 
-    func requestAuthorization(completion: @escaping (Bool, String?) -> Void) {
+    @objc public func requestAuthorization(completion: @escaping (Bool, String?) -> Void) {
         bridge.requestAuthorization { success, error in
             completion(success, error)
         }
     }
 
-    func isAuthorized() -> Bool {
+    @objc public func isAuthorized() -> Bool {
         return bridge.isAuthorized()
     }
 
     // MARK: - App Blocking
 
-    func shieldApp(bundleIdentifier: String) -> Bool {
+    @objc public func shieldApp(bundleIdentifier: String) -> Bool {
         return bridge.shieldApp(bundleIdentifier: bundleIdentifier)
     }
 
-    func unshieldApp(bundleIdentifier: String) -> Bool {
+    @objc public func unshieldApp(bundleIdentifier: String) -> Bool {
         return bridge.unshieldApp(bundleIdentifier: bundleIdentifier)
     }
 
     // MARK: - Monitoring
 
-    func setupMonitoring() -> Bool {
+    @objc public func setupMonitoring() -> Bool {
         return bridge.setupActivityMonitoring()
     }
 }
