@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.tab.*
 import id.compagnie.tawazn.design.icons.TawaznIcons
 import id.compagnie.tawazn.design.theme.TawaznTheme
@@ -115,9 +116,8 @@ object AppsTab : Tab {
 
     @Composable
     override fun Content() {
-        id.compagnie.tawazn.feature.appblocking.AppBlockingContent(
-            cafe.adriel.voyager.koin.koinScreenModel()
-        )
+        val screenModel = koinScreenModel<id.compagnie.tawazn.feature.appblocking.AppBlockingScreenModel>()
+        id.compagnie.tawazn.feature.appblocking.AppBlockingContent(screenModel)
     }
 }
 
