@@ -41,7 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
@@ -55,7 +55,7 @@ import kotlin.time.ExperimentalTime
 class FocusSessionListScreen : Screen {
     @Composable
     override fun Content() {
-        val screenModel = getScreenModel<FocusSessionScreenModel>()
+        val screenModel = koinScreenModel<FocusSessionScreenModel>()
         FocusSessionListContent(screenModel)
     }
 }

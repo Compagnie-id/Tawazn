@@ -44,7 +44,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
@@ -66,7 +66,7 @@ data class CreateEditFocusSessionScreen(
 ) : Screen {
     @Composable
     override fun Content() {
-        val screenModel = getScreenModel<FocusSessionScreenModel>()
+        val screenModel = koinScreenModel<FocusSessionScreenModel>()
         CreateEditFocusSessionContent(screenModel, existingSession)
     }
 }
