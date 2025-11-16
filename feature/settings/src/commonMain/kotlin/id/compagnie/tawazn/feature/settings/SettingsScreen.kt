@@ -49,8 +49,8 @@ fun SettingsContent(
 
     TawaznTheme {
         Scaffold(
-            topBar = if (showBackButton) {
-                {
+            topBar = {
+                if (showBackButton) {
                     TopAppBar(
                         title = { Text("Settings") },
                         navigationIcon = {
@@ -63,7 +63,7 @@ fun SettingsContent(
                         )
                     )
                 }
-            } else null,
+            },
             containerColor = MaterialTheme.colorScheme.background
         ) { padding ->
             LazyColumn(
