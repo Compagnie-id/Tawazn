@@ -519,3 +519,17 @@ fun SettingsSwitchItem(
         }
     }
 }
+
+/**
+ * Settings screen for tab navigation (no back button)
+ */
+class TabSettingsScreen : Screen {
+    @Composable
+    override fun Content() {
+        val screenModel = getScreenModel<SettingsScreenModel>()
+        SettingsContent(
+            screenModel = screenModel,
+            showBackButton = false
+        )
+    }
+}

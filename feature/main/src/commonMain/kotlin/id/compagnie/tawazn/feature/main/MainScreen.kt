@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.transitions.SlideTransition
 import cafe.adriel.voyager.navigator.tab.*
 import id.compagnie.tawazn.design.icons.TawaznIcons
 import id.compagnie.tawazn.design.theme.TawaznTheme
@@ -158,10 +160,10 @@ object SettingsTab : Tab {
 
     @Composable
     override fun Content() {
-        val screenModel = getScreenModel<id.compagnie.tawazn.feature.settings.SettingsScreenModel>()
-        id.compagnie.tawazn.feature.settings.SettingsContent(
-            screenModel = screenModel,
-            showBackButton = false
-        )
+        // Wrap in Navigator to enable navigation to sub-screens (Profile, Privacy, etc.)
+        Navigator(id.compagnie.tawazn.feature.settings.TabSettingsScreen()) { navigator ->
+            // Display current screen in the navigation stack
+            SlideTransition(navigator)
+        }
     }
 }
