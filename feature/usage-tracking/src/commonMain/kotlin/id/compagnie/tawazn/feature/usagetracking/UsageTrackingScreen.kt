@@ -204,7 +204,7 @@ fun UsageTrackingContent(screenModel: UsageTrackingScreenModel) {
                         )
                     }
 
-                    items(stats.topApps) { appUsage ->
+                    items(stats.topApps, key = { it.packageName }) { appUsage ->
                         UsageAppItem(appUsage)
                     }
 

@@ -131,7 +131,7 @@ fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
                         .padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    items(sessions) { session ->
+                    items(sessions, key = { it.id }) { session ->
                         SessionCard(
                             session = session,
                             onToggle = { screenModel.toggleSession(session.id, !session.isActive) },
