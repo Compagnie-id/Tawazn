@@ -5,14 +5,22 @@ import id.compagnie.tawazn.domain.repository.AppRepository
 import id.compagnie.tawazn.domain.repository.BlockedAppRepository
 import id.compagnie.tawazn.domain.repository.UsageRepository
 import id.compagnie.tawazn.platform.ios.IOSPlatformSync
+import id.compagnie.tawazn.platform.ios.ScreenTimeApi
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 /**
  * iOS implementation of PlatformSyncService
+ *
+ * Uses Koin dependency injection to get ScreenTimeApi and properly initialize IOSPlatformSync.
  */
-actual class PlatformSyncService {
+actual class PlatformSyncService : KoinComponent {
 
     private val logger = Logger.withTag("PlatformSyncService")
     private lateinit var platformSync: IOSPlatformSync
+
+    // Inject ScreenTimeApi from Koin
+    private val screenTimeApi: ScreenTimeApi by inject()
 
     actual fun initialize(
         appRepository: AppRepository,
@@ -21,11 +29,15 @@ actual class PlatformSyncService {
     ) {
         logger.i { "Initializing iOS platform sync service" }
 
+        // Create IOSPlatformSync with all required dependencies including ScreenTimeApi
         platformSync = IOSPlatformSync(
+            screenTimeApi = screenTimeApi,
             appRepository = appRepository,
             blockedAppRepository = blockedAppRepository,
             usageRepository = usageRepository
         )
+
+        logger.i { "iOS platform sync service initialized successfully" }
     }
 
     actual suspend fun syncInstalledApps() {
