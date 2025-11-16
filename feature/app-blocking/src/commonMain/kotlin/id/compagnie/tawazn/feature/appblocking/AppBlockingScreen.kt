@@ -122,6 +122,11 @@ fun AppBlockingContent(screenModel: AppBlockingScreenModel) {
     val searchQuery by screenModel.searchQuery.collectAsState()
     val navigator = LocalNavigator.current
 
+    // Compute blocked count efficiently to prevent iterating list on every recomposition
+    val blockedCount = remember(apps) {
+        derivedStateOf { apps.count { it.isBlocked } }
+    }.value
+
     TawaznTheme {
         Scaffold(
             topBar = {
@@ -167,7 +172,6 @@ fun AppBlockingContent(screenModel: AppBlockingScreenModel) {
                 )
 
                 // Stats
-                val blockedCount = apps.count { it.isBlocked }
                 GlassCard(
                     modifier = Modifier
                         .fillMaxWidth()

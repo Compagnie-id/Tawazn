@@ -32,6 +32,18 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
     val navigator = LocalNavigator.current
     val uiState by screenModel.uiState.collectAsState()
 
+    // Remember navigation callback to prevent unnecessary recompositions
+    val onManageSessionsClick = remember { { navigator?.push(FocusSessionListScreen()) } }
+
+    // Compute derived values efficiently
+    val progressPercent = remember(uiState.goalProgress) {
+        derivedStateOf { (uiState.goalProgress * 100).toInt() }
+    }.value
+
+    val goalHours = remember(uiState.dailyGoal) {
+        derivedStateOf { uiState.dailyGoal / 60f }
+    }.value
+
     TawaznTheme {
         Scaffold(
             topBar = {
@@ -135,8 +147,6 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                                 trackColor = MaterialTheme.colorScheme.surfaceVariant,
                             )
 
-                            val progressPercent = (uiState.goalProgress * 100).toInt()
-                            val goalHours = uiState.dailyGoal / 60f
                             Text(
                                 text = "$progressPercent% towards your daily goal of ${formatGoalHours(goalHours)} (${uiState.todayUsage.toHoursMinutesString()} used)",
                                 style = MaterialTheme.typography.bodySmall,
@@ -264,7 +274,7 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                             )
 
                             Button(
-                                onClick = { navigator?.push(FocusSessionListScreen()) },
+                                onClick = onManageSessionsClick,
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = TawaznTheme.colors.gradientMiddle
                                 )

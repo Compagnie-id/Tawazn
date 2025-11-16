@@ -9,7 +9,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.component.StatsCard
@@ -30,6 +29,11 @@ class DashboardScreen : Screen {
 @Composable
 fun DashboardContent() {
     val navigator = LocalNavigator.current
+
+    // Remember navigation callbacks to prevent unnecessary recompositions
+    val onBlockAppsClick = remember { { navigator?.push(AppBlockingScreen()) } }
+    val onViewUsageClick = remember { { navigator?.push(UsageTrackingScreen()) } }
+    val onManageSessionsClick = remember { { navigator?.push(FocusSessionListScreen()) } }
 
     TawaznTheme {
         Surface(
@@ -131,18 +135,14 @@ fun DashboardContent() {
                         QuickActionCard(
                             icon = TawaznIcons.Block,
                             title = "Block Apps",
-                            onClick = {
-                                navigator?.push(AppBlockingScreen())
-                            },
+                            onClick = onBlockAppsClick,
                             modifier = Modifier.weight(1f)
                         )
 
                         QuickActionCard(
                             icon = TawaznIcons.AccessTime,
                             title = "View Usage",
-                            onClick = {
-                                navigator?.push(UsageTrackingScreen())
-                            },
+                            onClick = onViewUsageClick,
                             modifier = Modifier.weight(1f)
                         )
                     }
@@ -182,7 +182,7 @@ fun DashboardContent() {
 
                             GradientButton(
                                 text = "Manage Sessions",
-                                onClick = { navigator?.push(FocusSessionListScreen()) },
+                                onClick = onManageSessionsClick,
                                 modifier = Modifier.fillMaxWidth()
                             )
                         }
