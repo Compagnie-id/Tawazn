@@ -295,6 +295,7 @@ fun PermissionPage(
         PermissionCard(
             title = "Screen Time Access",
             description = "Track app usage and screen time statistics. Your data stays private on this device.",
+            icon = TawaznIcons.PermDeviceInformation,
             isGranted = permissionState.hasUsageStatsPermission,
             isRequired = true,
             onRequestClick = onRequestPermissions
@@ -303,6 +304,7 @@ fun PermissionPage(
         PermissionCard(
             title = "App Blocking",
             description = "Allow Tawazn to block distracting apps and help you stay focused.",
+            icon = TawaznIcons.Accessibility,
             isGranted = permissionState.hasAccessibilityPermission,
             isRequired = false,
             onRequestClick = onRequestPermissions
