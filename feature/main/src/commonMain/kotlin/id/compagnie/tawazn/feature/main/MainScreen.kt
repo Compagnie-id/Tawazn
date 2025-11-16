@@ -137,7 +137,8 @@ object AnalyticsTab : Tab {
 
     @Composable
     override fun Content() {
-        id.compagnie.tawazn.feature.analytics.AnalyticsContent()
+        val screenModel = koinScreenModel<id.compagnie.tawazn.feature.analytics.AnalyticsScreenModel>()
+        id.compagnie.tawazn.feature.analytics.AnalyticsContent(screenModel)
     }
 }
 
@@ -157,6 +158,7 @@ object SettingsTab : Tab {
 
     @Composable
     override fun Content() {
-        id.compagnie.tawazn.feature.settings.SettingsContent()
+        val screenModel = koinScreenModel<id.compagnie.tawazn.feature.settings.SettingsScreenModel>()
+        id.compagnie.tawazn.feature.settings.SettingsContent(screenModel)
     }
 }
