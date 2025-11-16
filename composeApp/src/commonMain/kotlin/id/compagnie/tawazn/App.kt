@@ -2,9 +2,9 @@ package id.compagnie.tawazn
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.SlideTransition
 import id.compagnie.tawazn.core.datastore.AppPreferences
@@ -28,12 +28,16 @@ fun App() {
 
         TawaznTheme(darkTheme = darkTheme) {
             // Show onboarding screen if not completed, otherwise show main screen with tabs
-            // Use key to recreate Navigator when onboarding state changes
             val initialScreen = if (onboardingCompleted) MainScreen() else OnboardingScreen()
-            key(onboardingCompleted) {
-                Navigator(initialScreen) { navigator ->
-                    SlideTransition(navigator)
+            Navigator(initialScreen) { navigator ->
+                // Handle navigation when onboarding is completed
+                LaunchedEffect(onboardingCompleted) {
+                    if (onboardingCompleted && navigator.lastItem !is MainScreen) {
+                        navigator.replaceAll(MainScreen())
+                    }
                 }
+
+                SlideTransition(navigator)
             }
         }
     }
