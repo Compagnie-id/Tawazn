@@ -5,10 +5,13 @@ import ComposeApp
 struct iOSApp: App {
 
     init() {
-        // Initialize the production-grade Screen Time bridge
+        // CRITICAL: Initialize Koin FIRST (before any dependency injection)
+        initializeKoin()
+
+        // Then initialize the Screen Time bridge (depends on Koin being ready)
         initializeScreenTimeBridge()
 
-        // Additional app initialization can go here
+        // Additional app initialization
         configureLogging()
     }
 
@@ -20,10 +23,19 @@ struct iOSApp: App {
 
     // MARK: - Initialization
 
+    /// Initialize Koin dependency injection
+    ///
+    /// This MUST be called first, before any other initialization.
+    /// It sets up all dependency injection modules for the app.
+    private func initializeKoin() {
+        KoinInitializer_iosKt.initializeKoinIOS()
+        print("✅ Koin initialized successfully")
+    }
+
     /// Initialize the Screen Time API bridge
     ///
     /// This sets up the connection between Kotlin code and Swift Screen Time implementation.
-    /// Called once during app initialization.
+    /// Must be called AFTER Koin initialization.
     private func initializeScreenTimeBridge() {
         if #available(iOS 15.0, *) {
             let bridge = SwiftScreenTimeBridgeImpl()
@@ -36,7 +48,6 @@ struct iOSApp: App {
 
     /// Configure app-wide logging settings
     private func configureLogging() {
-        // Configure logging level based on build configuration
         #if DEBUG
         print("🐛 Debug mode: Verbose logging enabled")
         #else

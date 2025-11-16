@@ -1,30 +1,32 @@
 package id.compagnie.tawazn.data.di
 
 import id.compagnie.tawazn.core.datastore.DataStoreFactory
-import id.compagnie.tawazn.data.service.PlatformSyncService
-import id.compagnie.tawazn.data.service.createPlatformSyncService
 import id.compagnie.tawazn.database.DatabaseDriverFactory
-import id.compagnie.tawazn.platform.ios.IOSAppMonitorImpl
 import org.koin.dsl.module
 
+/**
+ * iOS platform-specific data module
+ *
+ * This module provides iOS-specific implementations for:
+ * - DataStore (for preferences storage)
+ * - DatabaseDriverFactory (for SQLDelight)
+ *
+ * Note: Platform sync and monitoring are now handled by the
+ * ios platform module (platform/ios), not here.
+ *
+ * Old dependencies (REMOVED for production architecture):
+ * - IOSAppMonitorImpl ❌ (deprecated, use ScreenTimeApi from platform/ios module)
+ * - PlatformSyncService ❌ (deprecated, use IOSPlatformSync from platform/ios module)
+ *
+ * The new production-grade services are provided by:
+ * - iosPlatformModule (from platform/ios/di)
+ *   - Provides: ScreenTimeApi
+ *   - Provides: IOSPlatformSync
+ */
 actual fun platformModule() = module {
-    // DataStore
+    // DataStore factory for preferences
     single { DataStoreFactory().createDataStore() }
 
-    // Database Driver Factory
+    // Database driver factory for SQLDelight
     single { DatabaseDriverFactory() }
-
-    // Platform Monitors
-    single { IOSAppMonitorImpl() }
-
-    // Platform Sync Service
-    single<PlatformSyncService> {
-        createPlatformSyncService().apply {
-            initialize(
-                appRepository = get(),
-                blockedAppRepository = get(),
-                usageRepository = get()
-            )
-        }
-    }
 }
