@@ -18,8 +18,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.Divider
+import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -183,7 +184,9 @@ fun CreateEditFocusSessionContent(
                                         fontWeight = FontWeight.Medium
                                     )
                                     Text(
-                                        text = "${startHour.toString().padStart(2, '0')}:${startMinute.toString().padStart(2, '0')}",
+                                        text = "${
+                                            startHour.toString().padStart(2, '0')
+                                        }:${startMinute.toString().padStart(2, '0')}",
                                         style = MaterialTheme.typography.titleMedium,
                                         color = TawaznTheme.colors.gradientMiddle
                                     )
@@ -192,7 +195,11 @@ fun CreateEditFocusSessionContent(
                             Icon(TawaznIcons.Edit, "Edit")
                         }
 
-                        Divider()
+                        HorizontalDivider(
+                            Modifier,
+                            DividerDefaults.Thickness,
+                            DividerDefaults.color
+                        )
 
                         // End Time
                         Row(
@@ -218,7 +225,9 @@ fun CreateEditFocusSessionContent(
                                         fontWeight = FontWeight.Medium
                                     )
                                     Text(
-                                        text = "${endHour.toString().padStart(2, '0')}:${endMinute.toString().padStart(2, '0')}",
+                                        text = "${
+                                            endHour.toString().padStart(2, '0')
+                                        }:${endMinute.toString().padStart(2, '0')}",
                                         style = MaterialTheme.typography.titleMedium,
                                         color = MaterialTheme.colorScheme.error
                                     )
@@ -349,7 +358,7 @@ fun CreateEditFocusSessionContent(
                             LocalTime(endHour, endMinute)
                         ).toInstant(TimeZone.currentSystemDefault())
 
-                        if (isEditMode && existingSession != null) {
+                        if (isEditMode) {
                             val updatedSession = existingSession.copy(
                                 name = name,
                                 description = description.ifBlank { null },

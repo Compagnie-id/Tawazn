@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package id.compagnie.tawazn.feature.analytics
 
 import cafe.adriel.voyager.core.model.ScreenModel
@@ -10,8 +12,7 @@ import id.compagnie.tawazn.domain.model.UsageStats
 import id.compagnie.tawazn.domain.repository.UsageRepository
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
-import kotlinx.datetime.DatePeriod
+import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.toLocalDateTime
@@ -19,6 +20,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.ExperimentalTime
 
 data class AnalyticsUiState(
     val isLoading: Boolean = true,
@@ -54,9 +56,9 @@ class AnalyticsScreenModel : ScreenModel, KoinComponent {
             try {
                 _uiState.update { it.copy(isLoading = true, error = null) }
 
-                val now = Clock.System.now()
+                val now = kotlin.time.Clock.System.now()
                 val today = now.toLocalDateTime(TimeZone.currentSystemDefault()).date
-                val weekAgo = today.minus(DatePeriod(days = 7))
+                val weekAgo = today.minus(7, DateTimeUnit.DAY)
 
                 // Get daily goal from preferences
                 val dailyGoalMinutes = appPreferences.dailyUsageGoalMinutes.first()
@@ -84,7 +86,7 @@ class AnalyticsScreenModel : ScreenModel, KoinComponent {
 
                 // Find best day (lowest usage)
                 val bestDay = dailyUsageSummary.minByOrNull { it.totalTime }?.let { day ->
-                    val dayName = getDayName(day.date.dayOfWeek.value)
+                    val dayName = getDayName(day.date.dayOfWeek.ordinal)
                     dayName to day.totalTime
                 }
 
