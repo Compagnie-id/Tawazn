@@ -1,0 +1,85 @@
+-- AppUsage table: stores app usage statistics
+CREATE TABLE IF NOT EXISTS AppUsage (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    packageName TEXT NOT NULL,
+    appName TEXT NOT NULL,
+    usageDate INTEGER NOT NULL,
+    totalTimeInForeground INTEGER NOT NULL DEFAULT 0,
+    launchCount INTEGER NOT NULL DEFAULT 0,
+    lastTimeUsed INTEGER,
+    createdAt INTEGER NOT NULL,
+    updatedAt INTEGER NOT NULL,
+    UNIQUE(packageName, usageDate),
+    FOREIGN KEY (packageName) REFERENCES App(packageName) ON DELETE CASCADE
+);
+
+-- Index for better query performance
+CREATE INDEX IF NOT EXISTS idx_usage_date ON AppUsage(usageDate);
+
+-- Queries
+selectAll:
+SELECT * FROM AppUsage ORDER BY usageDate DESC, totalTimeInForeground DESC;
+
+selectByPackageName:
+SELECT * FROM AppUsage WHERE packageName = ? ORDER BY usageDate DESC;
+
+selectByDate:
+SELECT * FROM AppUsage WHERE usageDate = ? ORDER BY totalTimeInForeground DESC;
+
+selectByDateRange:
+SELECT * FROM AppUsage
+WHERE usageDate BETWEEN ? AND ?
+ORDER BY usageDate DESC, totalTimeInForeground DESC;
+
+selectTodayUsage:
+SELECT * FROM AppUsage
+WHERE usageDate = ?
+ORDER BY totalTimeInForeground DESC;
+
+selectTopUsedApps:
+SELECT packageName, appName, SUM(totalTimeInForeground) AS totalTime, SUM(launchCount) AS totalLaunches
+FROM AppUsage
+WHERE usageDate BETWEEN ? AND ?
+GROUP BY packageName
+ORDER BY totalTime DESC
+LIMIT ?;
+
+selectTotalUsageByDate:
+SELECT usageDate, SUM(totalTimeInForeground) AS totalTime, SUM(launchCount) AS totalLaunches
+FROM AppUsage
+WHERE usageDate BETWEEN ? AND ?
+GROUP BY usageDate
+ORDER BY usageDate DESC;
+
+insert:
+INSERT INTO AppUsage(packageName, appName, usageDate, totalTimeInForeground, launchCount, lastTimeUsed, createdAt, updatedAt)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+update:
+UPDATE AppUsage
+SET totalTimeInForeground = ?,
+    launchCount = ?,
+    lastTimeUsed = ?,
+    updatedAt = ?
+WHERE id = ?;
+
+upsert:
+INSERT INTO AppUsage(packageName, appName, usageDate, totalTimeInForeground, launchCount, lastTimeUsed, createdAt, updatedAt)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+ON CONFLICT(packageName, usageDate) DO UPDATE SET
+    totalTimeInForeground = totalTimeInForeground + excluded.totalTimeInForeground,
+    launchCount = launchCount + excluded.launchCount,
+    lastTimeUsed = excluded.lastTimeUsed,
+    updatedAt = excluded.updatedAt;
+
+delete:
+DELETE FROM AppUsage WHERE id = ?;
+
+deleteByPackageName:
+DELETE FROM AppUsage WHERE packageName = ?;
+
+deleteOlderThan:
+DELETE FROM AppUsage WHERE usageDate < ?;
+
+deleteAll:
+DELETE FROM AppUsage;

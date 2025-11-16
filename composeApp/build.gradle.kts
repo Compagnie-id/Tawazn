@@ -32,6 +32,8 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.koin.android)
+            implementation(libs.koin.androidx.compose)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -42,6 +44,37 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+
+            // Project modules
+            implementation(project(":core:common"))
+            implementation(project(":core:design-system"))
+            implementation(project(":core:database"))
+            implementation(project(":core:datastore"))
+            implementation(project(":core:network"))
+            implementation(project(":domain"))
+            implementation(project(":data"))
+
+            // Feature modules
+            implementation(project(":feature:main"))
+            implementation(project(":feature:onboarding"))
+
+            // Koin
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.composeViewModel)
+
+            // Voyager Navigation
+            implementation(libs.voyager.navigator)
+            implementation(libs.voyager.screenmodel)
+            implementation(libs.voyager.tabNavigator)
+            implementation(libs.voyager.transitions)
+
+            // Coroutines
+            implementation(libs.kotlinx.coroutinesCore)
+            implementation(libs.kotlinx.datetime)
+
+            // Logging
+            implementation(libs.kermit)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

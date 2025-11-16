@@ -1,0 +1,33 @@
+-- App table: stores information about installed apps
+CREATE TABLE IF NOT EXISTS App (
+    packageName TEXT NOT NULL PRIMARY KEY,
+    appName TEXT NOT NULL,
+    iconPath TEXT,
+    category TEXT,
+    isSystemApp INTEGER NOT NULL DEFAULT 0,
+    installDate INTEGER NOT NULL,
+    lastUpdated INTEGER NOT NULL
+);
+
+-- Queries
+selectAll:
+SELECT * FROM App ORDER BY appName ASC;
+
+selectByPackageName:
+SELECT * FROM App WHERE packageName = ?;
+
+selectNonSystemApps:
+SELECT * FROM App WHERE isSystemApp = 0 ORDER BY appName ASC;
+
+selectByCategory:
+SELECT * FROM App WHERE category = ? ORDER BY appName ASC;
+
+insert:
+INSERT OR REPLACE INTO App(packageName, appName, iconPath, category, isSystemApp, installDate, lastUpdated)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+
+delete:
+DELETE FROM App WHERE packageName = ?;
+
+deleteAll:
+DELETE FROM App;
