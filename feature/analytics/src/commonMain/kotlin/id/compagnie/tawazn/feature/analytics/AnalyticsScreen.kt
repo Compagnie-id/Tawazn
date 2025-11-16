@@ -33,7 +33,7 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
     val uiState by screenModel.uiState.collectAsState()
 
     // Remember navigation callback to prevent unnecessary recompositions
-    val onManageSessionsClick = remember { { navigator?.push(FocusSessionListScreen()) } }
+    val onManageSessionsClick = remember { { navigator?.push(FocusSessionListScreen()); Unit } }
 
     // Compute derived values efficiently
     val progressPercent = remember(uiState.goalProgress) {

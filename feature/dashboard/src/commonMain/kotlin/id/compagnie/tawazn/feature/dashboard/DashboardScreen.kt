@@ -31,9 +31,9 @@ fun DashboardContent() {
     val navigator = LocalNavigator.current
 
     // Remember navigation callbacks to prevent unnecessary recompositions
-    val onBlockAppsClick = remember { { navigator?.push(AppBlockingScreen()) } }
-    val onViewUsageClick = remember { { navigator?.push(UsageTrackingScreen()) } }
-    val onManageSessionsClick = remember { { navigator?.push(FocusSessionListScreen()) } }
+    val onBlockAppsClick = remember { { navigator?.push(AppBlockingScreen()); Unit } }
+    val onViewUsageClick = remember { { navigator?.push(UsageTrackingScreen()); Unit } }
+    val onManageSessionsClick = remember { { navigator?.push(FocusSessionListScreen()); Unit } }
 
     TawaznTheme {
         Surface(
