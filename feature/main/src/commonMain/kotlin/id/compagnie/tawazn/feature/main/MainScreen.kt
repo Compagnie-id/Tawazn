@@ -159,6 +159,9 @@ object SettingsTab : Tab {
     @Composable
     override fun Content() {
         val screenModel = getScreenModel<id.compagnie.tawazn.feature.settings.SettingsScreenModel>()
-        id.compagnie.tawazn.feature.settings.SettingsContent(screenModel)
+        id.compagnie.tawazn.feature.settings.SettingsContent(
+            screenModel = screenModel,
+            showBackButton = false
+        )
     }
 }

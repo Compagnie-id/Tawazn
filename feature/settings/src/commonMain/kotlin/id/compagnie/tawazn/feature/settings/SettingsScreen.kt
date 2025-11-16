@@ -30,8 +30,11 @@ class SettingsScreen : Screen {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsContent(screenModel: SettingsScreenModel) {
-    val navigator = LocalNavigator.currentOrThrow
+fun SettingsContent(
+    screenModel: SettingsScreenModel,
+    showBackButton: Boolean = true
+) {
+    val navigator = LocalNavigator.current
     val platformState by screenModel.platformState.collectAsState()
 
     // Collect preference flows
@@ -46,19 +49,21 @@ fun SettingsContent(screenModel: SettingsScreenModel) {
 
     TawaznTheme {
         Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { Text("Settings") },
-                    navigationIcon = {
-                        IconButton(onClick = { navigator.pop() }) {
-                            Icon(TawaznIcons.ArrowBack, "Back")
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.9f)
+            topBar = if (showBackButton) {
+                {
+                    TopAppBar(
+                        title = { Text("Settings") },
+                        navigationIcon = {
+                            IconButton(onClick = { navigator?.pop() }) {
+                                Icon(TawaznIcons.ArrowBack, "Back")
+                            }
+                        },
+                        colors = TopAppBarDefaults.topAppBarColors(
+                            containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.9f)
+                        )
                     )
-                )
-            },
+                }
+            } else null,
             containerColor = MaterialTheme.colorScheme.background
         ) { padding ->
             LazyColumn(
@@ -78,7 +83,7 @@ fun SettingsContent(screenModel: SettingsScreenModel) {
                         icon = TawaznIcons.Person,
                         title = "Profile",
                         subtitle = "Manage your profile",
-                        onClick = { navigator.push(ProfileScreen()) }
+                        onClick = { navigator?.push(ProfileScreen()) }
                     )
                 }
 
@@ -87,7 +92,7 @@ fun SettingsContent(screenModel: SettingsScreenModel) {
                         icon = TawaznIcons.Security,
                         title = "Privacy & Security",
                         subtitle = "Control your data",
-                        onClick = { navigator.push(PrivacySecurityScreen()) }
+                        onClick = { navigator?.push(PrivacySecurityScreen()) }
                     )
                 }
 
@@ -136,7 +141,7 @@ fun SettingsContent(screenModel: SettingsScreenModel) {
                         icon = TawaznIcons.Flag,
                         title = "Usage Goals",
                         subtitle = "Set daily and weekly screen time goals",
-                        onClick = { navigator.push(UsageGoalsScreen()) }
+                        onClick = { navigator?.push(UsageGoalsScreen()) }
                     )
                 }
 
@@ -145,7 +150,7 @@ fun SettingsContent(screenModel: SettingsScreenModel) {
                         icon = TawaznIcons.LocalFireDepartment,
                         title = "Focus Sessions",
                         subtitle = "Manage scheduled blocking sessions",
-                        onClick = { navigator.push(FocusSessionListScreen()) }
+                        onClick = { navigator?.push(FocusSessionListScreen()) }
                     )
                 }
 
@@ -308,7 +313,7 @@ fun SettingsContent(screenModel: SettingsScreenModel) {
                         icon = TawaznIcons.Info,
                         title = "About Tawazn",
                         subtitle = "Version 1.0.0",
-                        onClick = { navigator.push(AboutScreen()) }
+                        onClick = { navigator?.push(AboutScreen()) }
                     )
                 }
 
