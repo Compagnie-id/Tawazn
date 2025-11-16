@@ -19,8 +19,8 @@ import org.koin.dsl.module
 expect fun platformModule(): Module
 
 val dataModule = module {
-    // Database
-    single { DatabaseDriverFactory(get()).createDriver() }
+    // Database (DatabaseDriverFactory provided by platformModule)
+    single { get<DatabaseDriverFactory>().createDriver() }
     single { TawaznDatabaseFactory.createDatabase(get()) }
 
     // DataStore & Preferences (DataStore created in platformModule)
