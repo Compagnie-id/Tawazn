@@ -41,6 +41,9 @@ kotlin {
             implementation(project(":core:common"))
 
             implementation(libs.kotlinx.coroutinesCore)
+
+            // Phosphor Icons - Bold style for neubrutalism
+            implementation(libs.phosphor.icons)
         }
 
         androidMain.dependencies {

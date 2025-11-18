@@ -35,6 +35,9 @@ kotlinx-datetime = "0.7.1"
 # Logging
 kermit = "2.0.4"
 
+# Icons
+phosphor-icons = "1.0.0"
+
 # Android-specific
 androidx-workmanager = "2.10.0"
 androidx-splashscreen = "1.2.0"
@@ -105,6 +108,9 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 
 # Logging
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
+
+# Icons - Phosphor (Bold style for neubrutalism)
+phosphor-icons = { module = "com.adamglin:phosphor-icon", version.ref = "phosphor-icons" }
 
 # Testing
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
