@@ -8,94 +8,124 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 
 private val LightColorScheme = lightColorScheme(
     primary = Primary,
     onPrimary = Color.White,
-    primaryContainer = Primary.copy(alpha = 0.1f),
-    onPrimaryContainer = PrimaryVariant,
+    primaryContainer = NeuYellow,
+    onPrimaryContainer = NeuBlack,
 
     secondary = Secondary,
     onSecondary = Color.White,
-    secondaryContainer = Secondary.copy(alpha = 0.1f),
-    onSecondaryContainer = SecondaryVariant,
+    secondaryContainer = NeuLavender,
+    onSecondaryContainer = NeuBlack,
 
     tertiary = Accent,
     onTertiary = Color.White,
-    tertiaryContainer = Accent.copy(alpha = 0.1f),
-    onTertiaryContainer = AccentVariant,
+    tertiaryContainer = NeuCyan,
+    onTertiaryContainer = NeuBlack,
 
     background = BackgroundLight,
     onBackground = TextPrimaryLight,
 
     surface = SurfaceLight,
     onSurface = TextPrimaryLight,
-    surfaceVariant = Color(0xFFF1F5F9),
+    surfaceVariant = Color(0xFFF5F5F5),
     onSurfaceVariant = TextSecondaryLight,
 
     error = Error,
     onError = Color.White,
-    errorContainer = Error.copy(alpha = 0.1f),
-    onErrorContainer = Error,
+    errorContainer = NeuRed,
+    onErrorContainer = NeuBlack,
 
-    outline = Color(0xFFCBD5E1),
-    outlineVariant = Color(0xFFE2E8F0)
+    outline = NeuBorder,
+    outlineVariant = NeuBlack
 )
 
 private val DarkColorScheme = darkColorScheme(
     primary = Primary,
     onPrimary = Color.White,
-    primaryContainer = Primary.copy(alpha = 0.2f),
-    onPrimaryContainer = Primary,
+    primaryContainer = PrimaryVariant,
+    onPrimaryContainer = Color.White,
 
     secondary = Secondary,
     onSecondary = Color.White,
-    secondaryContainer = Secondary.copy(alpha = 0.2f),
-    onSecondaryContainer = Secondary,
+    secondaryContainer = SecondaryVariant,
+    onSecondaryContainer = Color.White,
 
     tertiary = Accent,
     onTertiary = Color.White,
-    tertiaryContainer = Accent.copy(alpha = 0.2f),
-    onTertiaryContainer = Accent,
+    tertiaryContainer = AccentVariant,
+    onTertiaryContainer = Color.White,
 
     background = BackgroundDark,
     onBackground = TextPrimaryDark,
 
     surface = SurfaceDark,
     onSurface = TextPrimaryDark,
-    surfaceVariant = Color(0xFF334155),
+    surfaceVariant = Color(0xFF3D3D4F),
     onSurfaceVariant = TextSecondaryDark,
 
     error = Error,
     onError = Color.White,
-    errorContainer = Error.copy(alpha = 0.2f),
-    onErrorContainer = Error,
+    errorContainer = Error,
+    onErrorContainer = Color.White,
 
-    outline = Color(0xFF475569),
-    outlineVariant = Color(0xFF334155)
+    outline = Color(0xFF4B5563),
+    outlineVariant = Color(0xFF374151)
 )
 
+/**
+ * Neubrutalism Design System Colors
+ */
 data class TawaznColors(
-    val glass: Color,
-    val glassBorder: Color,
-    val gradientStart: Color,
-    val gradientMiddle: Color,
-    val gradientEnd: Color,
+    // Core neubrutalism colors
+    val border: Color,
+    val shadow: Color,
+    val card: Color,
+
+    // Shadow configuration
+    val shadowOffsetX: Dp,
+    val shadowOffsetY: Dp,
+    val borderWidth: Dp,
+
+    // Accent colors for cards
+    val cardYellow: Color,
+    val cardGreen: Color,
+    val cardOrange: Color,
+    val cardCyan: Color,
+    val cardPink: Color,
+    val cardLavender: Color,
+
+    // Status colors
     val success: Color,
     val warning: Color,
     val error: Color,
     val info: Color,
+
+    // Background
     val background: Color,
+
+    // Chart colors
     val chartColors: List<Color>
 )
 
 val LocalTawaznColors = staticCompositionLocalOf {
     TawaznColors(
-        glass = GlassLight,
-        glassBorder = GlassBorderLight,
-        gradientStart = GradientStart,
-        gradientMiddle = GradientMiddle,
-        gradientEnd = GradientEnd,
+        border = NeuBorder,
+        shadow = NeuBlack,
+        card = CardLight,
+        shadowOffsetX = 4.dp,
+        shadowOffsetY = 4.dp,
+        borderWidth = 3.dp,
+        cardYellow = NeuYellow,
+        cardGreen = NeuGreen,
+        cardOrange = NeuOrange,
+        cardCyan = NeuCyan,
+        cardPink = Accent,
+        cardLavender = NeuLavender,
         success = Success,
         warning = Warning,
         error = Error,
@@ -113,11 +143,18 @@ fun TawaznTheme(
     val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
 
     val tawaznColors = TawaznColors(
-        glass = if (darkTheme) GlassDark else GlassLight,
-        glassBorder = if (darkTheme) GlassBorderDark else GlassBorderLight,
-        gradientStart = GradientStart,
-        gradientMiddle = GradientMiddle,
-        gradientEnd = GradientEnd,
+        border = if (darkTheme) Color(0xFF4B5563) else NeuBorder,
+        shadow = if (darkTheme) Color(0xFF000000) else NeuBlack,
+        card = if (darkTheme) CardDark else CardLight,
+        shadowOffsetX = 4.dp,
+        shadowOffsetY = 4.dp,
+        borderWidth = 3.dp,
+        cardYellow = NeuYellow,
+        cardGreen = NeuGreen,
+        cardOrange = NeuOrange,
+        cardCyan = NeuCyan,
+        cardPink = Accent,
+        cardLavender = NeuLavender,
         success = Success,
         warning = Warning,
         error = Error,

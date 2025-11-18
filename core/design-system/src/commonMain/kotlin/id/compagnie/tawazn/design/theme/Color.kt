@@ -2,51 +2,58 @@ package id.compagnie.tawazn.design.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Primary Colors - Modern Blue/Purple Gradient
-val Primary = Color(0xFF6366F1) // Indigo
-val PrimaryVariant = Color(0xFF4F46E5)
-val Secondary = Color(0xFF8B5CF6) // Purple
-val SecondaryVariant = Color(0xFF7C3AED)
+// Neubrutalism Color Palette
+// Bold, saturated colors with high contrast
 
-// Accent Colors
-val Accent = Color(0xFFEC4899) // Pink
-val AccentVariant = Color(0xFFDB2777)
+// Primary Colors - Bright and Bold
+val Primary = Color(0xFF3B82F6) // Bright Blue
+val PrimaryVariant = Color(0xFF2563EB)
+val Secondary = Color(0xFFA855F7) // Vibrant Purple
+val SecondaryVariant = Color(0xFF9333EA)
 
-// Background Colors
-val BackgroundLight = Color(0xFFF8FAFC)
-val BackgroundDark = Color(0xFF0F172A)
+// Accent Colors - Eye-catching
+val Accent = Color(0xFFF472B6) // Hot Pink
+val AccentVariant = Color(0xFFEC4899)
 
-val SurfaceLight = Color(0xFFFFFFFF)
-val SurfaceDark = Color(0xFF1E293B)
+// Neubrutalism Specific Colors
+val NeuYellow = Color(0xFFFDE047) // Bright Yellow
+val NeuGreen = Color(0xFF4ADE80) // Lime Green
+val NeuOrange = Color(0xFFFB923C) // Bright Orange
+val NeuCyan = Color(0xFF22D3EE) // Cyan
+val NeuRed = Color(0xFFF87171) // Coral Red
+val NeuLavender = Color(0xFFC4B5FD) // Lavender
 
-// Glass Effect Colors
-val GlassLight = Color(0xFFFFFFFF).copy(alpha = 0.7f)
-val GlassDark = Color(0xFF1E293B).copy(alpha = 0.7f)
+// Border and Shadow Color
+val NeuBlack = Color(0xFF1A1A1A) // Near Black for borders
+val NeuBorder = Color(0xFF000000) // Pure Black for borders
 
-val GlassBorderLight = Color(0xFFFFFFFF).copy(alpha = 0.3f)
-val GlassBorderDark = Color(0xFFFFFFFF).copy(alpha = 0.1f)
+// Background Colors - Cream/Off-white for warmth
+val BackgroundLight = Color(0xFFFFFBEB) // Warm Cream
+val BackgroundDark = Color(0xFF1E1E2E) // Dark Navy
 
-// Text Colors
-val TextPrimaryLight = Color(0xFF0F172A)
-val TextPrimaryDark = Color(0xFFF8FAFC)
+val SurfaceLight = Color(0xFFFFFFFF) // Pure White
+val SurfaceDark = Color(0xFF2D2D3F) // Dark Surface
 
-val TextSecondaryLight = Color(0xFF64748B)
-val TextSecondaryDark = Color(0xFF94A3B8)
+// Card Background Colors (solid, no transparency)
+val CardLight = Color(0xFFFFFFFF)
+val CardDark = Color(0xFF2D2D3F)
 
-// Status Colors
-val Success = Color(0xFF10B981)
-val Warning = Color(0xFFF59E0B)
-val Error = Color(0xFFEF4444)
-val Info = Color(0xFF3B82F6)
+// Text Colors - High Contrast
+val TextPrimaryLight = Color(0xFF000000) // Pure Black
+val TextPrimaryDark = Color(0xFFFFFFFF) // Pure White
 
-// Gradient Colors
-val GradientStart = Color(0xFF6366F1)
-val GradientMiddle = Color(0xFF8B5CF6)
-val GradientEnd = Color(0xFFEC4899)
+val TextSecondaryLight = Color(0xFF4B5563)
+val TextSecondaryDark = Color(0xFFD1D5DB)
 
-// Chart Colors
-val ChartColor1 = Color(0xFF6366F1)
-val ChartColor2 = Color(0xFF8B5CF6)
-val ChartColor3 = Color(0xFFEC4899)
-val ChartColor4 = Color(0xFF10B981)
-val ChartColor5 = Color(0xFFF59E0B)
+// Status Colors - Bold and Clear
+val Success = Color(0xFF22C55E) // Bright Green
+val Warning = Color(0xFFFACC15) // Bright Yellow
+val Error = Color(0xFFEF4444) // Bright Red
+val Info = Color(0xFF3B82F6) // Blue
+
+// Chart Colors - Vibrant Palette
+val ChartColor1 = Color(0xFF3B82F6) // Blue
+val ChartColor2 = Color(0xFFA855F7) // Purple
+val ChartColor3 = Color(0xFFF472B6) // Pink
+val ChartColor4 = Color(0xFF22C55E) // Green
+val ChartColor5 = Color(0xFFFACC15) // Yellow
