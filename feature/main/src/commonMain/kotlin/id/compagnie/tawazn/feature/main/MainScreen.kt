@@ -2,21 +2,35 @@
 
 package id.compagnie.tawazn.feature.main
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.Navigator
@@ -53,13 +67,28 @@ fun MainContent() {
             Scaffold(
                 containerColor = MaterialTheme.colorScheme.background,
                 bottomBar = {
-                    NavigationBar(
-                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f)
+                    // Neubrutalism style navigation bar
+                    Surface(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .border(
+                                width = TawaznTheme.colors.borderWidth,
+                                color = TawaznTheme.colors.border,
+                                shape = RoundedCornerShape(0.dp)
+                            ),
+                        color = TawaznTheme.colors.card
                     ) {
-                        TabNavigationItem(DashboardTab)
-                        TabNavigationItem(AppsTab)
-                        TabNavigationItem(AnalyticsTab)
-                        TabNavigationItem(SettingsTab)
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp),
+                            horizontalArrangement = Arrangement.SpaceEvenly
+                        ) {
+                            TabNavigationItem(DashboardTab)
+                            TabNavigationItem(AppsTab)
+                            TabNavigationItem(AnalyticsTab)
+                            TabNavigationItem(SettingsTab)
+                        }
                     }
                 }
             ) { paddingValues ->
@@ -78,25 +107,74 @@ fun MainContent() {
 @Composable
 private fun RowScope.TabNavigationItem(tab: Tab) {
     val tabNavigator = LocalTabNavigator.current
+    val isSelected = tabNavigator.current == tab
+    val shape = RoundedCornerShape(8.dp)
 
-    NavigationBarItem(
-        selected = tabNavigator.current == tab,
-        onClick = { tabNavigator.current = tab },
-        icon = {
+    Box(
+        modifier = Modifier
+            .weight(1f)
+            .padding(horizontal = 4.dp)
+    ) {
+        // Shadow for selected state
+        if (isSelected) {
+            Box(
+                modifier = Modifier
+                    .matchParentSize()
+                    .offset(
+                        x = TawaznTheme.colors.shadowOffsetX / 2,
+                        y = TawaznTheme.colors.shadowOffsetY / 2
+                    )
+                    .background(
+                        color = TawaznTheme.colors.shadow,
+                        shape = shape
+                    )
+            )
+        }
+
+        // Main tab content
+        Column(
+            modifier = Modifier
+                .clip(shape)
+                .then(
+                    if (isSelected) {
+                        Modifier
+                            .background(TawaznTheme.colors.cardYellow)
+                            .border(
+                                width = 2.dp,
+                                color = TawaznTheme.colors.border,
+                                shape = shape
+                            )
+                    } else {
+                        Modifier.background(Color.Transparent)
+                    }
+                )
+                .clickable { tabNavigator.current = tab }
+                .padding(vertical = 8.dp, horizontal = 12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
             Icon(
                 painter = tab.options.icon!!,
-                contentDescription = tab.options.title
+                contentDescription = tab.options.title,
+                modifier = Modifier.size(24.dp),
+                tint = if (isSelected) {
+                    TawaznTheme.colors.border
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                }
             )
-        },
-        label = { Text(tab.options.title) },
-        colors = NavigationBarItemDefaults.colors(
-            selectedIconColor = MaterialTheme.colorScheme.primary,
-            selectedTextColor = MaterialTheme.colorScheme.primary,
-            indicatorColor = MaterialTheme.colorScheme.primaryContainer,
-            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-    )
+            Text(
+                text = tab.options.title,
+                style = MaterialTheme.typography.labelSmall,
+                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                color = if (isSelected) {
+                    TawaznTheme.colors.border
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                }
+            )
+        }
+    }
 }
 
 // Tab Objects
