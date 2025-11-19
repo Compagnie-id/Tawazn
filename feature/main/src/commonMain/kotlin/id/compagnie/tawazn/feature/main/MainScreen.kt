@@ -113,64 +113,68 @@ private fun RowScope.TabNavigationItem(tab: Tab) {
     Box(
         modifier = Modifier
             .weight(1f)
-            .padding(horizontal = 4.dp)
+            .padding(horizontal = 4.dp),
+        contentAlignment = Alignment.Center
     ) {
-        // Shadow for selected state (smaller than cards for compact tabs)
-        if (isSelected) {
-            Box(
-                modifier = Modifier
-                    .matchParentSize()
-                    .offset(x = 2.dp, y = 2.dp)
-                    .clip(shape)
-                    .background(
-                        color = TawaznTheme.colors.shadow,
-                        shape = shape
-                    )
-            )
-        }
+        // Inner Box to properly size the shadow
+        Box {
+            // Shadow for selected state (smaller than cards for compact tabs)
+            if (isSelected) {
+                Box(
+                    modifier = Modifier
+                        .matchParentSize()
+                        .offset(x = 2.dp, y = 2.dp)
+                        .clip(shape)
+                        .background(
+                            color = TawaznTheme.colors.shadow,
+                            shape = shape
+                        )
+                )
+            }
 
-        // Main tab content
-        Column(
-            modifier = Modifier
-                .clip(shape)
-                .then(
-                    if (isSelected) {
-                        Modifier
-                            .background(TawaznTheme.colors.cardYellow)
-                            .border(
-                                width = 2.dp,
-                                color = TawaznTheme.colors.border,
-                                shape = shape
-                            )
+            // Main tab content
+            Column(
+                modifier = Modifier
+                    .clip(shape)
+                    .then(
+                        if (isSelected) {
+                            Modifier
+                                .background(TawaznTheme.colors.cardYellow)
+                                .border(
+                                    width = 2.dp,
+                                    color = TawaznTheme.colors.border,
+                                    shape = shape
+                                )
+                        } else {
+                            Modifier.background(Color.Transparent)
+                        }
+                    )
+                    .clickable { tabNavigator.current = tab }
+                    .padding(vertical = 8.dp, horizontal = 12.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Icon(
+                    painter = tab.options.icon!!,
+                    contentDescription = tab.options.title,
+                    modifier = Modifier.size(24.dp),
+                    tint = if (isSelected) {
+                        TawaznTheme.colors.border
                     } else {
-                        Modifier.background(Color.Transparent)
+                        MaterialTheme.colorScheme.onSurfaceVariant
                     }
                 )
-                .clickable { tabNavigator.current = tab }
-                .padding(vertical = 8.dp, horizontal = 12.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            Icon(
-                painter = tab.options.icon!!,
-                contentDescription = tab.options.title,
-                modifier = Modifier.size(24.dp),
-                tint = if (isSelected) {
-                    TawaznTheme.colors.border
-                } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                }
-            )
-            Text(
-                text = tab.options.title,
-                style = MaterialTheme.typography.labelSmall,
-                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
-                color = if (isSelected) {
-                    TawaznTheme.colors.border
-                } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                }
-            )
+                Text(
+                    text = tab.options.title,
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                    color = if (isSelected) {
+                        TawaznTheme.colors.border
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    }
+                )
+            }
         }
     }
 }
