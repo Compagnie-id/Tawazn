@@ -26,7 +26,11 @@ import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import cafe.adriel.voyager.transitions.SlideTransition
-import id.compagnie.tawazn.design.icons.TawaznIcons
+import com.adamglin.PhosphorIcons
+import com.adamglin.phosphoricons.bold.House
+import com.adamglin.phosphoricons.bold.SquaresFour
+import com.adamglin.phosphoricons.bold.ChartBar
+import com.adamglin.phosphoricons.bold.Gear
 import id.compagnie.tawazn.design.theme.TawaznTheme
 
 /**
@@ -99,7 +103,7 @@ object DashboardTab : Tab {
     override val options: TabOptions
         @Composable
         get() {
-            val icon = rememberVectorPainter(TawaznIcons.Home)
+            val icon = rememberVectorPainter(PhosphorIcons.Bold.House)
             return remember {
                 TabOptions(
                     index = 0u,
@@ -131,7 +135,7 @@ object AppsTab : Tab {
     override val options: TabOptions
         @Composable
         get() {
-            val icon = rememberVectorPainter(TawaznIcons.Apps)
+            val icon = rememberVectorPainter(PhosphorIcons.Bold.SquaresFour)
             return remember {
                 TabOptions(
                     index = 1u,
@@ -163,7 +167,7 @@ object AnalyticsTab : Tab {
     override val options: TabOptions
         @Composable
         get() {
-            val icon = rememberVectorPainter(TawaznIcons.Analytics)
+            val icon = rememberVectorPainter(PhosphorIcons.Bold.ChartBar)
             return remember {
                 TabOptions(
                     index = 2u,
@@ -195,7 +199,7 @@ object SettingsTab : Tab {
     override val options: TabOptions
         @Composable
         get() {
-            val icon = rememberVectorPainter(TawaznIcons.Settings)
+            val icon = rememberVectorPainter(PhosphorIcons.Bold.Gear)
             return remember {
                 TabOptions(
                     index = 3u,

@@ -46,9 +46,13 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.adamglin.PhosphorIcons
+import com.adamglin.phosphoricons.bold.ArrowLeft
+import com.adamglin.phosphoricons.bold.CaretRight
+import com.adamglin.phosphoricons.bold.Clock
+import com.adamglin.phosphoricons.bold.PencilSimple
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
-import id.compagnie.tawazn.design.icons.TawaznIcons
 import id.compagnie.tawazn.design.theme.TawaznTheme
 import id.compagnie.tawazn.domain.model.BlockSession
 import id.compagnie.tawazn.domain.model.CreateBlockSessionRequest
@@ -102,7 +106,7 @@ fun CreateEditFocusSessionContent(
                     title = { Text(if (isEditMode) "Edit Session" else "Create Session") },
                     navigationIcon = {
                         IconButton(onClick = { navigator?.pop() }) {
-                            Icon(TawaznIcons.ArrowBack, "Back")
+                            Icon(PhosphorIcons.Bold.ArrowLeft, "Back")
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -172,7 +176,7 @@ fun CreateEditFocusSessionContent(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
-                                    imageVector = TawaznIcons.AccessTime,
+                                    imageVector = PhosphorIcons.Bold.Clock,
                                     contentDescription = "Start Time",
                                     tint = TawaznTheme.colors.gradientMiddle
                                 )
@@ -191,7 +195,7 @@ fun CreateEditFocusSessionContent(
                                     )
                                 }
                             }
-                            Icon(TawaznIcons.Edit, "Edit")
+                            Icon(PhosphorIcons.Bold.PencilSimple, "Edit")
                         }
 
                         HorizontalDivider(
@@ -213,7 +217,7 @@ fun CreateEditFocusSessionContent(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
-                                    imageVector = TawaznIcons.AccessTime,
+                                    imageVector = PhosphorIcons.Bold.Clock,
                                     contentDescription = "End Time",
                                     tint = MaterialTheme.colorScheme.error
                                 )
@@ -232,7 +236,7 @@ fun CreateEditFocusSessionContent(
                                     )
                                 }
                             }
-                            Icon(TawaznIcons.Edit, "Edit")
+                            Icon(PhosphorIcons.Bold.PencilSimple, "Edit")
                         }
                     }
                 }
@@ -326,7 +330,7 @@ fun CreateEditFocusSessionContent(
                                 }
                             }
                             Icon(
-                                TawaznIcons.ChevronRight,
+                                PhosphorIcons.Bold.CaretRight,
                                 "Select Days",
                                 tint = if (repeatDaily || repeatWeekly)
                                     MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)

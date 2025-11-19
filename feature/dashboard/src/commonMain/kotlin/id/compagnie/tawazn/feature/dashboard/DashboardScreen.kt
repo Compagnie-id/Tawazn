@@ -12,7 +12,13 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.component.StatsCard
-import id.compagnie.tawazn.design.icons.TawaznIcons
+import com.adamglin.PhosphorIcons
+import com.adamglin.phosphoricons.bold.Bell
+import com.adamglin.phosphoricons.bold.Clock
+import com.adamglin.phosphoricons.bold.Prohibit
+import com.adamglin.phosphoricons.bold.SquaresFour
+import com.adamglin.phosphoricons.bold.Fire
+import com.adamglin.phosphoricons.bold.TrendDown
 import id.compagnie.tawazn.design.theme.TawaznTheme
 import id.compagnie.tawazn.feature.appblocking.AppBlockingScreen
 import id.compagnie.tawazn.feature.settings.FocusSessionListScreen
@@ -67,7 +73,7 @@ fun DashboardContent() {
                         }
 
                         Icon(
-                            imageVector = TawaznIcons.Notifications,
+                            imageVector = PhosphorIcons.Bold.Bell,
                             contentDescription = "Notifications",
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(28.dp)
@@ -93,7 +99,7 @@ fun DashboardContent() {
                             title = "Screen Time",
                             value = "2h 34m",
                             subtitle = "↓ 15% from yesterday",
-                            icon = TawaznIcons.AccessTime,
+                            icon = PhosphorIcons.Bold.Clock,
                             modifier = Modifier.weight(1f)
                         )
 
@@ -101,7 +107,7 @@ fun DashboardContent() {
                             title = "Apps Blocked",
                             value = "12",
                             subtitle = "Active now",
-                            icon = TawaznIcons.Block,
+                            icon = PhosphorIcons.Bold.Prohibit,
                             modifier = Modifier.weight(1f),
                             useGradient = false
                         )
@@ -113,7 +119,7 @@ fun DashboardContent() {
                         title = "Most Used Today",
                         value = "Instagram",
                         subtitle = "45 minutes",
-                        icon = TawaznIcons.Apps,
+                        icon = PhosphorIcons.Bold.SquaresFour,
                         useGradient = true
                     )
                 }
@@ -133,14 +139,14 @@ fun DashboardContent() {
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         QuickActionCard(
-                            icon = TawaznIcons.Block,
+                            icon = PhosphorIcons.Bold.Prohibit,
                             title = "Block Apps",
                             onClick = onBlockAppsClick,
                             modifier = Modifier.weight(1f)
                         )
 
                         QuickActionCard(
-                            icon = TawaznIcons.AccessTime,
+                            icon = PhosphorIcons.Bold.Clock,
                             title = "View Usage",
                             onClick = onViewUsageClick,
                             modifier = Modifier.weight(1f)
@@ -159,7 +165,7 @@ fun DashboardContent() {
                                 verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
                             ) {
                                 Icon(
-                                    imageVector = TawaznIcons.LocalFireDepartment,
+                                    imageVector = PhosphorIcons.Bold.Fire,
                                     contentDescription = "Focus",
                                     tint = TawaznTheme.colors.warning,
                                     modifier = Modifier.size(32.dp)
@@ -216,7 +222,7 @@ fun DashboardContent() {
                                 )
 
                                 Icon(
-                                    imageVector = TawaznIcons.TrendingDown,
+                                    imageVector = PhosphorIcons.Bold.TrendDown,
                                     contentDescription = "Trending",
                                     tint = TawaznTheme.colors.success
                                 )

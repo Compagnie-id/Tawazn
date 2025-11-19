@@ -23,7 +23,19 @@ import cafe.adriel.voyager.koin.getScreenModel
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.component.PermissionCard
-import id.compagnie.tawazn.design.icons.TawaznIcons
+import com.adamglin.PhosphorIcons
+import com.adamglin.phosphoricons.bold.DeviceMobile
+import com.adamglin.phosphoricons.bold.Clock
+import com.adamglin.phosphoricons.bold.Prohibit
+import com.adamglin.phosphoricons.bold.ClockCountdown
+import com.adamglin.phosphoricons.bold.ChartBar
+import com.adamglin.phosphoricons.bold.Shield
+import com.adamglin.phosphoricons.bold.CheckCircle
+import com.adamglin.phosphoricons.bold.User
+import com.adamglin.phosphoricons.bold.ArrowsClockwise
+import com.adamglin.phosphoricons.bold.Lock
+import com.adamglin.phosphoricons.bold.Warning
+import com.adamglin.phosphoricons.bold.Check
 import id.compagnie.tawazn.design.theme.TawaznTheme
 
 class OnboardingScreen : Screen {
@@ -162,7 +174,7 @@ fun WelcomePage() {
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         Icon(
-            imageVector = TawaznIcons.Phone,
+            imageVector = PhosphorIcons.Bold.DeviceMobile,
             contentDescription = "Tawazn",
             modifier = Modifier.size(120.dp),
             tint = TawaznTheme.colors.gradientMiddle
@@ -208,25 +220,25 @@ fun FeaturePage() {
         )
 
         FeatureItem(
-            icon = TawaznIcons.AccessTime,
+            icon = PhosphorIcons.Bold.Clock,
             title = "Usage Tracking",
             description = "Monitor your screen time with detailed statistics and insights"
         )
 
         FeatureItem(
-            icon = TawaznIcons.Block,
+            icon = PhosphorIcons.Bold.Prohibit,
             title = "App Blocking",
             description = "Block distracting apps and create focus sessions"
         )
 
         FeatureItem(
-            icon = TawaznIcons.Schedule,
+            icon = PhosphorIcons.Bold.ClockCountdown,
             title = "Smart Scheduling",
             description = "Set up automatic blocking schedules for better productivity"
         )
 
         FeatureItem(
-            icon = TawaznIcons.Analytics,
+            icon = PhosphorIcons.Bold.ChartBar,
             title = "Insights & Analytics",
             description = "Understand your digital habits with weekly reports"
         )
@@ -247,7 +259,7 @@ fun PermissionPage(
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         Icon(
-            imageVector = TawaznIcons.Security,
+            imageVector = PhosphorIcons.Bold.Shield,
             contentDescription = "Permissions",
             modifier = Modifier.size(80.dp),
             tint = TawaznTheme.colors.gradientMiddle
@@ -271,7 +283,7 @@ fun PermissionPage(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        imageVector = TawaznIcons.CheckCircle,
+                        imageVector = PhosphorIcons.Bold.CheckCircle,
                         contentDescription = "Success",
                         tint = TawaznTheme.colors.success,
                         modifier = Modifier.size(24.dp)
@@ -290,7 +302,7 @@ fun PermissionPage(
         PermissionCard(
             title = "Screen Time Access",
             description = "Track app usage and screen time statistics. Your data stays private on this device.",
-            icon = TawaznIcons.PermDeviceInformation,
+            icon = PhosphorIcons.Bold.DeviceMobile,
             isGranted = permissionState.hasUsageStatsPermission,
             isRequired = true,
             onRequestClick = onRequestPermissions
@@ -299,7 +311,7 @@ fun PermissionPage(
         PermissionCard(
             title = "App Blocking",
             description = "Allow Tawazn to block distracting apps and help you stay focused.",
-            icon = TawaznIcons.Accessibility,
+            icon = PhosphorIcons.Bold.User,
             isGranted = permissionState.hasAccessibilityPermission,
             isRequired = false,
             onRequestClick = onRequestPermissions
@@ -328,7 +340,7 @@ fun PermissionPage(
         if (permissionState.permissionRequested && !permissionState.hasAllPermissions) {
             TextButton(onClick = onCheckPermissions) {
                 Icon(
-                    imageVector = TawaznIcons.Refresh,
+                    imageVector = PhosphorIcons.Bold.ArrowsClockwise,
                     contentDescription = "Refresh",
                     modifier = Modifier.size(16.dp)
                 )
@@ -344,7 +356,7 @@ fun PermissionPage(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                imageVector = TawaznIcons.Lock,
+                imageVector = PhosphorIcons.Bold.Lock,
                 contentDescription = "Privacy",
                 tint = TawaznTheme.colors.success,
                 modifier = Modifier.size(16.dp)
@@ -376,7 +388,7 @@ fun ReadyPage(
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         Icon(
-            imageVector = TawaznIcons.CheckCircle,
+            imageVector = PhosphorIcons.Bold.CheckCircle,
             contentDescription = "Ready",
             modifier = Modifier.size(100.dp),
             tint = TawaznTheme.colors.success
@@ -422,7 +434,7 @@ fun ReadyPage(
                     verticalAlignment = Alignment.Top
                 ) {
                     Icon(
-                        imageVector = TawaznIcons.Warning,
+                        imageVector = PhosphorIcons.Bold.Warning,
                         contentDescription = "Warning",
                         tint = TawaznTheme.colors.warning,
                         modifier = Modifier.size(24.dp)
@@ -487,7 +499,7 @@ fun QuickTip(text: String) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            imageVector = TawaznIcons.Check,
+            imageVector = PhosphorIcons.Bold.Check,
             contentDescription = null,
             tint = TawaznTheme.colors.gradientMiddle,
             modifier = Modifier.size(16.dp)

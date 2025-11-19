@@ -37,7 +37,13 @@ import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.StatsCard
-import id.compagnie.tawazn.design.icons.TawaznIcons
+import com.adamglin.PhosphorIcons
+import com.adamglin.phosphoricons.bold.ArrowLeft
+import com.adamglin.phosphoricons.bold.TrendDown
+import com.adamglin.phosphoricons.bold.TrendUp
+import com.adamglin.phosphoricons.bold.Fire
+import com.adamglin.phosphoricons.bold.ClockCountdown
+import com.adamglin.phosphoricons.bold.SquaresFour
 import id.compagnie.tawazn.design.theme.TawaznTheme
 import id.compagnie.tawazn.feature.settings.FocusSessionListScreen
 
@@ -76,7 +82,7 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                     navigationIcon = {
                         if (navigator?.canPop == true) {
                             IconButton(onClick = { navigator.pop() }) {
-                                Icon(TawaznIcons.ArrowBack, "Back")
+                                Icon(PhosphorIcons.Bold.ArrowLeft, "Back")
                             }
                         }
                     },
@@ -156,7 +162,7 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                                     fontWeight = FontWeight.SemiBold
                                 )
                                 Icon(
-                                    imageVector = if (uiState.goalProgress < 0.8f) TawaznIcons.TrendingDown else TawaznIcons.TrendingUp,
+                                    imageVector = if (uiState.goalProgress < 0.8f) PhosphorIcons.Bold.TrendDown else PhosphorIcons.Bold.TrendUp,
                                     contentDescription = "Trending",
                                     tint = if (uiState.goalProgress < 0.8f) TawaznTheme.colors.success else TawaznTheme.colors.warning
                                 )
@@ -193,7 +199,7 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
-                                    imageVector = TawaznIcons.LocalFireDepartment,
+                                    imageVector = PhosphorIcons.Bold.Fire,
                                     contentDescription = "Streak",
                                     tint = TawaznTheme.colors.warning,
                                     modifier = Modifier.size(40.dp)
@@ -237,7 +243,7 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                     val bestDay = uiState.bestDay
                     if (bestDay != null) {
                         InsightCard(
-                            icon = TawaznIcons.TrendingUp,
+                            icon = PhosphorIcons.Bold.TrendUp,
                             title = "Most Productive Day",
                             description = "${bestDay.first} - Only ${bestDay.second.toHoursMinutesString()} screen time",
                             color = TawaznTheme.colors.success
@@ -249,7 +255,7 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                     val weeklyStats = uiState.weeklyStats
                     if (weeklyStats != null && weeklyStats.totalScreenTime.inWholeMinutes > 0) {
                         InsightCard(
-                            icon = TawaznIcons.Schedule,
+                            icon = PhosphorIcons.Bold.ClockCountdown,
                             title = "Weekly Total",
                             description = "${weeklyStats.totalScreenTime.toHoursMinutesString()} total screen time this week",
                             color = TawaznTheme.colors.info
@@ -262,7 +268,7 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                     if (topDistraction != null) {
                         val avgDaily = topDistraction.totalTime.inWholeMinutes / 7
                         InsightCard(
-                            icon = TawaznIcons.Apps,
+                            icon = PhosphorIcons.Bold.SquaresFour,
                             title = "Top App",
                             description = "${topDistraction.appName} - ${avgDaily}m average daily",
                             color = TawaznTheme.colors.warning

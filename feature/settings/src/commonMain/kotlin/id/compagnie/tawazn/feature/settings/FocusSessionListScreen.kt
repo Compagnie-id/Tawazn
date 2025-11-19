@@ -43,9 +43,18 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.adamglin.PhosphorIcons
+import com.adamglin.phosphoricons.bold.ArrowLeft
+import com.adamglin.phosphoricons.bold.CalendarX
+import com.adamglin.phosphoricons.bold.ClockCountdown
+import com.adamglin.phosphoricons.bold.PencilSimple
+import com.adamglin.phosphoricons.bold.Plus
+import com.adamglin.phosphoricons.bold.Prohibit
+import com.adamglin.phosphoricons.bold.Repeat
+import com.adamglin.phosphoricons.bold.Trash
+import com.adamglin.phosphoricons.bold.Warning
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
-import id.compagnie.tawazn.design.icons.TawaznIcons
 import id.compagnie.tawazn.design.theme.TawaznTheme
 import id.compagnie.tawazn.domain.model.BlockSession
 import kotlinx.datetime.TimeZone
@@ -73,7 +82,7 @@ fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
                     title = { Text("Focus Sessions") },
                     navigationIcon = {
                         IconButton(onClick = { navigator?.pop() }) {
-                            Icon(TawaznIcons.ArrowBack, "Back")
+                            Icon(PhosphorIcons.Bold.ArrowLeft, "Back")
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -86,7 +95,7 @@ fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
                     onClick = { navigator?.push(CreateEditFocusSessionScreen()) },
                     containerColor = TawaznTheme.colors.gradientMiddle
                 ) {
-                    Icon(TawaznIcons.Add, "Add Session", tint = MaterialTheme.colorScheme.onPrimary)
+                    Icon(PhosphorIcons.Bold.Plus, "Add Session", tint = MaterialTheme.colorScheme.onPrimary)
                 }
             }
         ) { padding ->
@@ -102,7 +111,7 @@ fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         Icon(
-                            imageVector = TawaznIcons.EventBusy,
+                            imageVector = PhosphorIcons.Bold.CalendarX,
                             contentDescription = "No Sessions",
                             modifier = Modifier.size(64.dp),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
@@ -149,7 +158,7 @@ fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
                 onDismissRequest = { showDeleteDialog = null },
                 icon = {
                     Icon(
-                        imageVector = TawaznIcons.Warning,
+                        imageVector = PhosphorIcons.Bold.Warning,
                         contentDescription = "Warning",
                         tint = MaterialTheme.colorScheme.error
                     )
@@ -234,7 +243,7 @@ fun SessionCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    imageVector = TawaznIcons.Schedule,
+                    imageVector = PhosphorIcons.Bold.ClockCountdown,
                     contentDescription = "Time",
                     modifier = Modifier.size(16.dp),
                     tint = TawaznTheme.colors.gradientMiddle
@@ -252,7 +261,7 @@ fun SessionCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        imageVector = TawaznIcons.Repeat,
+                        imageVector = PhosphorIcons.Bold.Repeat,
                         contentDescription = "Repeat",
                         modifier = Modifier.size(16.dp),
                         tint = TawaznTheme.colors.info
@@ -278,7 +287,7 @@ fun SessionCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        imageVector = TawaznIcons.Block,
+                        imageVector = PhosphorIcons.Bold.Prohibit,
                         contentDescription = "Apps",
                         modifier = Modifier.size(16.dp),
                         tint = MaterialTheme.colorScheme.error
@@ -298,7 +307,7 @@ fun SessionCard(
                     onClick = onEdit,
                     modifier = Modifier.weight(1f)
                 ) {
-                    Icon(TawaznIcons.Edit, "Edit", modifier = Modifier.size(18.dp))
+                    Icon(PhosphorIcons.Bold.PencilSimple, "Edit", modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(4.dp))
                     Text("Edit")
                 }
@@ -309,7 +318,7 @@ fun SessionCard(
                         contentColor = MaterialTheme.colorScheme.error
                     )
                 ) {
-                    Icon(TawaznIcons.Delete, "Delete", modifier = Modifier.size(18.dp))
+                    Icon(PhosphorIcons.Bold.Trash, "Delete", modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(4.dp))
                     Text("Delete")
                 }

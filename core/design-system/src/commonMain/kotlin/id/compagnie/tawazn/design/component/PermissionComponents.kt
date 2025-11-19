@@ -13,7 +13,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import id.compagnie.tawazn.design.icons.TawaznIcons
+import com.adamglin.PhosphorIcons
+import com.adamglin.phosphoricons.bold.Check
+import com.adamglin.phosphoricons.bold.Warning
 import id.compagnie.tawazn.design.theme.NeuBlack
 import id.compagnie.tawazn.design.theme.TawaznTheme
 
@@ -143,7 +145,7 @@ fun PermissionCard(
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        imageVector = TawaznIcons.Check,
+                        imageVector = PhosphorIcons.Bold.Check,
                         contentDescription = "Granted",
                         tint = Color.White,
                         modifier = Modifier.size(18.dp)
@@ -193,7 +195,7 @@ fun PermissionStatusBadge(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                imageVector = if (isGranted) TawaznIcons.Check else TawaznIcons.Warning,
+                imageVector = if (isGranted) PhosphorIcons.Bold.Check else PhosphorIcons.Bold.Warning,
                 contentDescription = null,
                 tint = Color.White,
                 modifier = Modifier.size(14.dp)

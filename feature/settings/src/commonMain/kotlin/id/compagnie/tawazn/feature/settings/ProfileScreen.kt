@@ -2,7 +2,14 @@
 
 package id.compagnie.tawazn.feature.settings
 
-import id.compagnie.tawazn.design.icons.TawaznIcons
+import com.adamglin.PhosphorIcons
+import com.adamglin.phosphoricons.bold.ArrowLeft
+import com.adamglin.phosphoricons.bold.Calendar
+import com.adamglin.phosphoricons.bold.Devices
+import com.adamglin.phosphoricons.bold.Fire
+import com.adamglin.phosphoricons.bold.PencilSimple
+import com.adamglin.phosphoricons.bold.Trophy
+import com.adamglin.phosphoricons.bold.User
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -59,7 +66,7 @@ fun ProfileContent() {
                     title = { Text("Profile") },
                     navigationIcon = {
                         IconButton(onClick = { navigator?.pop() }) {
-                            Icon(TawaznIcons.ArrowBack, "Back")
+                            Icon(PhosphorIcons.Bold.ArrowLeft, "Back")
                         }
                     },
                     actions = {
@@ -84,7 +91,7 @@ fun ProfileContent() {
                             }
                         } else {
                             IconButton(onClick = { editMode = true }) {
-                                Icon(TawaznIcons.Edit, "Edit")
+                                Icon(PhosphorIcons.Bold.PencilSimple, "Edit")
                             }
                         }
                     },
@@ -119,7 +126,7 @@ fun ProfileContent() {
                         ) {
                             Box(contentAlignment = Alignment.Center) {
                                 Icon(
-                                    imageVector = TawaznIcons.Person,
+                                    imageVector = PhosphorIcons.Bold.User,
                                     contentDescription = "Profile",
                                     modifier = Modifier.size(48.dp),
                                     tint = MaterialTheme.colorScheme.onPrimaryContainer
@@ -177,7 +184,7 @@ fun ProfileContent() {
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             Icon(
-                                imageVector = TawaznIcons.LocalFireDepartment,
+                                imageVector = PhosphorIcons.Bold.Fire,
                                 contentDescription = "Streak",
                                 tint = TawaznTheme.colors.warning,
                                 modifier = Modifier.size(32.dp)
@@ -204,7 +211,7 @@ fun ProfileContent() {
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             Icon(
-                                imageVector = TawaznIcons.EmojiEvents,
+                                imageVector = PhosphorIcons.Bold.Trophy,
                                 contentDescription = "Best",
                                 tint = TawaznTheme.colors.success,
                                 modifier = Modifier.size(32.dp)
@@ -235,7 +242,7 @@ fun ProfileContent() {
                 GlassCard(modifier = Modifier.fillMaxWidth()) {
                     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         InfoRow(
-                            icon = TawaznIcons.CalendarToday,
+                            icon = PhosphorIcons.Bold.Calendar,
                             label = "Member Since",
                             value = "January 2024"
                         )
@@ -245,7 +252,7 @@ fun ProfileContent() {
                             DividerDefaults.color
                         )
                         InfoRow(
-                            icon = TawaznIcons.Devices,
+                            icon = PhosphorIcons.Bold.Devices,
                             label = "Platform",
                             value = getPlatformName()
                         )
