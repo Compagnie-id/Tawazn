@@ -115,12 +115,16 @@ private fun RowScope.TabNavigationItem(tab: Tab) {
             .weight(1f)
             .padding(horizontal = 4.dp)
     ) {
-        // Shadow for selected state (subtle like buttons)
+        // Shadow for selected state (matching card/button style)
         if (isSelected) {
             Box(
                 modifier = Modifier
                     .matchParentSize()
-                    .offset(x = 2.dp, y = 2.dp)
+                    .offset(
+                        x = TawaznTheme.colors.shadowOffsetX,
+                        y = TawaznTheme.colors.shadowOffsetY
+                    )
+                    .clip(shape)
                     .background(
                         color = TawaznTheme.colors.shadow,
                         shape = shape
@@ -137,7 +141,7 @@ private fun RowScope.TabNavigationItem(tab: Tab) {
                         Modifier
                             .background(TawaznTheme.colors.cardYellow)
                             .border(
-                                width = 2.dp,
+                                width = TawaznTheme.colors.borderWidth,
                                 color = TawaznTheme.colors.border,
                                 shape = shape
                             )

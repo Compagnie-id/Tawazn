@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -36,6 +34,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import id.compagnie.tawazn.design.component.GlassCard
+import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.component.StatsCard
 import com.adamglin.PhosphorIcons
 import com.adamglin.phosphoricons.Bold
@@ -304,14 +303,10 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
 
-                            Button(
-                                onClick = onManageSessionsClick,
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = TawaznTheme.colors.gradientMiddle
-                                )
-                            ) {
-                                Text("Manage Sessions")
-                            }
+                            GradientButton(
+                                text = "Manage Sessions",
+                                onClick = onManageSessionsClick
+                            )
                         }
                     }
                 }
