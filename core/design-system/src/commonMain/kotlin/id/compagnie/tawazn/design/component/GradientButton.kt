@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -61,6 +62,7 @@ fun NeuButton(
         // Button
         Box(
             modifier = Modifier
+                .fillMaxWidth()
                 .clip(RoundedCornerShape(cornerRadius))
                 .background(actualBackgroundColor, RoundedCornerShape(cornerRadius))
                 .border(
@@ -141,6 +143,7 @@ fun OutlinedNeuButton(
         // Button
         Box(
             modifier = Modifier
+                .fillMaxWidth()
                 .clip(RoundedCornerShape(cornerRadius))
                 .background(TawaznTheme.colors.card, RoundedCornerShape(cornerRadius))
                 .border(
