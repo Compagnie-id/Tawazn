@@ -115,15 +115,12 @@ private fun RowScope.TabNavigationItem(tab: Tab) {
             .weight(1f)
             .padding(horizontal = 4.dp)
     ) {
-        // Shadow for selected state
+        // Shadow for selected state (subtle like buttons)
         if (isSelected) {
             Box(
                 modifier = Modifier
                     .matchParentSize()
-                    .offset(
-                        x = TawaznTheme.colors.shadowOffsetX / 2,
-                        y = TawaznTheme.colors.shadowOffsetY / 2
-                    )
+                    .offset(x = 2.dp, y = 2.dp)
                     .background(
                         color = TawaznTheme.colors.shadow,
                         shape = shape
