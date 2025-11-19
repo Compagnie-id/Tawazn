@@ -27,6 +27,7 @@ import cafe.adriel.voyager.navigator.tab.TabNavigator
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import cafe.adriel.voyager.transitions.SlideTransition
 import com.adamglin.PhosphorIcons
+import com.adamglin.phosphoricons.Bold
 import com.adamglin.phosphoricons.bold.House
 import com.adamglin.phosphoricons.bold.SquaresFour
 import com.adamglin.phosphoricons.bold.ChartBar

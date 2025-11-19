@@ -13,6 +13,7 @@ import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.component.StatsCard
 import com.adamglin.PhosphorIcons
+import com.adamglin.phosphoricons.Bold
 import com.adamglin.phosphoricons.bold.Bell
 import com.adamglin.phosphoricons.bold.Clock
 import com.adamglin.phosphoricons.bold.Prohibit

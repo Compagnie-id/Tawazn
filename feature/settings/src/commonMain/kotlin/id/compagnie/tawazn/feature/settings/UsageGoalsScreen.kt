@@ -3,6 +3,7 @@
 package id.compagnie.tawazn.feature.settings
 
 import com.adamglin.PhosphorIcons
+import com.adamglin.phosphoricons.Bold
 import com.adamglin.phosphoricons.bold.ArrowLeft
 import com.adamglin.phosphoricons.bold.Flag
 import com.adamglin.phosphoricons.bold.Lightbulb
