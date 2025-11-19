@@ -108,6 +108,11 @@ data class TawaznColors(
     // Background
     val background: Color,
 
+    // Gradient colors (for backwards compatibility - mapped to neubrutalism accents)
+    val gradientStart: Color,
+    val gradientMiddle: Color,
+    val gradientEnd: Color,
+
     // Chart colors
     val chartColors: List<Color>
 )
@@ -131,6 +136,9 @@ val LocalTawaznColors = staticCompositionLocalOf {
         error = Error,
         info = Info,
         background = BackgroundLight,
+        gradientStart = Primary,
+        gradientMiddle = Primary,
+        gradientEnd = Accent,
         chartColors = listOf(ChartColor1, ChartColor2, ChartColor3, ChartColor4, ChartColor5)
     )
 }
@@ -160,6 +168,9 @@ fun TawaznTheme(
         error = Error,
         info = Info,
         background = if (darkTheme) BackgroundDark else BackgroundLight,
+        gradientStart = Primary,
+        gradientMiddle = Primary,
+        gradientEnd = Accent,
         chartColors = listOf(ChartColor1, ChartColor2, ChartColor3, ChartColor4, ChartColor5)
     )
 
