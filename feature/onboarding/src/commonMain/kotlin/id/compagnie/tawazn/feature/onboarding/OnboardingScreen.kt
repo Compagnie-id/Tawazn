@@ -132,7 +132,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                             if (currentPage < 3) {
                                 currentPage++
                             } else {
-                                // Complete onboarding - App.kt will automatically navigate to MainScreen
+                                // Complete onboarding - App.kt will automatically show the main app
                                 screenModel.completeOnboarding()
                             }
                         },
@@ -151,7 +151,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                     if (currentPage < 3) {
                         TextButton(
                             onClick = {
-                                // Skip onboarding - App.kt will automatically navigate to MainScreen
+                                // Skip onboarding - App.kt will automatically show the main app
                                 screenModel.completeOnboarding()
                             },
                             modifier = Modifier.fillMaxWidth()
