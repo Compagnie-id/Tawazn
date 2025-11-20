@@ -33,9 +33,12 @@
 
 ### Multi-Module Clean Architecture
 
+Tawazn follows **Clean Architecture** principles with **zero feature-to-feature dependencies**:
+
 ```
 Tawazn/
-├── composeApp/              # Main application
+├── composeApp/              # Main application & navigation
+│   └── navigation/          # Bottom tab navigation (Voyager)
 ├── core/
 │   ├── common/              # Shared utilities
 │   ├── design-system/       # Liquid glass UI components
@@ -44,7 +47,7 @@ Tawazn/
 │   └── network/             # Ktor client
 ├── domain/                  # Business logic (Pure Kotlin)
 ├── data/                    # Repository implementations
-├── feature/
+├── feature/                 # Independent feature modules
 │   ├── dashboard/           # Main dashboard
 │   ├── app-blocking/        # App blocking feature
 │   ├── usage-tracking/      # Usage statistics
@@ -56,6 +59,12 @@ Tawazn/
     ├── ios/                 # iOS-specific (Screen Time API)
     └── desktop/             # Desktop-specific monitoring
 ```
+
+**Key Architecture Principles:**
+- ✅ **Zero Feature Dependencies** - Features never import each other
+- ✅ **Navigation in composeApp** - App-level orchestration
+- ✅ **Clean Separation** - Clear layer boundaries
+- ✅ **Testable & Scalable** - Each feature can be built independently
 
 For detailed architecture documentation, see [ARCHITECTURE.md](ARCHITECTURE.md).
 
@@ -254,7 +263,11 @@ xcodebuild -project iosApp/iosApp.xcodeproj -scheme iosApp -configuration Debug
 ```
 /
 ├── composeApp/                         # Main app module
-│   ├── src/commonMain/                 # Shared app code
+│   ├── src/commonMain/
+│   │   ├── App.kt                      # Root composable
+│   │   └── navigation/                 # App navigation
+│   │       ├── AppNavigation.kt        # Bottom tab navigation
+│   │       └── NavigationDestination.kt # Navigation abstraction
 │   ├── src/androidMain/                # Android app code
 │   ├── src/iosMain/                    # iOS app code
 │   └── src/jvmMain/                    # Desktop app code
@@ -275,7 +288,7 @@ xcodebuild -project iosApp/iosApp.xcodeproj -scheme iosApp -configuration Debug
 │   ├── repository/                     # Repository implementations
 │   └── di/                             # Koin modules
 │
-├── feature/                            # Feature modules
+├── feature/                            # Feature modules (INDEPENDENT)
 │   ├── dashboard/                      # Main dashboard
 │   ├── app-blocking/                   # App blocking
 │   ├── usage-tracking/                 # Usage stats

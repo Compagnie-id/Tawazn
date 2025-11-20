@@ -2,12 +2,18 @@
 
 ## 📐 Architecture Overview
 
-Tawazn follows **Multi-Module Clean Architecture** with clear separation of concerns:
+Tawazn follows **Multi-Module Clean Architecture** with clear separation of concerns and **zero feature-to-feature dependencies**:
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│                 Presentation Layer                   │
-│         (Compose UI + ViewModels + Voyager)         │
+│               composeApp (Orchestration)             │
+│         Navigation + DI + Theme + Entry Point        │
+└─────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────┐
+│            Presentation Layer (Features)             │
+│         (Compose UI + ScreenModels + Voyager)        │
+│          [NO inter-feature dependencies]             │
 └─────────────────────────────────────────────────────┘
                          ↓
 ┌─────────────────────────────────────────────────────┐
@@ -26,6 +32,26 @@ Tawazn follows **Multi-Module Clean Architecture** with clear separation of conc
 │                 Platform Layer                       │
 │   (Android UsageStats + iOS ScreenTime + Desktop)   │
 └─────────────────────────────────────────────────────┘
+```
+
+## 🎯 Dependency Rules
+
+**Allowed Dependencies:**
+```
+✅ feature → domain
+✅ feature → core:design-system
+✅ feature → core:common
+✅ composeApp → feature (all features)
+✅ data → domain
+✅ platform → NO dependencies
+```
+
+**Forbidden Dependencies:**
+```
+❌ feature → feature (NEVER!)
+❌ domain → feature
+❌ core → feature
+❌ domain → data/platform
 ```
 
 ## 📁 Module Structure
@@ -134,49 +160,125 @@ Pure Kotlin module with no external dependencies.
 
 ### Feature Modules
 
-All feature modules follow the same structure:
+All feature modules follow the same structure and are **completely independent** with **NO cross-feature dependencies**:
+
+**Structure**:
 - UI (Compose screens)
-- ViewModels/ScreenModels
-- Navigation (Voyager screens)
+- ScreenModels (Voyager)
+- Navigation callbacks (CompositionLocal)
+- DI modules
+
+**Key Principle**: Features communicate through navigation callbacks provided by `composeApp`, never by direct imports.
 
 #### `:feature:dashboard`
 - Main dashboard with stats overview
 - Today's screen time
-- Quick actions
+- Quick actions (uses navigation callbacks)
 - Weekly insights
+- **Dependencies**: domain, core:design-system, core:common
 
 #### `:feature:app-blocking`
 - Block/unblock apps
 - Scheduled blocking
 - Block sessions management
+- **Dependencies**: domain, core:design-system, core:common
 
 #### `:feature:usage-tracking`
 - Detailed usage statistics
 - Charts and graphs
 - App breakdown
 - Time analysis
+- **Dependencies**: domain, core:design-system, core:common
 
 #### `:feature:analytics`
 - Weekly/monthly reports
 - Trends and insights
-- Productivity metrics
+- Productivity metrics (uses navigation callbacks)
+- **Dependencies**: domain, core:design-system, core:datastore, core:common
 
 #### `:feature:settings`
 - App preferences
 - Theme selection
 - Notifications
 - Data management
+- Focus session screens (internal navigation)
+- **Dependencies**: domain, data, core:database, core:datastore, core:design-system, core:common
 
 #### `:feature:onboarding`
 - Welcome screens
 - Permission requests
 - Initial setup
+- **Dependencies**: domain, data, core:datastore, core:design-system, core:common
 
 ### Main App (`:composeApp`)
-- App entry point
+
+**Responsibilities**:
+- App entry point and platform-specific launchers
+- **Navigation orchestration** (AppNavigation.kt)
+- Bottom tab navigation (Voyager TabNavigator)
+- Provides navigation callbacks to features via CompositionLocal
 - Koin DI initialization
-- Navigation setup
-- Platform-specific configuration
+- Theme wrapper
+- Onboarding flow management
+
+**Key Files**:
+- `App.kt` - Root composable with theme and DI
+- `navigation/AppNavigation.kt` - Bottom tab navigation container
+- `navigation/NavigationDestination.kt` - Navigation abstraction
+
+**Dependencies**: All features, all core modules, domain, data
+
+## 🧭 Navigation Pattern
+
+### Navigation Architecture
+
+**Principle**: Navigation is owned by `composeApp`, not features. Features use callback interfaces provided via CompositionLocal to navigate without importing other features.
+
+### Implementation
+
+**1. Feature defines navigation interface:**
+```kotlin
+// In feature:dashboard/DashboardScreen.kt
+data class DashboardNavigation(
+    val onBlockAppsClick: () -> Unit = {},
+    val onViewUsageClick: () -> Unit = {},
+    val onManageSessionsClick: () -> Unit = {}
+)
+
+val LocalDashboardNavigation = compositionLocalOf { DashboardNavigation() }
+```
+
+**2. composeApp provides implementation:**
+```kotlin
+// In composeApp/navigation/AppNavigation.kt
+CompositionLocalProvider(
+    LocalDashboardNavigation provides DashboardNavigation(
+        onBlockAppsClick = { navigator.push(AppBlockingScreen()) },
+        onViewUsageClick = { navigator.push(UsageTrackingScreen()) },
+        onManageSessionsClick = { navigator.push(FocusSessionListScreen()) }
+    )
+) {
+    // Feature screen content
+}
+```
+
+**3. Feature consumes callbacks:**
+```kotlin
+// In feature:dashboard/DashboardScreen.kt
+val navigation = LocalDashboardNavigation.current
+
+GradientButton(
+    text = "Block Apps",
+    onClick = navigation.onBlockAppsClick
+)
+```
+
+### Benefits
+
+✅ **Zero coupling** - Features don't import each other
+✅ **Testable** - Easy to mock navigation callbacks
+✅ **Flexible** - Change navigation logic without touching features
+✅ **Scalable** - Add features without breaking existing ones
 
 ## 🔧 Dependency Injection (Koin)
 
@@ -411,6 +513,57 @@ GlassCard(
 - Encrypted database (optional)
 - Privacy-preserving iOS implementation
 
+## 💡 Architecture Best Practices
+
+### Module Independence
+
+**DO:**
+- ✅ Keep features independent (no inter-feature dependencies)
+- ✅ Use navigation callbacks via CompositionLocal
+- ✅ Depend on domain layer, not other features
+- ✅ Define feature-specific navigation interfaces
+- ✅ Test features in isolation
+
+**DON'T:**
+- ❌ Import other feature modules
+- ❌ Share ViewModels/ScreenModels between features
+- ❌ Create circular dependencies
+- ❌ Put navigation logic in feature modules
+- ❌ Bypass the domain layer
+
+### Code Organization
+
+**Feature Module Structure:**
+```
+feature/dashboard/
+├── build.gradle.kts
+└── src/
+    └── commonMain/kotlin/
+        └── id/compagnie/tawazn/feature/dashboard/
+            ├── DashboardScreen.kt          # Screen + Navigation interface
+            ├── DashboardScreenModel.kt     # State management
+            ├── components/                 # Feature-specific components
+            └── di/                         # DI module
+```
+
+### Adding New Features
+
+To add a new feature:
+
+1. **Create module** in `feature/your-feature/`
+2. **Define navigation interface** using CompositionLocal
+3. **Implement UI** with ScreenModel
+4. **Add to composeApp** build.gradle.kts
+5. **Wire navigation** in AppNavigation.kt
+6. **Only depend on**: domain, core modules (never other features)
+
+### Testing Strategy
+
+- **Unit tests**: Domain layer (use cases, models)
+- **Integration tests**: Repository implementations
+- **UI tests**: Feature screens (with mocked navigation)
+- **E2E tests**: Full navigation flows (in composeApp)
+
 ## 📈 Future Enhancements
 
 1. **Cloud Sync**: Multi-device synchronization
@@ -421,3 +574,23 @@ GlassCard(
 6. **Advanced Analytics**: AI-powered insights
 7. **Widget Support**: Home screen widgets
 8. **Wear OS/watchOS**: Companion apps
+
+---
+
+## 🔄 Architecture Evolution
+
+### Recent Refactoring (2025)
+
+**Changes Made:**
+- ✅ Removed `feature:main` module (moved to composeApp)
+- ✅ Eliminated all feature-to-feature dependencies
+- ✅ Implemented navigation callback pattern
+- ✅ Moved navigation orchestration to composeApp
+- ✅ Achieved 100% Clean Architecture compliance
+
+**Benefits:**
+- 🚀 Features can be built independently
+- 🧪 Easier testing with mocked navigation
+- 📦 Better module boundaries
+- 🔧 Simplified dependency graph
+- ⚡ Faster parallel builds
