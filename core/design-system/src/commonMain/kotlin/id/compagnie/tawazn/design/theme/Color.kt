@@ -2,58 +2,58 @@ package id.compagnie.tawazn.design.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Neubrutalism Color Palette
+// Neubrutalism Color Palette - Forest Green Theme
 // Bold, saturated colors with high contrast
 
-// Primary Colors - Bright and Bold
-val Primary = Color(0xFF3B82F6) // Bright Blue
-val PrimaryVariant = Color(0xFF2563EB)
-val Secondary = Color(0xFFA855F7) // Vibrant Purple
-val SecondaryVariant = Color(0xFF9333EA)
+// Primary Colors - Forest Green
+val Primary = Color(0xFF228B22) // Forest Green
+val PrimaryVariant = Color(0xFF1E7B1E)
+val Secondary = Color(0xFF6B8E23) // Olive Drab
+val SecondaryVariant = Color(0xFF556B2F)
 
-// Accent Colors - Eye-catching
-val Accent = Color(0xFFF472B6) // Hot Pink
-val AccentVariant = Color(0xFFEC4899)
+// Accent Colors - Warm Terracotta
+val Accent = Color(0xFFCD853F) // Peru/Terracotta
+val AccentVariant = Color(0xFFD2691E)
 
 // Neubrutalism Specific Colors
-val NeuYellow = Color(0xFFFDE047) // Bright Yellow
-val NeuGreen = Color(0xFF4ADE80) // Lime Green
-val NeuOrange = Color(0xFFFB923C) // Bright Orange
-val NeuCyan = Color(0xFF22D3EE) // Cyan
-val NeuRed = Color(0xFFF87171) // Coral Red
-val NeuLavender = Color(0xFFC4B5FD) // Lavender
+val NeuYellow = Color(0xFFF0E68C) // Khaki/Soft Yellow
+val NeuGreen = Color(0xFF90EE90) // Light Green
+val NeuOrange = Color(0xFFDEB887) // Burlywood/Warm Tan
+val NeuCyan = Color(0xFF20B2AA) // Light Sea Green
+val NeuRed = Color(0xFFCD5C5C) // Indian Red
+val NeuLavender = Color(0xFFD8BFD8) // Thistle
 
 // Border and Shadow Color
-val NeuBlack = Color(0xFF1A1A1A) // Near Black for borders
-val NeuBorder = Color(0xFF000000) // Pure Black for borders
+val NeuBlack = Color(0xFF2F4F2F) // Dark Slate Green for borders
+val NeuBorder = Color(0xFF1C3A1C) // Deep Forest for borders
 
-// Background Colors - Cream/Off-white for warmth
-val BackgroundLight = Color(0xFFFFFBEB) // Warm Cream
-val BackgroundDark = Color(0xFF1E1E2E) // Dark Navy
+// Background Colors - Natural/Earth tones
+val BackgroundLight = Color(0xFFFAF8F0) // Natural Cream
+val BackgroundDark = Color(0xFF1E2D1E) // Dark Forest
 
-val SurfaceLight = Color(0xFFFFFFFF) // Pure White
-val SurfaceDark = Color(0xFF2D2D3F) // Dark Surface
+val SurfaceLight = Color(0xFFFFFFF5) // Ivory
+val SurfaceDark = Color(0xFF2A3D2A) // Dark Surface
 
 // Card Background Colors (solid, no transparency)
-val CardLight = Color(0xFFFFFFFF)
-val CardDark = Color(0xFF2D2D3F)
+val CardLight = Color(0xFFFFFFF5) // Ivory
+val CardDark = Color(0xFF2A3D2A)
 
 // Text Colors - High Contrast
-val TextPrimaryLight = Color(0xFF000000) // Pure Black
-val TextPrimaryDark = Color(0xFFFFFFFF) // Pure White
+val TextPrimaryLight = Color(0xFF1C3A1C) // Deep Forest
+val TextPrimaryDark = Color(0xFFF5F5DC) // Beige
 
-val TextSecondaryLight = Color(0xFF4B5563)
-val TextSecondaryDark = Color(0xFFD1D5DB)
+val TextSecondaryLight = Color(0xFF4A5D4A)
+val TextSecondaryDark = Color(0xFFB8C4B8)
 
 // Status Colors - Bold and Clear
-val Success = Color(0xFF22C55E) // Bright Green
-val Warning = Color(0xFFFACC15) // Bright Yellow
-val Error = Color(0xFFEF4444) // Bright Red
-val Info = Color(0xFF3B82F6) // Blue
+val Success = Color(0xFF32CD32) // Lime Green
+val Warning = Color(0xFFDAA520) // Goldenrod
+val Error = Color(0xFFB22222) // Firebrick
+val Info = Color(0xFF20B2AA) // Light Sea Green
 
-// Chart Colors - Vibrant Palette
-val ChartColor1 = Color(0xFF3B82F6) // Blue
-val ChartColor2 = Color(0xFFA855F7) // Purple
-val ChartColor3 = Color(0xFFF472B6) // Pink
-val ChartColor4 = Color(0xFF22C55E) // Green
-val ChartColor5 = Color(0xFFFACC15) // Yellow
+// Chart Colors - Forest Palette
+val ChartColor1 = Color(0xFF228B22) // Forest Green
+val ChartColor2 = Color(0xFF6B8E23) // Olive
+val ChartColor3 = Color(0xFFCD853F) // Peru
+val ChartColor4 = Color(0xFF20B2AA) // Sea Green
+val ChartColor5 = Color(0xFFDAA520) // Goldenrod
