@@ -6,8 +6,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import id.compagnie.tawazn.core.datastore.AppPreferences
 import id.compagnie.tawazn.design.theme.TawaznTheme
-import id.compagnie.tawazn.feature.main.MainScreen
 import id.compagnie.tawazn.feature.onboarding.OnboardingScreen
+import id.compagnie.tawazn.navigation.AppNavigation
 import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
 
@@ -25,9 +25,9 @@ fun App() {
 
         TawaznTheme(darkTheme = darkTheme) {
             // Conditionally show screens without Navigator wrapper
-            // MainScreen contains TabNavigator, tabs contain their own Navigators
+            // AppNavigation contains TabNavigator, tabs contain their own Navigators
             if (onboardingCompleted) {
-                MainScreen().Content()
+                AppNavigation()
             } else {
                 OnboardingScreen().Content()
             }

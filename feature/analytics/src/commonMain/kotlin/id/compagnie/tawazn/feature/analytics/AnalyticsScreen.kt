@@ -22,7 +22,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -32,7 +34,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.koinScreenModel
-import cafe.adriel.voyager.navigator.LocalNavigator
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.component.StatsCard
@@ -45,7 +46,16 @@ import com.adamglin.phosphoricons.bold.Fire
 import com.adamglin.phosphoricons.bold.ClockCountdown
 import com.adamglin.phosphoricons.bold.SquaresFour
 import id.compagnie.tawazn.design.theme.TawaznTheme
-import id.compagnie.tawazn.feature.settings.FocusSessionListScreen
+
+/**
+ * Navigation callbacks for Analytics screen
+ * This eliminates the need for feature-to-feature dependencies
+ */
+data class AnalyticsNavigation(
+    val onManageSessionsClick: () -> Unit = {}
+)
+
+val LocalAnalyticsNavigation = compositionLocalOf { AnalyticsNavigation() }
 
 class AnalyticsScreen : Screen {
 
@@ -59,11 +69,8 @@ class AnalyticsScreen : Screen {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
-    val navigator = LocalNavigator.current
+    val navigation = LocalAnalyticsNavigation.current
     val uiState by screenModel.uiState.collectAsState()
-
-    // Remember navigation callback to prevent unnecessary recompositions
-    val onManageSessionsClick = remember { { navigator?.push(FocusSessionListScreen()); Unit } }
 
     // Compute derived values efficiently
     val progressPercent = remember(uiState.goalProgress) {
@@ -305,7 +312,7 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
 
                             GradientButton(
                                 text = "Manage Sessions",
-                                onClick = onManageSessionsClick
+                                onClick = navigation.onManageSessionsClick
                             )
                         }
                     }

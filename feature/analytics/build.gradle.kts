@@ -42,9 +42,6 @@ kotlin {
             implementation(project(":core:datastore"))
             implementation(project(":domain"))
 
-            // Feature module dependencies
-            implementation(project(":feature:settings"))
-
             implementation(libs.kotlinx.coroutinesCore)
             implementation(libs.kotlinx.datetime)
             implementation(libs.androidx.lifecycle.viewmodelCompose)

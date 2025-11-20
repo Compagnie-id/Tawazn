@@ -55,8 +55,8 @@ kotlin {
             implementation(project(":data"))
 
             // Feature modules
-            implementation(project(":feature:main"))
             implementation(project(":feature:onboarding"))
+            implementation(project(":feature:dashboard"))
             implementation(project(":feature:app-blocking"))
             implementation(project(":feature:analytics"))
             implementation(project(":feature:settings"))
