@@ -19,7 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.koin.koinScreenModel
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.component.PermissionCard
@@ -42,7 +42,7 @@ import id.compagnie.tawazn.design.theme.TawaznTheme
 class OnboardingScreen : Screen {
     @Composable
     override fun Content() {
-        val screenModel = getScreenModel<OnboardingScreenModel>()
+        val screenModel = koinScreenModel<OnboardingScreenModel>()
         OnboardingContent(screenModel)
     }
 }

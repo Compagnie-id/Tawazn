@@ -34,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.koinScreenModel
+import cafe.adriel.voyager.navigator.LocalNavigator
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.component.StatsCard
@@ -69,6 +70,7 @@ class AnalyticsScreen : Screen {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
+    val navigator = LocalNavigator.current
     val navigation = LocalAnalyticsNavigation.current
     val uiState by screenModel.uiState.collectAsState()
 
