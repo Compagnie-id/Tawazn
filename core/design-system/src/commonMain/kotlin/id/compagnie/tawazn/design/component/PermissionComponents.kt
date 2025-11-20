@@ -1,19 +1,28 @@
 package id.compagnie.tawazn.design.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import id.compagnie.tawazn.design.icons.TawaznIcons
+import com.adamglin.PhosphorIcons
+import com.adamglin.phosphoricons.Bold
+import com.adamglin.phosphoricons.bold.Check
+import com.adamglin.phosphoricons.bold.Warning
+import id.compagnie.tawazn.design.theme.NeuBlack
 import id.compagnie.tawazn.design.theme.TawaznTheme
 
 /**
  * Permission card component for displaying permission requests
+ * Neubrutalism style with bold borders and hard shadows
  *
  * @param title Permission title (e.g., "Usage Stats Permission")
  * @param description Permission description
@@ -33,42 +42,47 @@ fun PermissionCard(
     onRequestClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    GlassCard(
+    val cardColor = if (isGranted) {
+        TawaznTheme.colors.cardGreen
+    } else {
+        TawaznTheme.colors.cardOrange
+    }
+
+    NeuCard(
         modifier = modifier.fillMaxWidth(),
-        cornerRadius = 16.dp
+        backgroundColor = cardColor,
+        cornerRadius = 12.dp
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(8.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Icon
-            Surface(
-                shape = MaterialTheme.shapes.medium,
-                color = if (isGranted) {
-                    TawaznTheme.colors.success.copy(alpha = 0.2f)
-                } else {
-                    TawaznTheme.colors.warning.copy(alpha = 0.2f)
-                },
-                modifier = Modifier.size(48.dp)
+            // Icon with neubrutalism style
+            Box(
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(TawaznTheme.colors.card)
+                    .border(
+                        width = 2.dp,
+                        color = TawaznTheme.colors.border,
+                        shape = RoundedCornerShape(8.dp)
+                    ),
+                contentAlignment = Alignment.Center
             ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = null,
-                        tint = if (isGranted) {
-                            TawaznTheme.colors.success
-                        } else {
-                            TawaznTheme.colors.warning
-                        },
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = if (isGranted) {
+                        TawaznTheme.colors.success
+                    } else {
+                        TawaznTheme.colors.warning
+                    },
+                    modifier = Modifier.size(24.dp)
+                )
             }
 
             // Content
@@ -83,20 +97,27 @@ fun PermissionCard(
                     Text(
                         text = title,
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurface
+                        fontWeight = FontWeight.Bold,
+                        color = NeuBlack
                     )
 
                     if (isRequired) {
-                        Surface(
-                            shape = MaterialTheme.shapes.small,
-                            color = TawaznTheme.colors.error.copy(alpha = 0.15f)
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(4.dp))
+                                .background(TawaznTheme.colors.error)
+                                .border(
+                                    width = 1.dp,
+                                    color = NeuBlack,
+                                    shape = RoundedCornerShape(4.dp)
+                                )
+                                .padding(horizontal = 6.dp, vertical = 2.dp)
                         ) {
                             Text(
                                 text = "Required",
                                 style = MaterialTheme.typography.labelSmall,
-                                color = TawaznTheme.colors.error,
-                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White
                             )
                         }
                     }
@@ -105,93 +126,115 @@ fun PermissionCard(
                 Text(
                     text = description,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    fontWeight = FontWeight.Medium,
+                    color = NeuBlack.copy(alpha = 0.8f)
                 )
             }
 
             // Status/Action Button
             if (isGranted) {
-                Icon(
-                    imageVector = TawaznIcons.CheckCircle,
-                    contentDescription = "Granted",
-                    tint = TawaznTheme.colors.success,
-                    modifier = Modifier.size(24.dp)
-                )
-            } else {
-                FilledTonalButton(
-                    onClick = onRequestClick,
-                    colors = ButtonDefaults.filledTonalButtonColors(
-                        containerColor = TawaznTheme.colors.warning.copy(alpha = 0.2f),
-                        contentColor = TawaznTheme.colors.warning
-                    )
+                Box(
+                    modifier = Modifier
+                        .size(32.dp)
+                        .clip(RoundedCornerShape(6.dp))
+                        .background(TawaznTheme.colors.success)
+                        .border(
+                            width = 2.dp,
+                            color = NeuBlack,
+                            shape = RoundedCornerShape(6.dp)
+                        ),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Text("Grant")
+                    Icon(
+                        imageVector = PhosphorIcons.Bold.Check,
+                        contentDescription = "Granted",
+                        tint = Color.White,
+                        modifier = Modifier.size(18.dp)
+                    )
                 }
+            } else {
+                NeuButton(
+                    text = "Grant",
+                    onClick = onRequestClick,
+                    backgroundColor = TawaznTheme.colors.warning,
+                    textColor = NeuBlack,
+                    cornerRadius = 8.dp,
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+                )
             }
         }
     }
 }
 
 /**
- * Permission status badge
+ * Permission status badge - Neubrutalism style
  */
 @Composable
 fun PermissionStatusBadge(
     isGranted: Boolean,
     modifier: Modifier = Modifier
 ) {
-    Surface(
-        shape = MaterialTheme.shapes.small,
-        color = if (isGranted) {
-            TawaznTheme.colors.success.copy(alpha = 0.15f)
-        } else {
-            TawaznTheme.colors.error.copy(alpha = 0.15f)
-        },
+    val backgroundColor = if (isGranted) {
+        TawaznTheme.colors.success
+    } else {
+        TawaznTheme.colors.error
+    }
+
+    Box(
         modifier = modifier
+            .clip(RoundedCornerShape(6.dp))
+            .background(backgroundColor)
+            .border(
+                width = 2.dp,
+                color = NeuBlack,
+                shape = RoundedCornerShape(6.dp)
+            )
+            .padding(horizontal = 8.dp, vertical = 4.dp)
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(4.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                imageVector = if (isGranted) TawaznIcons.CheckCircle else TawaznIcons.Warning,
+                imageVector = if (isGranted) PhosphorIcons.Bold.Check else PhosphorIcons.Bold.Warning,
                 contentDescription = null,
-                tint = if (isGranted) TawaznTheme.colors.success else TawaznTheme.colors.error,
+                tint = Color.White,
                 modifier = Modifier.size(14.dp)
             )
             Text(
                 text = if (isGranted) "Granted" else "Not Granted",
                 style = MaterialTheme.typography.labelSmall,
-                color = if (isGranted) TawaznTheme.colors.success else TawaznTheme.colors.error
+                fontWeight = FontWeight.Bold,
+                color = Color.White
             )
         }
     }
 }
 
 /**
- * Platform info card showing system details
+ * Platform info card showing system details - Neubrutalism style
  */
 @Composable
 fun PlatformInfoCard(
     platformInfo: Map<String, String>,
     modifier: Modifier = Modifier
 ) {
-    GlassCard(
+    NeuCard(
         modifier = modifier.fillMaxWidth(),
+        backgroundColor = TawaznTheme.colors.cardLavender,
         cornerRadius = 12.dp
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
                 text = "Platform Information",
                 style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface
+                fontWeight = FontWeight.Bold,
+                color = NeuBlack
             )
 
             platformInfo.forEach { (key, value) ->
@@ -202,13 +245,14 @@ fun PlatformInfoCard(
                     Text(
                         text = formatKey(key),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        fontWeight = FontWeight.Medium,
+                        color = NeuBlack.copy(alpha = 0.7f)
                     )
                     Text(
                         text = value,
                         style = MaterialTheme.typography.bodySmall,
-                        fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurface
+                        fontWeight = FontWeight.Bold,
+                        color = NeuBlack
                     )
                 }
             }
@@ -218,14 +262,14 @@ fun PlatformInfoCard(
 
 private fun formatKey(key: String): String {
     return key.split(Regex("(?=[A-Z])"))
-        .joinToString(" ") { it.capitalize() }
+        .joinToString(" ") { it.replaceFirstChar { char -> char.uppercase() } }
         .replace("_", " ")
         .replace(Regex("\\s+"), " ")
         .trim()
 }
 
 /**
- * Sync status indicator
+ * Sync status indicator - Neubrutalism style
  */
 @Composable
 fun SyncStatusIndicator(
@@ -240,15 +284,21 @@ fun SyncStatusIndicator(
     ) {
         Box(
             modifier = Modifier
-                .size(8.dp)
+                .size(12.dp)
+                .clip(RoundedCornerShape(3.dp))
                 .background(
-                    color = if (isReady) TawaznTheme.colors.success else TawaznTheme.colors.error,
-                    shape = MaterialTheme.shapes.extraSmall
+                    color = if (isReady) TawaznTheme.colors.success else TawaznTheme.colors.error
+                )
+                .border(
+                    width = 2.dp,
+                    color = NeuBlack,
+                    shape = RoundedCornerShape(3.dp)
                 )
         )
         Text(
             text = label,
             style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurface
         )
     }

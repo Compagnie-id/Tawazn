@@ -2,7 +2,19 @@
 
 package id.compagnie.tawazn.feature.settings
 
-import id.compagnie.tawazn.design.icons.TawaznIcons
+import com.adamglin.PhosphorIcons
+import com.adamglin.phosphoricons.Bold
+import com.adamglin.phosphoricons.bold.ArrowLeft
+import com.adamglin.phosphoricons.bold.ArrowSquareOut
+import com.adamglin.phosphoricons.bold.Bug
+import com.adamglin.phosphoricons.bold.Buildings
+import com.adamglin.phosphoricons.bold.ChartBar
+import com.adamglin.phosphoricons.bold.ClockCountdown
+import com.adamglin.phosphoricons.bold.Code
+import com.adamglin.phosphoricons.bold.FileText
+import com.adamglin.phosphoricons.bold.Prohibit
+import com.adamglin.phosphoricons.bold.Scales
+import com.adamglin.phosphoricons.bold.TrendUp
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -40,7 +52,7 @@ fun AboutContent() {
                     title = { Text("About") },
                     navigationIcon = {
                         IconButton(onClick = { navigator?.pop() }) {
-                            Icon(TawaznIcons.ArrowBack, "Back")
+                            Icon(PhosphorIcons.Bold.ArrowLeft, "Back")
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -71,7 +83,7 @@ fun AboutContent() {
                         ) {
                             Box(contentAlignment = Alignment.Center) {
                                 Icon(
-                                    imageVector = TawaznIcons.Balance,
+                                    imageVector = PhosphorIcons.Bold.Scales,
                                     contentDescription = "Tawazn Logo",
                                     modifier = Modifier.size(56.dp),
                                     tint = TawaznTheme.colors.gradientMiddle
@@ -132,7 +144,7 @@ fun AboutContent() {
 
                 item {
                     FeatureCard(
-                        icon = TawaznIcons.TrendingUp,
+                        icon = PhosphorIcons.Bold.TrendUp,
                         title = "Usage Tracking",
                         description = "Monitor your app usage in real-time"
                     )
@@ -140,7 +152,7 @@ fun AboutContent() {
 
                 item {
                     FeatureCard(
-                        icon = TawaznIcons.Block,
+                        icon = PhosphorIcons.Bold.Prohibit,
                         title = "App Blocking",
                         description = "Block distracting apps when you need focus"
                     )
@@ -148,7 +160,7 @@ fun AboutContent() {
 
                 item {
                     FeatureCard(
-                        icon = TawaznIcons.Schedule,
+                        icon = PhosphorIcons.Bold.ClockCountdown,
                         title = "Focus Sessions",
                         description = "Schedule blocking sessions for maximum productivity"
                     )
@@ -156,7 +168,7 @@ fun AboutContent() {
 
                 item {
                     FeatureCard(
-                        icon = TawaznIcons.Analytics,
+                        icon = PhosphorIcons.Bold.ChartBar,
                         title = "Analytics",
                         description = "Get insights and trends about your digital habits"
                     )
@@ -169,7 +181,7 @@ fun AboutContent() {
 
                 item {
                     AboutLinkItem(
-                        icon = TawaznIcons.Code,
+                        icon = PhosphorIcons.Bold.Code,
                         title = "Source Code",
                         subtitle = "View on GitHub",
                         onClick = { /* TODO: Open GitHub */ }
@@ -178,7 +190,7 @@ fun AboutContent() {
 
                 item {
                     AboutLinkItem(
-                        icon = TawaznIcons.BugReport,
+                        icon = PhosphorIcons.Bold.Bug,
                         title = "Report a Bug",
                         subtitle = "Help us improve",
                         onClick = { /* TODO: Open issue tracker */ }
@@ -187,7 +199,7 @@ fun AboutContent() {
 
                 item {
                     AboutLinkItem(
-                        icon = TawaznIcons.Description,
+                        icon = PhosphorIcons.Bold.FileText,
                         title = "Licenses",
                         subtitle = "Open source licenses",
                         onClick = { showLicensesDialog = true }
@@ -207,7 +219,7 @@ fun AboutContent() {
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
-                                    imageVector = TawaznIcons.Business,
+                                    imageVector = PhosphorIcons.Bold.Buildings,
                                     contentDescription = "Company",
                                     tint = TawaznTheme.colors.gradientMiddle,
                                     modifier = Modifier.size(24.dp)
@@ -358,7 +370,7 @@ fun AboutLinkItem(
             }
 
             Icon(
-                imageVector = TawaznIcons.OpenInNew,
+                imageVector = PhosphorIcons.Bold.ArrowSquareOut,
                 contentDescription = "Open",
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )

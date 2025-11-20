@@ -2,7 +2,21 @@
 
 package id.compagnie.tawazn.feature.settings
 
-import id.compagnie.tawazn.design.icons.TawaznIcons
+import com.adamglin.PhosphorIcons
+import com.adamglin.phosphoricons.Bold
+import com.adamglin.phosphoricons.bold.ArrowLeft
+import com.adamglin.phosphoricons.bold.Bell
+import com.adamglin.phosphoricons.bold.Bug
+import com.adamglin.phosphoricons.bold.CaretRight
+import com.adamglin.phosphoricons.bold.ChartBar
+import com.adamglin.phosphoricons.bold.CheckCircle
+import com.adamglin.phosphoricons.bold.ClockCounterClockwise
+import com.adamglin.phosphoricons.bold.DeviceMobile
+import com.adamglin.phosphoricons.bold.DownloadSimple
+import com.adamglin.phosphoricons.bold.Eye
+import com.adamglin.phosphoricons.bold.Info
+import com.adamglin.phosphoricons.bold.Lock
+import com.adamglin.phosphoricons.bold.Shield
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -45,7 +59,7 @@ fun PrivacySecurityContent() {
                     title = { Text("Privacy & Security") },
                     navigationIcon = {
                         IconButton(onClick = { navigator?.pop() }) {
-                            Icon(TawaznIcons.ArrowBack, "Back")
+                            Icon(PhosphorIcons.Bold.ArrowLeft, "Back")
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -68,7 +82,7 @@ fun PrivacySecurityContent() {
 
                 item {
                     PrivacySwitchItem(
-                        icon = TawaznIcons.Analytics,
+                        icon = PhosphorIcons.Bold.ChartBar,
                         title = "Analytics",
                         subtitle = "Help improve Tawazn with anonymous usage data",
                         checked = analyticsEnabled,
@@ -82,7 +96,7 @@ fun PrivacySecurityContent() {
 
                 item {
                     PrivacySwitchItem(
-                        icon = TawaznIcons.BugReport,
+                        icon = PhosphorIcons.Bold.Bug,
                         title = "Crash Reports",
                         subtitle = "Automatically send crash reports",
                         checked = crashReportsEnabled,
@@ -101,7 +115,7 @@ fun PrivacySecurityContent() {
 
                 item {
                     PrivacyActionItem(
-                        icon = TawaznIcons.Download,
+                        icon = PhosphorIcons.Bold.DownloadSimple,
                         title = "Export Data",
                         subtitle = "Download all your data",
                         onClick = { showExportDialog = true }
@@ -110,7 +124,7 @@ fun PrivacySecurityContent() {
 
                 item {
                     PrivacyActionItem(
-                        icon = TawaznIcons.History,
+                        icon = PhosphorIcons.Bold.ClockCounterClockwise,
                         title = "View Data Usage",
                         subtitle = "See what data is collected",
                         onClick = { /* TODO: Show data usage details */ }
@@ -134,7 +148,7 @@ fun PrivacySecurityContent() {
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
-                                    imageVector = TawaznIcons.Shield,
+                                    imageVector = PhosphorIcons.Bold.Shield,
                                     contentDescription = "Security",
                                     tint = TawaznTheme.colors.success,
                                     modifier = Modifier.size(24.dp)
@@ -152,7 +166,7 @@ fun PrivacySecurityContent() {
                                     )
                                 }
                                 Icon(
-                                    imageVector = TawaznIcons.CheckCircle,
+                                    imageVector = PhosphorIcons.Bold.CheckCircle,
                                     contentDescription = "Enabled",
                                     tint = TawaznTheme.colors.success
                                 )
@@ -164,7 +178,7 @@ fun PrivacySecurityContent() {
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
-                                    imageVector = TawaznIcons.Lock,
+                                    imageVector = PhosphorIcons.Bold.Lock,
                                     contentDescription = "Local Storage",
                                     tint = TawaznTheme.colors.info,
                                     modifier = Modifier.size(24.dp)
@@ -182,7 +196,7 @@ fun PrivacySecurityContent() {
                                     )
                                 }
                                 Icon(
-                                    imageVector = TawaznIcons.CheckCircle,
+                                    imageVector = PhosphorIcons.Bold.CheckCircle,
                                     contentDescription = "Enabled",
                                     tint = TawaznTheme.colors.info
                                 )
@@ -207,7 +221,7 @@ fun PrivacySecurityContent() {
 
                 item {
                     PermissionInfoCard(
-                        icon = TawaznIcons.Visibility,
+                        icon = PhosphorIcons.Bold.Eye,
                         title = "Usage Access",
                         description = "Required to track app usage time and provide insights"
                     )
@@ -215,7 +229,7 @@ fun PrivacySecurityContent() {
 
                 item {
                     PermissionInfoCard(
-                        icon = TawaznIcons.Notifications,
+                        icon = PhosphorIcons.Bold.Bell,
                         title = "Notifications",
                         description = "Send you reminders and usage reports"
                     )
@@ -223,7 +237,7 @@ fun PrivacySecurityContent() {
 
                 item {
                     PermissionInfoCard(
-                        icon = TawaznIcons.PhoneAndroid,
+                        icon = PhosphorIcons.Bold.DeviceMobile,
                         title = "Accessibility (Android)",
                         description = "Block apps during focus sessions"
                     )
@@ -264,7 +278,7 @@ fun PrivacySecurityContent() {
                 onDismissRequest = { showExportDialog = false },
                 icon = {
                     Icon(
-                        imageVector = TawaznIcons.Info,
+                        imageVector = PhosphorIcons.Bold.Info,
                         contentDescription = "Info",
                         tint = TawaznTheme.colors.info
                     )
@@ -363,7 +377,7 @@ fun PrivacyActionItem(
                 )
             }
             Icon(
-                imageVector = TawaznIcons.ChevronRight,
+                imageVector = PhosphorIcons.Bold.CaretRight,
                 contentDescription = "Navigate",
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )

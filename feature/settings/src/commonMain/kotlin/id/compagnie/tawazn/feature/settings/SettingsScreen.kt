@@ -44,10 +44,30 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.adamglin.PhosphorIcons
+import com.adamglin.phosphoricons.Bold
+import com.adamglin.phosphoricons.bold.ArrowLeft
+import com.adamglin.phosphoricons.bold.ArrowsCounterClockwise
+import com.adamglin.phosphoricons.bold.Bell
+import com.adamglin.phosphoricons.bold.Bug
+import com.adamglin.phosphoricons.bold.Calendar
+import com.adamglin.phosphoricons.bold.CaretRight
+import com.adamglin.phosphoricons.bold.CloudArrowUp
+import com.adamglin.phosphoricons.bold.DeviceMobile
+import com.adamglin.phosphoricons.bold.FileText
+import com.adamglin.phosphoricons.bold.Fire
+import com.adamglin.phosphoricons.bold.Flag
+import com.adamglin.phosphoricons.bold.Gavel
+import com.adamglin.phosphoricons.bold.Gear
+import com.adamglin.phosphoricons.bold.Info
+import com.adamglin.phosphoricons.bold.Moon
+import com.adamglin.phosphoricons.bold.Shield
+import com.adamglin.phosphoricons.bold.Trash
+import com.adamglin.phosphoricons.bold.User
+import com.adamglin.phosphoricons.bold.Warning
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.PermissionStatusBadge
 import id.compagnie.tawazn.design.component.PlatformInfoCard
-import id.compagnie.tawazn.design.icons.TawaznIcons
 import id.compagnie.tawazn.design.theme.TawaznTheme
 
 class SettingsScreen : Screen {
@@ -85,7 +105,7 @@ fun SettingsContent(
                         title = { Text("Settings") },
                         navigationIcon = {
                             IconButton(onClick = { navigator?.pop() }) {
-                                Icon(TawaznIcons.ArrowBack, "Back")
+                                Icon(PhosphorIcons.Bold.ArrowLeft, "Back")
                             }
                         },
                         colors = TopAppBarDefaults.topAppBarColors(
@@ -110,7 +130,7 @@ fun SettingsContent(
 
                 item {
                     SettingsItem(
-                        icon = TawaznIcons.Person,
+                        icon = PhosphorIcons.Bold.User,
                         title = "Profile",
                         subtitle = "Manage your profile",
                         onClick = { navigator?.push(ProfileScreen()) }
@@ -119,7 +139,7 @@ fun SettingsContent(
 
                 item {
                     SettingsItem(
-                        icon = TawaznIcons.Security,
+                        icon = PhosphorIcons.Bold.Shield,
                         title = "Privacy & Security",
                         subtitle = "Control your data",
                         onClick = { navigator?.push(PrivacySecurityScreen()) }
@@ -133,7 +153,7 @@ fun SettingsContent(
 
                 item {
                     SettingsSwitchItem(
-                        icon = TawaznIcons.Notifications,
+                        icon = PhosphorIcons.Bold.Bell,
                         title = "Notifications",
                         subtitle = "Enable notifications",
                         checked = notificationsEnabled,
@@ -143,7 +163,7 @@ fun SettingsContent(
 
                 item {
                     SettingsSwitchItem(
-                        icon = TawaznIcons.Today,
+                        icon = PhosphorIcons.Bold.Calendar,
                         title = "Daily Report",
                         subtitle = "Get daily screen time summary",
                         checked = dailyReportEnabled,
@@ -153,7 +173,7 @@ fun SettingsContent(
 
                 item {
                     SettingsSwitchItem(
-                        icon = TawaznIcons.CalendarMonth,
+                        icon = PhosphorIcons.Bold.Calendar,
                         title = "Weekly Report",
                         subtitle = "Get weekly insights",
                         checked = weeklyReportEnabled,
@@ -168,7 +188,7 @@ fun SettingsContent(
 
                 item {
                     SettingsItem(
-                        icon = TawaznIcons.Flag,
+                        icon = PhosphorIcons.Bold.Flag,
                         title = "Usage Goals",
                         subtitle = "Set daily and weekly screen time goals",
                         onClick = { navigator?.push(UsageGoalsScreen()) }
@@ -177,7 +197,7 @@ fun SettingsContent(
 
                 item {
                     SettingsItem(
-                        icon = TawaznIcons.LocalFireDepartment,
+                        icon = PhosphorIcons.Bold.Fire,
                         title = "Focus Sessions",
                         subtitle = "Manage scheduled blocking sessions",
                         onClick = { navigator?.push(FocusSessionListScreen()) }
@@ -191,7 +211,7 @@ fun SettingsContent(
 
                 item {
                     SettingsSwitchItem(
-                        icon = TawaznIcons.Settings,
+                        icon = PhosphorIcons.Bold.Gear,
                         title = "Use System Theme",
                         subtitle = "Follow system dark mode setting",
                         checked = useSystemTheme,
@@ -201,7 +221,7 @@ fun SettingsContent(
 
                 item {
                     SettingsSwitchItem(
-                        icon = TawaznIcons.DarkMode,
+                        icon = PhosphorIcons.Bold.Moon,
                         title = "Dark Mode",
                         subtitle = if (useSystemTheme) "Disabled (using system theme)" else "Use dark theme",
                         checked = darkModeEnabled,
@@ -217,7 +237,7 @@ fun SettingsContent(
 
                 item {
                     SettingsItem(
-                        icon = TawaznIcons.CloudUpload,
+                        icon = PhosphorIcons.Bold.CloudArrowUp,
                         title = "Backup & Sync",
                         subtitle = "Cloud backup (Coming soon)",
                         onClick = { /* TODO */ }
@@ -226,7 +246,7 @@ fun SettingsContent(
 
                 item {
                     SettingsItem(
-                        icon = TawaznIcons.DeleteForever,
+                        icon = PhosphorIcons.Bold.Trash,
                         title = "Clear Data",
                         subtitle = "Delete all usage data",
                         onClick = { showClearDataDialog = true }
@@ -291,7 +311,7 @@ fun SettingsContent(
                                         Spacer(modifier = Modifier.width(4.dp))
                                     }
                                     Icon(
-                                        imageVector = TawaznIcons.Sync,
+                                        imageVector = PhosphorIcons.Bold.ArrowsCounterClockwise,
                                         contentDescription = "Sync",
                                         modifier = Modifier.size(16.dp)
                                     )
@@ -317,7 +337,7 @@ fun SettingsContent(
 
                 item {
                     SettingsItem(
-                        icon = TawaznIcons.PermDeviceInformation,
+                        icon = PhosphorIcons.Bold.DeviceMobile,
                         title = "Usage Access",
                         subtitle = "Required for tracking",
                         onClick = { screenModel.requestPermissions() }
@@ -326,7 +346,7 @@ fun SettingsContent(
 
                 item {
                     SettingsItem(
-                        icon = TawaznIcons.Accessibility,
+                        icon = PhosphorIcons.Bold.User,
                         title = "Accessibility Service",
                         subtitle = "Required for blocking",
                         onClick = { screenModel.requestPermissions() }
@@ -340,7 +360,7 @@ fun SettingsContent(
 
                 item {
                     SettingsItem(
-                        icon = TawaznIcons.Info,
+                        icon = PhosphorIcons.Bold.Info,
                         title = "About Tawazn",
                         subtitle = "Version 1.0.0",
                         onClick = { navigator?.push(AboutScreen()) }
@@ -349,7 +369,7 @@ fun SettingsContent(
 
                 item {
                     SettingsItem(
-                        icon = TawaznIcons.Description,
+                        icon = PhosphorIcons.Bold.FileText,
                         title = "Privacy Policy",
                         subtitle = "Read our privacy policy",
                         onClick = { /* TODO */ }
@@ -358,7 +378,7 @@ fun SettingsContent(
 
                 item {
                     SettingsItem(
-                        icon = TawaznIcons.Gavel,
+                        icon = PhosphorIcons.Bold.Gavel,
                         title = "Terms of Service",
                         subtitle = "Read our terms",
                         onClick = { /* TODO */ }
@@ -367,7 +387,7 @@ fun SettingsContent(
 
                 item {
                     SettingsItem(
-                        icon = TawaznIcons.BugReport,
+                        icon = PhosphorIcons.Bold.Bug,
                         title = "Report a Bug",
                         subtitle = "Help us improve",
                         onClick = { /* TODO */ }
@@ -397,7 +417,7 @@ fun SettingsContent(
                 onDismissRequest = { showClearDataDialog = false },
                 icon = {
                     Icon(
-                        imageVector = TawaznIcons.Warning,
+                        imageVector = PhosphorIcons.Bold.Warning,
                         contentDescription = "Warning",
                         tint = MaterialTheme.colorScheme.error
                     )
@@ -486,7 +506,7 @@ fun SettingsItem(
             }
 
             Icon(
-                imageVector = TawaznIcons.ChevronRight,
+                imageVector = PhosphorIcons.Bold.CaretRight,
                 contentDescription = "Navigate",
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(20.dp)

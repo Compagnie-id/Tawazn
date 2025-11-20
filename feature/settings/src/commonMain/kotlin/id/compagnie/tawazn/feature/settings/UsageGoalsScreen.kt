@@ -2,7 +2,11 @@
 
 package id.compagnie.tawazn.feature.settings
 
-import id.compagnie.tawazn.design.icons.TawaznIcons
+import com.adamglin.PhosphorIcons
+import com.adamglin.phosphoricons.Bold
+import com.adamglin.phosphoricons.bold.ArrowLeft
+import com.adamglin.phosphoricons.bold.Flag
+import com.adamglin.phosphoricons.bold.Lightbulb
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -60,7 +64,7 @@ fun UsageGoalsContent() {
                     title = { Text("Usage Goals") },
                     navigationIcon = {
                         IconButton(onClick = { navigator?.pop() }) {
-                            Icon(TawaznIcons.ArrowBack, "Back")
+                            Icon(PhosphorIcons.Bold.ArrowLeft, "Back")
                         }
                     },
                     actions = {
@@ -105,7 +109,7 @@ fun UsageGoalsContent() {
                             horizontalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
                             Icon(
-                                imageVector = TawaznIcons.Flag,
+                                imageVector = PhosphorIcons.Bold.Flag,
                                 contentDescription = "Goals",
                                 modifier = Modifier.size(32.dp),
                                 tint = TawaznTheme.colors.gradientMiddle
@@ -358,7 +362,7 @@ fun UsageGoalsContent() {
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             Icon(
-                                imageVector = TawaznIcons.Lightbulb,
+                                imageVector = PhosphorIcons.Bold.Lightbulb,
                                 contentDescription = "Tips",
                                 tint = TawaznTheme.colors.warning,
                                 modifier = Modifier.size(20.dp)
