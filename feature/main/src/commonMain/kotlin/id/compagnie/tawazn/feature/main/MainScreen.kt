@@ -17,10 +17,10 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -68,16 +68,16 @@ fun MainContent() {
                 containerColor = MaterialTheme.colorScheme.background,
                 bottomBar = {
                     // Neubrutalism style navigation bar
-                    Surface(
+                    Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .border(
-                                width = TawaznTheme.colors.borderWidth,
-                                color = TawaznTheme.colors.border,
-                                shape = RoundedCornerShape(0.dp)
-                            ),
-                        color = TawaznTheme.colors.card
+                            .background(TawaznTheme.colors.card)
                     ) {
+                        // Top border only
+                        HorizontalDivider(
+                            thickness = TawaznTheme.colors.borderWidth,
+                            color = TawaznTheme.colors.border
+                        )
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
