@@ -16,7 +16,8 @@ import kotlinx.serialization.json.Json
  */
 class StringProviderImpl(
     private val dataStore: DataStore<Preferences>,
-    private val translationsProvider: TranslationsProvider
+    private val translationsProvider: TranslationsProvider,
+    private val systemLocaleProvider: SystemLocaleProvider
 ) : StringProvider {
 
     private val _currentLanguage = MutableStateFlow(Language.ENGLISH)
@@ -26,13 +27,27 @@ class StringProviderImpl(
 
     private val languageKey = stringPreferencesKey("app_language")
 
+    init {
+        // Load English translations immediately to prevent empty strings
+        // This ensures the app has translations available even before async init completes
+        translations = translationsProvider.getTranslations(Language.ENGLISH)
+    }
+
     suspend fun initialize() {
-        // Load saved language preference
+        // Load saved language preference, or use system locale as fallback
         val savedLanguageCode = dataStore.data.map { preferences ->
-            preferences[languageKey] ?: Language.ENGLISH.code
+            preferences[languageKey]
         }.first()
 
-        val language = Language.fromCode(savedLanguageCode)
+        val language = if (savedLanguageCode != null) {
+            // User has explicitly selected a language
+            Language.fromCode(savedLanguageCode)
+        } else {
+            // No saved preference, use system locale
+            val systemLocale = systemLocaleProvider.getSystemLocale()
+            Language.fromCode(systemLocale)
+        }
+
         _currentLanguage.value = language
         loadTranslations(language)
     }

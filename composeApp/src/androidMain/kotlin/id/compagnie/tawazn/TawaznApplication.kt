@@ -33,6 +33,7 @@ class TawaznApplication : Application() {
                 dataModule,
                 domainModule,
                 i18nModule,
+                id.compagnie.tawazn.i18n.di.platformLocaleModule,
                 onboardingModule,
                 appBlockingModule,
                 analyticsModule,
