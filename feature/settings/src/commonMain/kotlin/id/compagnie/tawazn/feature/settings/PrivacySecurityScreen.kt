@@ -33,6 +33,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import id.compagnie.tawazn.core.datastore.AppPreferences
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.theme.TawaznTheme
+import id.compagnie.tawazn.i18n.stringResource
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
@@ -55,10 +56,10 @@ fun PrivacySecurityContent() {
     Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Privacy & Security") },
+                    title = { Text(stringResource("privacy_security.title")) },
                     navigationIcon = {
                         IconButton(onClick = { navigator?.pop() }) {
-                            Icon(PhosphorIcons.Bold.ArrowLeft, "Back")
+                            Icon(PhosphorIcons.Bold.ArrowLeft, stringResource("common.back"))
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -76,14 +77,14 @@ fun PrivacySecurityContent() {
             ) {
                 // Data Privacy Section
                 item {
-                    SectionHeader("Data Privacy")
+                    SectionHeader(stringResource("privacy_security.data_privacy"))
                 }
 
                 item {
                     PrivacySwitchItem(
                         icon = PhosphorIcons.Bold.ChartBar,
-                        title = "Analytics",
-                        subtitle = "Help improve Tawazn with anonymous usage data",
+                        title = stringResource("privacy_security.analytics"),
+                        subtitle = stringResource("privacy_security.analytics_desc"),
                         checked = analyticsEnabled,
                         onCheckedChange = {
                             scope.launch {
@@ -96,8 +97,8 @@ fun PrivacySecurityContent() {
                 item {
                     PrivacySwitchItem(
                         icon = PhosphorIcons.Bold.Bug,
-                        title = "Crash Reports",
-                        subtitle = "Automatically send crash reports",
+                        title = stringResource("privacy_security.crash_reports"),
+                        subtitle = stringResource("privacy_security.crash_reports_desc"),
                         checked = crashReportsEnabled,
                         onCheckedChange = {
                             scope.launch {
@@ -109,14 +110,14 @@ fun PrivacySecurityContent() {
 
                 // Data Management Section
                 item {
-                    SectionHeader("Data Management")
+                    SectionHeader(stringResource("privacy_security.data_management"))
                 }
 
                 item {
                     PrivacyActionItem(
                         icon = PhosphorIcons.Bold.DownloadSimple,
-                        title = "Export Data",
-                        subtitle = "Download all your data",
+                        title = stringResource("privacy_security.export_data"),
+                        subtitle = stringResource("privacy_security.export_data_desc"),
                         onClick = { showExportDialog = true }
                     )
                 }
@@ -124,15 +125,15 @@ fun PrivacySecurityContent() {
                 item {
                     PrivacyActionItem(
                         icon = PhosphorIcons.Bold.ClockCounterClockwise,
-                        title = "View Data Usage",
-                        subtitle = "See what data is collected",
+                        title = stringResource("privacy_security.view_data_usage"),
+                        subtitle = stringResource("privacy_security.view_data_usage_desc"),
                         onClick = { /* TODO: Show data usage details */ }
                     )
                 }
 
                 // Security Section
                 item {
-                    SectionHeader("Security")
+                    SectionHeader(stringResource("privacy_security.security"))
                 }
 
                 item {
@@ -148,25 +149,25 @@ fun PrivacySecurityContent() {
                             ) {
                                 Icon(
                                     imageVector = PhosphorIcons.Bold.Shield,
-                                    contentDescription = "Security",
+                                    contentDescription = stringResource("privacy_security.security"),
                                     tint = TawaznTheme.colors.success,
                                     modifier = Modifier.size(24.dp)
                                 )
                                 Column(modifier = Modifier.weight(1f)) {
                                     Text(
-                                        text = "Data Encryption",
+                                        text = stringResource("privacy_security.data_encryption"),
                                         style = MaterialTheme.typography.bodyLarge,
                                         fontWeight = FontWeight.Medium
                                     )
                                     Text(
-                                        text = "Your data is encrypted at rest",
+                                        text = stringResource("privacy_security.data_encryption_desc"),
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 }
                                 Icon(
                                     imageVector = PhosphorIcons.Bold.CheckCircle,
-                                    contentDescription = "Enabled",
+                                    contentDescription = stringResource("privacy_security.enabled"),
                                     tint = TawaznTheme.colors.success
                                 )
                             }
@@ -178,25 +179,25 @@ fun PrivacySecurityContent() {
                             ) {
                                 Icon(
                                     imageVector = PhosphorIcons.Bold.Lock,
-                                    contentDescription = "Local Storage",
+                                    contentDescription = stringResource("privacy_security.local_storage_title"),
                                     tint = TawaznTheme.colors.info,
                                     modifier = Modifier.size(24.dp)
                                 )
                                 Column(modifier = Modifier.weight(1f)) {
                                     Text(
-                                        text = "Local Storage Only",
+                                        text = stringResource("privacy_security.local_storage_title"),
                                         style = MaterialTheme.typography.bodyLarge,
                                         fontWeight = FontWeight.Medium
                                     )
                                     Text(
-                                        text = "All data stays on your device",
+                                        text = stringResource("privacy_security.local_storage_desc"),
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 }
                                 Icon(
                                     imageVector = PhosphorIcons.Bold.CheckCircle,
-                                    contentDescription = "Enabled",
+                                    contentDescription = stringResource("privacy_security.enabled"),
                                     tint = TawaznTheme.colors.info
                                 )
                             }
@@ -206,12 +207,12 @@ fun PrivacySecurityContent() {
 
                 // Permissions Section
                 item {
-                    SectionHeader("Permissions")
+                    SectionHeader(stringResource("privacy_security.permissions"))
                 }
 
                 item {
                     Text(
-                        text = "Tawazn requires certain permissions to function properly. All permissions are used solely for app functionality and never for tracking.",
+                        text = stringResource("privacy_security.permissions_note"),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(horizontal = 8.dp)
@@ -221,24 +222,24 @@ fun PrivacySecurityContent() {
                 item {
                     PermissionInfoCard(
                         icon = PhosphorIcons.Bold.Eye,
-                        title = "Usage Access",
-                        description = "Required to track app usage time and provide insights"
+                        title = stringResource("privacy_security.usage_access"),
+                        description = stringResource("privacy_security.usage_access_desc")
                     )
                 }
 
                 item {
                     PermissionInfoCard(
                         icon = PhosphorIcons.Bold.Bell,
-                        title = "Notifications",
-                        description = "Send you reminders and usage reports"
+                        title = stringResource("privacy_security.notifications_permission"),
+                        description = stringResource("privacy_security.notifications_desc")
                     )
                 }
 
                 item {
                     PermissionInfoCard(
                         icon = PhosphorIcons.Bold.DeviceMobile,
-                        title = "Accessibility (Android)",
-                        description = "Block apps during focus sessions"
+                        title = stringResource("privacy_security.accessibility_android"),
+                        description = stringResource("privacy_security.accessibility_desc")
                     )
                 }
 
@@ -249,7 +250,7 @@ fun PrivacySecurityContent() {
 
                 item {
                     Text(
-                        text = "Privacy Commitment",
+                        text = stringResource("privacy_security.commitment"),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = TawaznTheme.colors.gradientMiddle
@@ -258,12 +259,7 @@ fun PrivacySecurityContent() {
 
                 item {
                     Text(
-                        text = "Tawazn is designed with privacy in mind:\n\n" +
-                                "• All data is stored locally on your device\n" +
-                                "• No personal information is collected\n" +
-                                "• No third-party analytics or tracking\n" +
-                                "• No ads or data selling\n" +
-                                "• Open source and transparent",
+                        text = stringResource("privacy_security.commitment_text"),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -278,17 +274,17 @@ fun PrivacySecurityContent() {
                 icon = {
                     Icon(
                         imageVector = PhosphorIcons.Bold.Info,
-                        contentDescription = "Info",
+                        contentDescription = stringResource("privacy_security.export_dialog_title"),
                         tint = TawaznTheme.colors.info
                     )
                 },
-                title = { Text("Export Data") },
+                title = { Text(stringResource("privacy_security.export_dialog_title")) },
                 text = {
-                    Text("Data export feature coming soon! You'll be able to export all your usage history, sessions, and settings to a JSON file.")
+                    Text(stringResource("privacy_security.export_dialog_message"))
                 },
                 confirmButton = {
                     Button(onClick = { showExportDialog = false }) {
-                        Text("OK")
+                        Text(stringResource("common.ok"))
                     }
                 }
             )

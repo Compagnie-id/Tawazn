@@ -10,6 +10,7 @@ import id.compagnie.tawazn.domain.model.AppUsageSummary
 import id.compagnie.tawazn.domain.model.DailyUsage
 import id.compagnie.tawazn.domain.model.UsageStats
 import id.compagnie.tawazn.domain.repository.UsageRepository
+import id.compagnie.tawazn.i18n.StringProvider
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.datetime.DateTimeUnit
@@ -42,6 +43,7 @@ data class AnalyticsUiState(
 class AnalyticsScreenModel : ScreenModel, KoinComponent {
     private val repository: UsageRepository by inject()
     private val appPreferences: AppPreferences by inject()
+    private val stringProvider: StringProvider by inject()
     private val logger = Logger.withTag("AnalyticsScreenModel")
 
     private val _uiState = MutableStateFlow(AnalyticsUiState())
@@ -136,13 +138,13 @@ class AnalyticsScreenModel : ScreenModel, KoinComponent {
 
     private fun getDayName(dayOfWeek: Int): String {
         return when (dayOfWeek) {
-            1 -> "Monday"
-            2 -> "Tuesday"
-            3 -> "Wednesday"
-            4 -> "Thursday"
-            5 -> "Friday"
-            6 -> "Saturday"
-            7 -> "Sunday"
+            1 -> stringProvider.getString("day.monday")
+            2 -> stringProvider.getString("day.tuesday")
+            3 -> stringProvider.getString("day.wednesday")
+            4 -> stringProvider.getString("day.thursday")
+            5 -> stringProvider.getString("day.friday")
+            6 -> stringProvider.getString("day.saturday")
+            7 -> stringProvider.getString("day.sunday")
             else -> "Unknown"
         }
     }

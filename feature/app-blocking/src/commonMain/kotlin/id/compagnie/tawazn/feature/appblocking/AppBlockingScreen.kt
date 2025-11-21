@@ -51,6 +51,7 @@ import id.compagnie.tawazn.domain.repository.AppRepository
 import id.compagnie.tawazn.domain.repository.BlockedAppRepository
 import id.compagnie.tawazn.domain.usecase.BlockAppUseCase
 import id.compagnie.tawazn.domain.usecase.UnblockAppUseCase
+import id.compagnie.tawazn.i18n.stringResource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -138,11 +139,11 @@ fun AppBlockingContent(screenModel: AppBlockingScreenModel) {
     Scaffold(
         topBar = {
                 TopAppBar(
-                    title = { Text("Block Apps") },
+                    title = { Text(stringResource("app_blocking.title")) },
                     navigationIcon = {
                         if (navigator?.canPop == true) {
                             IconButton(onClick = { navigator.pop() }) {
-                                Icon(PhosphorIcons.Bold.ArrowLeft, "Back")
+                                Icon(PhosphorIcons.Bold.ArrowLeft, stringResource("common.back"))
                             }
                         }
                     },
@@ -165,12 +166,12 @@ fun AppBlockingContent(screenModel: AppBlockingScreenModel) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    placeholder = { Text("Search apps...") },
-                    leadingIcon = { Icon(PhosphorIcons.Bold.MagnifyingGlass, "Search") },
+                    placeholder = { Text(stringResource("app_blocking.search")) },
+                    leadingIcon = { Icon(PhosphorIcons.Bold.MagnifyingGlass, stringResource("app_blocking.search")) },
                     trailingIcon = {
                         if (searchQuery.isNotEmpty()) {
                             IconButton(onClick = { screenModel.updateSearch("") }) {
-                                Icon(PhosphorIcons.Bold.X, "Clear")
+                                Icon(PhosphorIcons.Bold.X, stringResource("app_blocking.clear"))
                             }
                         }
                     },
@@ -192,12 +193,12 @@ fun AppBlockingContent(screenModel: AppBlockingScreenModel) {
                     ) {
                         Column {
                             Text(
-                                text = "$blockedCount Apps Blocked",
+                                text = stringResource("app_blocking.blocked_apps") + " ($blockedCount)",
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.SemiBold
                             )
                             Text(
-                                text = "${apps.size} total apps",
+                                text = stringResource("app_blocking.total_apps", apps.size),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -205,7 +206,7 @@ fun AppBlockingContent(screenModel: AppBlockingScreenModel) {
 
                         Icon(
                             imageVector = PhosphorIcons.Bold.Prohibit,
-                            contentDescription = "Blocked",
+                            contentDescription = stringResource("app_blocking.blocked_apps"),
                             tint = TawaznTheme.colors.gradientMiddle,
                             modifier = Modifier.size(40.dp)
                         )

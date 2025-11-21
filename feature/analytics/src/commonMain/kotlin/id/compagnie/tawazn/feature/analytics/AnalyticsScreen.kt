@@ -47,6 +47,7 @@ import com.adamglin.phosphoricons.bold.Fire
 import com.adamglin.phosphoricons.bold.ClockCountdown
 import com.adamglin.phosphoricons.bold.SquaresFour
 import id.compagnie.tawazn.design.theme.TawaznTheme
+import id.compagnie.tawazn.i18n.stringResource
 
 /**
  * Navigation callbacks for Analytics screen
@@ -86,11 +87,11 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
     Scaffold(
         topBar = {
                 TopAppBar(
-                    title = { Text("Analytics & Insights") },
+                    title = { Text(stringResource("analytics.insights")) },
                     navigationIcon = {
                         if (navigator?.canPop == true) {
                             IconButton(onClick = { navigator.pop() }) {
-                                Icon(PhosphorIcons.Bold.ArrowLeft, "Back")
+                                Icon(PhosphorIcons.Bold.ArrowLeft, stringResource("common.back"))
                             }
                         }
                     },
@@ -111,7 +112,7 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                 // Weekly Summary
                 item {
                     Text(
-                        text = "This Week",
+                        text = stringResource("analytics.this_week"),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold
                     )
@@ -126,16 +127,16 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                             horizontalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
                             StatsCard(
-                                title = "Avg Daily",
+                                title = stringResource("analytics.avg_daily"),
                                 value = uiState.averageDailyTime.toHoursMinutesString(),
-                                subtitle = "This week",
+                                subtitle = stringResource("analytics.this_week"),
                                 modifier = Modifier.weight(1f),
                                 useGradient = true
                             )
 
                             StatsCard(
-                                title = "Best Day",
-                                value = uiState.bestDay?.second?.toHoursMinutesString() ?: "No data",
+                                title = stringResource("analytics.best_day"),
+                                value = uiState.bestDay?.second?.toHoursMinutesString() ?: stringResource("analytics.no_data"),
                                 subtitle = uiState.bestDay?.first ?: "",
                                 modifier = Modifier.weight(1f)
                             )
@@ -146,7 +147,7 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                 // Progress Section
                 item {
                     Text(
-                        text = "Progress",
+                        text = stringResource("analytics.progress"),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(top = 8.dp)
@@ -165,13 +166,13 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = "Today's Goal Progress",
+                                    text = stringResource("analytics.todays_goal_progress"),
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.SemiBold
                                 )
                                 Icon(
                                     imageVector = if (uiState.goalProgress < 0.8f) PhosphorIcons.Bold.TrendDown else PhosphorIcons.Bold.TrendUp,
-                                    contentDescription = "Trending",
+                                    contentDescription = stringResource("analytics.progress"),
                                     tint = if (uiState.goalProgress < 0.8f) TawaznTheme.colors.success else TawaznTheme.colors.warning
                                 )
                             }
@@ -186,7 +187,7 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                             )
 
                             Text(
-                                text = "$progressPercent% towards your daily goal of ${formatGoalHours(goalHours)} (${uiState.todayUsage.toHoursMinutesString()} used)",
+                                text = stringResource("analytics.towards_goal", progressPercent, formatGoalHours(goalHours), uiState.todayUsage.toHoursMinutesString()),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -208,19 +209,19 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                             ) {
                                 Icon(
                                     imageVector = PhosphorIcons.Bold.Fire,
-                                    contentDescription = "Streak",
+                                    contentDescription = stringResource("profile.day_streak"),
                                     tint = TawaznTheme.colors.warning,
                                     modifier = Modifier.size(40.dp)
                                 )
 
                                 Column {
                                     Text(
-                                        text = if (uiState.currentStreak > 0) "${uiState.currentStreak} Day Streak" else "No Active Streak",
+                                        text = if (uiState.currentStreak > 0) stringResource("analytics.streak.active", uiState.currentStreak) else stringResource("analytics.streak.inactive"),
                                         style = MaterialTheme.typography.titleMedium,
                                         fontWeight = FontWeight.SemiBold
                                     )
                                     Text(
-                                        text = if (uiState.currentStreak > 0) "Keep it up! Best: ${uiState.longestStreak} days" else "Start by meeting your daily goal",
+                                        text = if (uiState.currentStreak > 0) stringResource("analytics.streak.keep_going", uiState.longestStreak) else stringResource("analytics.streak.start"),
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -240,7 +241,7 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                 // Insights Section
                 item {
                     Text(
-                        text = "Insights",
+                        text = stringResource("analytics.recommendations"),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(top = 8.dp)
@@ -252,8 +253,8 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                     if (bestDay != null) {
                         InsightCard(
                             icon = PhosphorIcons.Bold.TrendUp,
-                            title = "Most Productive Day",
-                            description = "${bestDay.first} - Only ${bestDay.second.toHoursMinutesString()} screen time",
+                            title = stringResource("analytics.most_productive"),
+                            description = "${bestDay.first} - ${bestDay.second.toHoursMinutesString()}",
                             color = TawaznTheme.colors.success
                         )
                     }
@@ -264,8 +265,8 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                     if (weeklyStats != null && weeklyStats.totalScreenTime.inWholeMinutes > 0) {
                         InsightCard(
                             icon = PhosphorIcons.Bold.ClockCountdown,
-                            title = "Weekly Total",
-                            description = "${weeklyStats.totalScreenTime.toHoursMinutesString()} total screen time this week",
+                            title = stringResource("analytics.weekly_total"),
+                            description = "${weeklyStats.totalScreenTime.toHoursMinutesString()}",
                             color = TawaznTheme.colors.info
                         )
                     }
@@ -277,8 +278,8 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                         val avgDaily = topDistraction.totalTime.inWholeMinutes / 7
                         InsightCard(
                             icon = PhosphorIcons.Bold.SquaresFour,
-                            title = "Top App",
-                            description = "${topDistraction.appName} - ${avgDaily}m average daily",
+                            title = stringResource("analytics.top_app"),
+                            description = "${topDistraction.appName} - ${avgDaily}m",
                             color = TawaznTheme.colors.warning
                         )
                     }
@@ -287,7 +288,7 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                 // Recommendations
                 item {
                     Text(
-                        text = "Recommendations",
+                        text = stringResource("analytics.recommendations"),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(top = 8.dp)
@@ -300,19 +301,19 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                             verticalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
                             Text(
-                                text = "Focus Session Suggestion",
+                                text = stringResource("analytics.focus_suggestion"),
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.SemiBold
                             )
 
                             Text(
-                                text = "Based on your usage patterns, we recommend creating a focus session from 8-10 PM to reduce evening screen time.",
+                                text = stringResource("analytics.focus_suggestion_text"),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
 
                             GradientButton(
-                                text = "Manage Sessions",
+                                text = stringResource("analytics.manage_sessions"),
                                 onClick = navigation.onManageSessionsClick
                             )
                         }
@@ -322,7 +323,7 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                 // Achievements
                 item {
                     Text(
-                        text = "Achievements",
+                        text = stringResource("analytics.achievements"),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(top = 8.dp)

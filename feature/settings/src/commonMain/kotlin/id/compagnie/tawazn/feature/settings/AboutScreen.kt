@@ -32,6 +32,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.theme.TawaznTheme
+import id.compagnie.tawazn.i18n.stringResource
 
 class AboutScreen : Screen {
     @Composable
@@ -48,10 +49,10 @@ fun AboutContent() {
     Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("About") },
+                    title = { Text(stringResource("about.title")) },
                     navigationIcon = {
                         IconButton(onClick = { navigator?.pop() }) {
-                            Icon(PhosphorIcons.Bold.ArrowLeft, "Back")
+                            Icon(PhosphorIcons.Bold.ArrowLeft, stringResource("common.back"))
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -97,13 +98,13 @@ fun AboutContent() {
                         )
 
                         Text(
-                            text = "Version 1.0.0",
+                            text = "${stringResource("about.version")} 1.0.0",
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
 
                         Text(
-                            text = "Balance your digital life",
+                            text = stringResource("about.description"),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             textAlign = TextAlign.Center
@@ -122,13 +123,13 @@ fun AboutContent() {
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             Text(
-                                text = "About Tawazn",
+                                text = stringResource("about.title"),
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.SemiBold
                             )
 
                             Text(
-                                text = "Tawazn (تَوازُن) means 'balance' in Arabic. This app helps you achieve a healthier relationship with technology by tracking your screen time, blocking distracting apps, and providing insights into your digital habits.",
+                                text = stringResource("about.balance_description"),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -138,51 +139,51 @@ fun AboutContent() {
 
                 // Features
                 item {
-                    SectionHeader("Features")
+                    SectionHeader(stringResource("about.features"))
                 }
 
                 item {
                     FeatureCard(
                         icon = PhosphorIcons.Bold.TrendUp,
-                        title = "Usage Tracking",
-                        description = "Monitor your app usage in real-time"
+                        title = stringResource("onboarding.feature.usage_tracking.title"),
+                        description = stringResource("about.usage_tracking_desc")
                     )
                 }
 
                 item {
                     FeatureCard(
                         icon = PhosphorIcons.Bold.Prohibit,
-                        title = "App Blocking",
-                        description = "Block distracting apps when you need focus"
+                        title = stringResource("onboarding.feature.app_blocking.title"),
+                        description = stringResource("about.app_blocking_desc")
                     )
                 }
 
                 item {
                     FeatureCard(
                         icon = PhosphorIcons.Bold.ClockCountdown,
-                        title = "Focus Sessions",
-                        description = "Schedule blocking sessions for maximum productivity"
+                        title = stringResource("focus_session.title"),
+                        description = stringResource("about.focus_sessions_desc")
                     )
                 }
 
                 item {
                     FeatureCard(
                         icon = PhosphorIcons.Bold.ChartBar,
-                        title = "Analytics",
-                        description = "Get insights and trends about your digital habits"
+                        title = stringResource("analytics.title"),
+                        description = stringResource("about.analytics_desc")
                     )
                 }
 
                 // Links Section
                 item {
-                    SectionHeader("Links")
+                    SectionHeader(stringResource("about.links"))
                 }
 
                 item {
                     AboutLinkItem(
                         icon = PhosphorIcons.Bold.Code,
-                        title = "Source Code",
-                        subtitle = "View on GitHub",
+                        title = stringResource("about.source_code"),
+                        subtitle = stringResource("about.view_github"),
                         onClick = { /* TODO: Open GitHub */ }
                     )
                 }
@@ -190,8 +191,8 @@ fun AboutContent() {
                 item {
                     AboutLinkItem(
                         icon = PhosphorIcons.Bold.Bug,
-                        title = "Report a Bug",
-                        subtitle = "Help us improve",
+                        title = stringResource("settings.report_bug.title"),
+                        subtitle = stringResource("about.report_bug_subtitle"),
                         onClick = { /* TODO: Open issue tracker */ }
                     )
                 }
@@ -199,15 +200,15 @@ fun AboutContent() {
                 item {
                     AboutLinkItem(
                         icon = PhosphorIcons.Bold.FileText,
-                        title = "Licenses",
-                        subtitle = "Open source licenses",
+                        title = stringResource("about.licenses"),
+                        subtitle = stringResource("about.licenses_subtitle"),
                         onClick = { showLicensesDialog = true }
                     )
                 }
 
                 // Developer Info
                 item {
-                    SectionHeader("Developer")
+                    SectionHeader(stringResource("about.developer"))
                 }
 
                 item {
@@ -219,20 +220,20 @@ fun AboutContent() {
                             ) {
                                 Icon(
                                     imageVector = PhosphorIcons.Bold.Buildings,
-                                    contentDescription = "Company",
+                                    contentDescription = stringResource("about.developer"),
                                     tint = TawaznTheme.colors.gradientMiddle,
                                     modifier = Modifier.size(24.dp)
                                 )
 
                                 Column {
                                     Text(
-                                        text = "Compagnie.id",
+                                        text = stringResource("about.company_name"),
                                         style = MaterialTheme.typography.bodyLarge,
                                         fontWeight = FontWeight.Medium
                                     )
 
                                     Text(
-                                        text = "Building tools for digital wellbeing",
+                                        text = stringResource("about.company_tagline"),
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -249,7 +250,7 @@ fun AboutContent() {
 
                 item {
                     Text(
-                        text = "© 2024 Compagnie.id\nAll rights reserved",
+                        text = stringResource("about.copyright"),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center,
@@ -259,7 +260,7 @@ fun AboutContent() {
 
                 item {
                     Text(
-                        text = "Made with ❤️ using Compose Multiplatform",
+                        text = stringResource("about.made_with"),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center,
@@ -273,10 +274,10 @@ fun AboutContent() {
         if (showLicensesDialog) {
             AlertDialog(
                 onDismissRequest = { showLicensesDialog = false },
-                title = { Text("Open Source Licenses") },
+                title = { Text(stringResource("about.licenses_dialog_title")) },
                 text = {
                     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                        Text("This app uses the following open source libraries:")
+                        Text(stringResource("about.licenses_dialog_text"))
                         LicenseItem("Compose Multiplatform", "Apache 2.0")
                         LicenseItem("Kotlin", "Apache 2.0")
                         LicenseItem("Kotlinx Coroutines", "Apache 2.0")
@@ -291,7 +292,7 @@ fun AboutContent() {
                 },
                 confirmButton = {
                     Button(onClick = { showLicensesDialog = false }) {
-                        Text("Close")
+                        Text(stringResource("common.done"))
                     }
                 }
             )

@@ -57,6 +57,7 @@ import com.adamglin.phosphoricons.bold.Warning
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.theme.TawaznTheme
+import id.compagnie.tawazn.i18n.stringResource
 import id.compagnie.tawazn.domain.model.BlockSession
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -79,10 +80,10 @@ fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
     Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Focus Sessions") },
+                    title = { Text(stringResource("focus_session.title")) },
                     navigationIcon = {
                         IconButton(onClick = { navigator?.pop() }) {
-                            Icon(PhosphorIcons.Bold.ArrowLeft, "Back")
+                            Icon(PhosphorIcons.Bold.ArrowLeft, stringResource("common.back"))
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -95,7 +96,7 @@ fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
                     onClick = { navigator?.push(CreateEditFocusSessionScreen()) },
                     containerColor = TawaznTheme.colors.gradientMiddle
                 ) {
-                    Icon(PhosphorIcons.Bold.Plus, "Add Session", tint = MaterialTheme.colorScheme.onPrimary)
+                    Icon(PhosphorIcons.Bold.Plus, stringResource("focus_session.create"), tint = MaterialTheme.colorScheme.onPrimary)
                 }
             }
         ) { padding ->
@@ -112,22 +113,22 @@ fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
                     ) {
                         Icon(
                             imageVector = PhosphorIcons.Bold.CalendarX,
-                            contentDescription = "No Sessions",
+                            contentDescription = stringResource("focus_session.no_sessions"),
                             modifier = Modifier.size(64.dp),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
-                            text = "No Focus Sessions",
+                            text = stringResource("focus_session.no_sessions"),
                             style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
-                            text = "Create a session to schedule app blocking",
+                            text = stringResource("focus_session.create_description"),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         GradientButton(
-                            text = "Create Session",
+                            text = stringResource("focus_session.create"),
                             onClick = { navigator?.push(CreateEditFocusSessionScreen()) },
                             modifier = Modifier.padding(top = 16.dp)
                         )
@@ -159,13 +160,13 @@ fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
                 icon = {
                     Icon(
                         imageVector = PhosphorIcons.Bold.Warning,
-                        contentDescription = "Warning",
+                        contentDescription = stringResource("focus_session.delete"),
                         tint = MaterialTheme.colorScheme.error
                     )
                 },
-                title = { Text("Delete Session?") },
+                title = { Text(stringResource("focus_session.delete_confirm_title")) },
                 text = {
-                    Text("Are you sure you want to delete \"${session.name}\"? This action cannot be undone.")
+                    Text(stringResource("focus_session.delete_confirm_message", session.name))
                 },
                 confirmButton = {
                     Button(
@@ -177,12 +178,12 @@ fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
                             containerColor = MaterialTheme.colorScheme.error
                         )
                     ) {
-                        Text("Delete")
+                        Text(stringResource("common.delete"))
                     }
                 },
                 dismissButton = {
                     TextButton(onClick = { showDeleteDialog = null }) {
-                        Text("Cancel")
+                        Text(stringResource("common.cancel"))
                     }
                 }
             )
@@ -243,7 +244,7 @@ fun SessionCard(
             ) {
                 Icon(
                     imageVector = PhosphorIcons.Bold.ClockCountdown,
-                    contentDescription = "Time",
+                    contentDescription = stringResource("focus_session.schedule"),
                     modifier = Modifier.size(16.dp),
                     tint = TawaznTheme.colors.gradientMiddle
                 )
@@ -261,18 +262,18 @@ fun SessionCard(
                 ) {
                     Icon(
                         imageVector = PhosphorIcons.Bold.Repeat,
-                        contentDescription = "Repeat",
+                        contentDescription = stringResource("focus_session.repeat"),
                         modifier = Modifier.size(16.dp),
                         tint = TawaznTheme.colors.info
                     )
                     Text(
                         text = when {
-                            session.repeatDaily -> "Daily"
-                            session.repeatWeekly -> "Weekly"
+                            session.repeatDaily -> stringResource("focus_session.daily")
+                            session.repeatWeekly -> stringResource("focus_session.weekly")
                             session.repeatDays.isNotEmpty() -> session.repeatDays.joinToString(", ") {
                                 it.name.take(3)
                             }
-                            else -> "Once"
+                            else -> stringResource("focus_session.once")
                         },
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -287,12 +288,12 @@ fun SessionCard(
                 ) {
                     Icon(
                         imageVector = PhosphorIcons.Bold.Prohibit,
-                        contentDescription = "Apps",
+                        contentDescription = stringResource("focus_session.apps_to_block"),
                         modifier = Modifier.size(16.dp),
                         tint = MaterialTheme.colorScheme.error
                     )
                     Text(
-                        text = "${session.blockedApps.size} app${if (session.blockedApps.size != 1) "s" else ""} blocked",
+                        text = stringResource("focus_session.apps_blocked_count", session.blockedApps.size, if (session.blockedApps.size != 1) "s" else ""),
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -306,9 +307,9 @@ fun SessionCard(
                     onClick = onEdit,
                     modifier = Modifier.weight(1f)
                 ) {
-                    Icon(PhosphorIcons.Bold.PencilSimple, "Edit", modifier = Modifier.size(18.dp))
+                    Icon(PhosphorIcons.Bold.PencilSimple, stringResource("common.edit"), modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(4.dp))
-                    Text("Edit")
+                    Text(stringResource("common.edit"))
                 }
                 OutlinedButton(
                     onClick = onDelete,
@@ -317,9 +318,9 @@ fun SessionCard(
                         contentColor = MaterialTheme.colorScheme.error
                     )
                 ) {
-                    Icon(PhosphorIcons.Bold.Trash, "Delete", modifier = Modifier.size(18.dp))
+                    Icon(PhosphorIcons.Bold.Trash, stringResource("common.delete"), modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(4.dp))
-                    Text("Delete")
+                    Text(stringResource("common.delete"))
                 }
             }
         }
