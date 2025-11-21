@@ -32,7 +32,6 @@ class UsageGoalsScreen : Screen {
     override fun Content() {
         UsageGoalsContent()
     }
-}
 
 @Composable
 fun UsageGoalsContent() {
@@ -55,9 +54,7 @@ fun UsageGoalsContent() {
             dailyGoalHours = dailyGoalMinutes / 60f
             weeklyGoalHours = weeklyGoalMinutes / 60f
         }
-    }
 
-    TawaznTheme {
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -126,7 +123,6 @@ fun UsageGoalsContent() {
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
-                }
 
                 // Daily Goal
                 Text(
@@ -238,7 +234,6 @@ fun UsageGoalsContent() {
                             )
                         }
                     }
-                }
 
                 // Weekly Goal
                 Spacer(Modifier.height(8.dp))
@@ -352,7 +347,6 @@ fun UsageGoalsContent() {
                             )
                         }
                     }
-                }
 
                 // Tips
                 GlassCard(modifier = Modifier.fillMaxWidth()) {
@@ -382,7 +376,6 @@ fun UsageGoalsContent() {
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
-                }
 
                 // Save button (if changes)
                 if (hasChanges) {
@@ -401,7 +394,6 @@ fun UsageGoalsContent() {
             }
         }
     }
-}
 
 @Composable
 fun PresetButton(
@@ -416,7 +408,6 @@ fun PresetButton(
     ) {
         Text(text, style = MaterialTheme.typography.bodySmall)
     }
-}
 
 fun formatHours(hours: Float): String {
     val wholeHours = hours.toInt()

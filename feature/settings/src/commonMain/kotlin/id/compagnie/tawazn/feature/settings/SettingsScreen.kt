@@ -76,7 +76,6 @@ class SettingsScreen : Screen {
         val screenModel = koinScreenModel<SettingsScreenModel>()
         SettingsContent(screenModel)
     }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -97,7 +96,6 @@ fun SettingsContent(
     // Clear data dialog state
     var showClearDataDialog by remember { mutableStateOf(false) }
 
-    TawaznTheme {
         Scaffold(
             topBar = {
                 if (showBackButton) {
@@ -321,14 +319,12 @@ fun SettingsContent(
                             }
                         }
                     }
-                }
 
                 // Platform Info
                 if (platformState.platformInfo.isNotEmpty()) {
                     item {
                         PlatformInfoCard(platformInfo = platformState.platformInfo)
                     }
-                }
 
                 // Permissions Section
                 item {
@@ -409,7 +405,6 @@ fun SettingsContent(
                     )
                 }
             }
-        }
 
         // Clear Data Confirmation Dialog
         if (showClearDataDialog) {
@@ -455,7 +450,6 @@ fun SettingsContent(
             )
         }
     }
-}
 
 @Composable
 fun SectionHeader(title: String) {
@@ -513,7 +507,6 @@ fun SettingsItem(
             )
         }
     }
-}
 
 @Composable
 fun SettingsSwitchItem(
@@ -568,7 +561,6 @@ fun SettingsSwitchItem(
             )
         }
     }
-}
 
 /**
  * Settings screen for tab navigation (no back button)

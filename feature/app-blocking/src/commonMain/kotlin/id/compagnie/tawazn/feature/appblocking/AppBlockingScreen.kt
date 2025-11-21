@@ -67,7 +67,6 @@ class AppBlockingScreen : Screen {
         val screenModel = koinScreenModel<AppBlockingScreenModel>()
         AppBlockingContent(screenModel)
     }
-}
 
 class AppBlockingScreenModel : ScreenModel, KoinComponent {
     private val appRepository: AppRepository by inject()
@@ -101,7 +100,6 @@ class AppBlockingScreenModel : ScreenModel, KoinComponent {
                 _blockedApps.value = blocked.filter { it.isBlocked }.map { it.packageName }.toSet()
             }
         }
-    }
 
     fun updateSearch(query: String) {
         _searchQuery.value = query
@@ -116,7 +114,6 @@ class AppBlockingScreenModel : ScreenModel, KoinComponent {
             }
         }
     }
-}
 
 data class AppBlockingState(
     val app: AppInfo,
@@ -135,7 +132,6 @@ fun AppBlockingContent(screenModel: AppBlockingScreenModel) {
         derivedStateOf { apps.count { it.isBlocked } }
     }.value
 
-    TawaznTheme {
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -211,7 +207,6 @@ fun AppBlockingContent(screenModel: AppBlockingScreenModel) {
                             modifier = Modifier.size(40.dp)
                         )
                     }
-                }
 
                 // App List
                 LazyColumn(
@@ -229,7 +224,6 @@ fun AppBlockingContent(screenModel: AppBlockingScreenModel) {
             }
         }
     }
-}
 
 @Composable
 fun AppBlockItem(
@@ -281,7 +275,6 @@ fun AppBlockItem(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
-            }
 
             // Toggle Switch
             Switch(

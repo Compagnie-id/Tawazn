@@ -35,7 +35,6 @@ class ProfileScreen : Screen {
     override fun Content() {
         ProfileContent()
     }
-}
 
 @Composable
 fun ProfileContent() {
@@ -58,9 +57,7 @@ fun ProfileContent() {
             editUsername = username
             editEmail = email
         }
-    }
 
-    TawaznTheme {
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -133,7 +130,6 @@ fun ProfileContent() {
                                     tint = MaterialTheme.colorScheme.onPrimaryContainer
                                 )
                             }
-                        }
 
                         if (editMode) {
                             OutlinedTextField(
@@ -163,7 +159,6 @@ fun ProfileContent() {
                             )
                         }
                     }
-                }
 
                 // Stats Section
                 Text(
@@ -202,7 +197,6 @@ fun ProfileContent() {
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
-                    }
 
                     // Longest Streak
                     GlassCard(modifier = Modifier.weight(1f)) {
@@ -230,7 +224,6 @@ fun ProfileContent() {
                             )
                         }
                     }
-                }
 
                 // Account Information
                 Text(
@@ -258,7 +251,6 @@ fun ProfileContent() {
                             value = getPlatformName()
                         )
                     }
-                }
 
                 Spacer(Modifier.height(8.dp))
 
@@ -272,7 +264,6 @@ fun ProfileContent() {
             }
         }
     }
-}
 
 @Composable
 fun InfoRow(icon: androidx.compose.ui.graphics.vector.ImageVector, label: String, value: String) {

@@ -47,7 +47,6 @@ class UsageTrackingScreen : Screen {
         val screenModel = koinScreenModel<UsageTrackingScreenModel>()
         UsageTrackingContent(screenModel)
     }
-}
 
 class UsageTrackingScreenModel : ScreenModel, KoinComponent {
     private val usageRepository: UsageRepository by inject()
@@ -87,7 +86,6 @@ class UsageTrackingScreenModel : ScreenModel, KoinComponent {
                     startDate = today.minus(30, kotlinx.datetime.DateTimeUnit.DAY)
                     endDate = today
                 }
-            }
 
             try {
                 val stats = usageRepository.getUsageStats(startDate, endDate)
@@ -108,7 +106,6 @@ class UsageTrackingScreenModel : ScreenModel, KoinComponent {
             }
         }
     }
-}
 
 enum class UsagePeriod {
     TODAY, WEEK, MONTH
@@ -121,7 +118,6 @@ fun UsageTrackingContent(screenModel: UsageTrackingScreenModel) {
     val selectedPeriod by screenModel.selectedPeriod.collectAsState()
     val navigator = LocalNavigator.current
 
-    TawaznTheme {
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -165,7 +161,6 @@ fun UsageTrackingContent(screenModel: UsageTrackingScreenModel) {
                             )
                         }
                     }
-                }
 
                 // Overview Stats
                 item {
@@ -197,7 +192,6 @@ fun UsageTrackingContent(screenModel: UsageTrackingScreenModel) {
                                 modifier = Modifier.weight(1f)
                             )
                         }
-                    }
 
                     // Top Apps
                     item {
@@ -247,7 +241,6 @@ fun UsageTrackingContent(screenModel: UsageTrackingScreenModel) {
             }
         }
     }
-}
 
 @Composable
 fun UsageAppItem(appUsage: AppUsageSummary) {
@@ -284,7 +277,6 @@ fun UsageAppItem(appUsage: AppUsageSummary) {
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
-            }
 
             Column(horizontalAlignment = Alignment.End) {
                 Text(
@@ -301,7 +293,6 @@ fun UsageAppItem(appUsage: AppUsageSummary) {
             }
         }
     }
-}
 
 fun formatDuration(duration: kotlin.time.Duration): String {
     val hours = duration.inWholeHours

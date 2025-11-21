@@ -47,11 +47,10 @@ class DashboardScreen : Screen {
 fun DashboardContent() {
     val navigation = LocalDashboardNavigation.current
 
-    TawaznTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
+    ) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -255,7 +254,6 @@ fun DashboardContent() {
                 }
             }
         }
-    }
 }
 
 @Composable
