@@ -157,12 +157,12 @@ fun TawaznTheme(
         shadowOffsetX = 4.dp,
         shadowOffsetY = 4.dp,
         borderWidth = 3.dp,
-        cardYellow = NeuYellow,
-        cardGreen = NeuGreen,
-        cardOrange = NeuOrange,
-        cardCyan = NeuCyan,
-        cardPink = Accent,
-        cardLavender = NeuLavender,
+        cardYellow = if (darkTheme) NeuYellowDark else NeuYellow,
+        cardGreen = if (darkTheme) NeuGreenDark else NeuGreen,
+        cardOrange = if (darkTheme) NeuOrangeDark else NeuOrange,
+        cardCyan = if (darkTheme) NeuCyanDark else NeuCyan,
+        cardPink = if (darkTheme) AccentDark else Accent,
+        cardLavender = if (darkTheme) NeuLavenderDark else NeuLavender,
         success = Success,
         warning = Warning,
         error = Error,
@@ -170,7 +170,7 @@ fun TawaznTheme(
         background = if (darkTheme) BackgroundDark else BackgroundLight,
         gradientStart = Primary,
         gradientMiddle = Primary,
-        gradientEnd = Accent,
+        gradientEnd = if (darkTheme) AccentDark else Accent,
         chartColors = listOf(ChartColor1, ChartColor2, ChartColor3, ChartColor4, ChartColor5)
     )
 

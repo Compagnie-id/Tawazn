@@ -19,7 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.koin.koinScreenModel
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.component.PermissionCard
@@ -42,7 +42,7 @@ import id.compagnie.tawazn.design.theme.TawaznTheme
 class OnboardingScreen : Screen {
     @Composable
     override fun Content() {
-        val screenModel = getScreenModel<OnboardingScreenModel>()
+        val screenModel = koinScreenModel<OnboardingScreenModel>()
         OnboardingContent(screenModel)
     }
 }
@@ -52,11 +52,10 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
     var currentPage by remember { mutableStateOf(0) }
     val permissionState by screenModel.permissionState.collectAsState()
 
-    TawaznTheme {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
                     brush = Brush.verticalGradient(
                         colors = listOf(
                             TawaznTheme.colors.gradientStart.copy(alpha = 0.1f),
@@ -132,7 +131,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                             if (currentPage < 3) {
                                 currentPage++
                             } else {
-                                // Complete onboarding - App.kt will automatically navigate to MainScreen
+                                // Complete onboarding - App.kt will automatically show the main app
                                 screenModel.completeOnboarding()
                             }
                         },
@@ -151,7 +150,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                     if (currentPage < 3) {
                         TextButton(
                             onClick = {
-                                // Skip onboarding - App.kt will automatically navigate to MainScreen
+                                // Skip onboarding - App.kt will automatically show the main app
                                 screenModel.completeOnboarding()
                             },
                             modifier = Modifier.fillMaxWidth()
@@ -162,7 +161,6 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                 }
             }
         }
-    }
 }
 
 @Composable

@@ -7,8 +7,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.component.StatsCard
@@ -21,9 +22,18 @@ import com.adamglin.phosphoricons.bold.SquaresFour
 import com.adamglin.phosphoricons.bold.Fire
 import com.adamglin.phosphoricons.bold.TrendDown
 import id.compagnie.tawazn.design.theme.TawaznTheme
-import id.compagnie.tawazn.feature.appblocking.AppBlockingScreen
-import id.compagnie.tawazn.feature.settings.FocusSessionListScreen
-import id.compagnie.tawazn.feature.usagetracking.UsageTrackingScreen
+
+/**
+ * Navigation callbacks for Dashboard screen
+ * This eliminates the need for feature-to-feature dependencies
+ */
+data class DashboardNavigation(
+    val onBlockAppsClick: () -> Unit = {},
+    val onViewUsageClick: () -> Unit = {},
+    val onManageSessionsClick: () -> Unit = {}
+)
+
+val LocalDashboardNavigation = compositionLocalOf { DashboardNavigation() }
 
 class DashboardScreen : Screen {
 
@@ -35,18 +45,12 @@ class DashboardScreen : Screen {
 
 @Composable
 fun DashboardContent() {
-    val navigator = LocalNavigator.current
+    val navigation = LocalDashboardNavigation.current
 
-    // Remember navigation callbacks to prevent unnecessary recompositions
-    val onBlockAppsClick = remember { { navigator?.push(AppBlockingScreen()); Unit } }
-    val onViewUsageClick = remember { { navigator?.push(UsageTrackingScreen()); Unit } }
-    val onManageSessionsClick = remember { { navigator?.push(FocusSessionListScreen()); Unit } }
-
-    TawaznTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
+    ) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -142,14 +146,14 @@ fun DashboardContent() {
                         QuickActionCard(
                             icon = PhosphorIcons.Bold.Prohibit,
                             title = "Block Apps",
-                            onClick = onBlockAppsClick,
+                            onClick = navigation.onBlockAppsClick,
                             modifier = Modifier.weight(1f)
                         )
 
                         QuickActionCard(
                             icon = PhosphorIcons.Bold.Clock,
                             title = "View Usage",
-                            onClick = onViewUsageClick,
+                            onClick = navigation.onViewUsageClick,
                             modifier = Modifier.weight(1f)
                         )
                     }
@@ -189,7 +193,7 @@ fun DashboardContent() {
 
                             GradientButton(
                                 text = "Manage Sessions",
-                                onClick = onManageSessionsClick,
+                                onClick = navigation.onManageSessionsClick,
                                 modifier = Modifier.fillMaxWidth()
                             )
                         }
@@ -250,7 +254,6 @@ fun DashboardContent() {
                 }
             }
         }
-    }
 }
 
 @Composable

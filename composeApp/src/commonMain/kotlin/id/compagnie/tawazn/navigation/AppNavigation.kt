@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalVoyagerApi::class)
 
-package id.compagnie.tawazn.feature.main
+package id.compagnie.tawazn.navigation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -32,7 +31,6 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
-import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
@@ -42,64 +40,64 @@ import cafe.adriel.voyager.navigator.tab.TabOptions
 import cafe.adriel.voyager.transitions.SlideTransition
 import com.adamglin.PhosphorIcons
 import com.adamglin.phosphoricons.Bold
-import com.adamglin.phosphoricons.bold.House
-import com.adamglin.phosphoricons.bold.SquaresFour
 import com.adamglin.phosphoricons.bold.ChartBar
 import com.adamglin.phosphoricons.bold.Gear
+import com.adamglin.phosphoricons.bold.House
+import com.adamglin.phosphoricons.bold.SquaresFour
 import id.compagnie.tawazn.design.theme.TawaznTheme
+import id.compagnie.tawazn.feature.dashboard.DashboardNavigation
+import id.compagnie.tawazn.feature.dashboard.LocalDashboardNavigation
+import id.compagnie.tawazn.feature.analytics.AnalyticsNavigation
+import id.compagnie.tawazn.feature.analytics.LocalAnalyticsNavigation
 
 /**
- * Main application screen with tab-based navigation
- * Provides bottom navigation bar with 4 main tabs
+ * Main navigation container with bottom tab navigation
+ * Manages the primary app navigation structure
  */
-class MainScreen : Screen {
-
-    @Composable
-    override fun Content() {
-        MainContent()
+@Composable
+fun AppNavigation() {
+    TabNavigator(DashboardTab) {
+        Scaffold(
+            containerColor = MaterialTheme.colorScheme.background,
+            bottomBar = { BottomNavigationBar() }
+        ) { paddingValues ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+            ) {
+                CurrentTab()
+            }
+        }
     }
 }
 
+/**
+ * Bottom navigation bar with neubrutalism style
+ * Displays 4 main tabs: Home, Apps, Insights, Settings
+ */
 @Composable
-fun MainContent() {
-    TawaznTheme {
-        TabNavigator(DashboardTab) {
-            Scaffold(
-                containerColor = MaterialTheme.colorScheme.background,
-                bottomBar = {
-                    // Neubrutalism style navigation bar
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(TawaznTheme.colors.card)
-                    ) {
-                        // Top border only
-                        HorizontalDivider(
-                            thickness = TawaznTheme.colors.borderWidth,
-                            color = TawaznTheme.colors.border
-                        )
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(8.dp),
-                            horizontalArrangement = Arrangement.SpaceEvenly
-                        ) {
-                            TabNavigationItem(DashboardTab)
-                            TabNavigationItem(AppsTab)
-                            TabNavigationItem(AnalyticsTab)
-                            TabNavigationItem(SettingsTab)
-                        }
-                    }
-                }
-            ) { paddingValues ->
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues)
-                ) {
-                    CurrentTab()
-                }
-            }
+private fun BottomNavigationBar() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(TawaznTheme.colors.card)
+    ) {
+        // Top border only
+        HorizontalDivider(
+            thickness = TawaznTheme.colors.borderWidth,
+            color = TawaznTheme.colors.border
+        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            TabNavigationItem(DashboardTab)
+            TabNavigationItem(AppsTab)
+            TabNavigationItem(AnalyticsTab)
+            TabNavigationItem(SettingsTab)
         }
     }
 }
@@ -179,7 +177,8 @@ private fun RowScope.TabNavigationItem(tab: Tab) {
     }
 }
 
-// Tab Objects
+// Tab Definitions - Each tab wraps its feature screen in a Navigator
+
 object DashboardTab : Tab {
     override val options: TabOptions
         @Composable
@@ -204,10 +203,19 @@ object DashboardTab : Tab {
                 disposeSteps = false
             )
         ) { navigator ->
-            SlideTransition(
-                navigator = navigator,
-                disposeScreenAfterTransitionEnd = true
-            )
+            // Provide navigation callbacks to Dashboard
+            androidx.compose.runtime.CompositionLocalProvider(
+                LocalDashboardNavigation provides DashboardNavigation(
+                    onBlockAppsClick = { navigator.push(id.compagnie.tawazn.feature.appblocking.AppBlockingScreen()) },
+                    onViewUsageClick = { navigator.push(id.compagnie.tawazn.feature.usagetracking.UsageTrackingScreen()) },
+                    onManageSessionsClick = { navigator.push(id.compagnie.tawazn.feature.settings.FocusSessionListScreen()) }
+                )
+            ) {
+                SlideTransition(
+                    navigator = navigator,
+                    disposeScreenAfterTransitionEnd = true
+                )
+            }
         }
     }
 }
@@ -268,10 +276,17 @@ object AnalyticsTab : Tab {
                 disposeSteps = false
             )
         ) { navigator ->
-            SlideTransition(
-                navigator = navigator,
-                disposeScreenAfterTransitionEnd = true
-            )
+            // Provide navigation callbacks to Analytics
+            androidx.compose.runtime.CompositionLocalProvider(
+                LocalAnalyticsNavigation provides AnalyticsNavigation(
+                    onManageSessionsClick = { navigator.push(id.compagnie.tawazn.feature.settings.FocusSessionListScreen()) }
+                )
+            ) {
+                SlideTransition(
+                    navigator = navigator,
+                    disposeScreenAfterTransitionEnd = true
+                )
+            }
         }
     }
 }

@@ -60,8 +60,7 @@ fun ProfileContent() {
         }
     }
 
-    TawaznTheme {
-        Scaffold(
+    Scaffold(
             topBar = {
                 TopAppBar(
                     title = { Text("Profile") },
@@ -272,7 +271,6 @@ fun ProfileContent() {
             }
         }
     }
-}
 
 @Composable
 fun InfoRow(icon: androidx.compose.ui.graphics.vector.ImageVector, label: String, value: String) {

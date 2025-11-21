@@ -18,7 +18,7 @@ import com.adamglin.phosphoricons.bold.ArrowsClockwise
 import com.adamglin.phosphoricons.bold.Clock
 import com.adamglin.phosphoricons.bold.SquaresFour
 import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -44,7 +44,7 @@ class UsageTrackingScreen : Screen {
 
     @Composable
     override fun Content() {
-        val screenModel = getScreenModel<UsageTrackingScreenModel>()
+        val screenModel = koinScreenModel<UsageTrackingScreenModel>()
         UsageTrackingContent(screenModel)
     }
 }
@@ -121,9 +121,8 @@ fun UsageTrackingContent(screenModel: UsageTrackingScreenModel) {
     val selectedPeriod by screenModel.selectedPeriod.collectAsState()
     val navigator = LocalNavigator.current
 
-    TawaznTheme {
-        Scaffold(
-            topBar = {
+    Scaffold(
+        topBar = {
                 TopAppBar(
                     title = { Text("Usage Tracking") },
                     navigationIcon = {
@@ -246,7 +245,6 @@ fun UsageTrackingContent(screenModel: UsageTrackingScreenModel) {
                 }
             }
         }
-    }
 }
 
 @Composable

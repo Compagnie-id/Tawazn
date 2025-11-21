@@ -57,8 +57,7 @@ fun UsageGoalsContent() {
         }
     }
 
-    TawaznTheme {
-        Scaffold(
+    Scaffold(
             topBar = {
                 TopAppBar(
                     title = { Text("Usage Goals") },
@@ -401,7 +400,6 @@ fun UsageGoalsContent() {
             }
         }
     }
-}
 
 @Composable
 fun PresetButton(

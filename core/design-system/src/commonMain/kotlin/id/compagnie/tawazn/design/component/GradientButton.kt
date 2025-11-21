@@ -209,7 +209,7 @@ fun SecondaryNeuButton(
         modifier = modifier,
         enabled = enabled,
         backgroundColor = TawaznTheme.colors.cardYellow,
-        textColor = NeuBlack,
+        textColor = MaterialTheme.colorScheme.onSurface,
         cornerRadius = cornerRadius,
         contentPadding = contentPadding
     )

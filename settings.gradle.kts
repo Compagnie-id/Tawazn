@@ -53,7 +53,6 @@ include(":platform:ios")
 include(":platform:desktop")
 
 // Feature Modules
-include(":feature:main")
 include(":feature:dashboard")
 include(":feature:app-blocking")
 include(":feature:usage-tracking")

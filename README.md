@@ -33,9 +33,12 @@
 
 ### Multi-Module Clean Architecture
 
+Tawazn follows **Clean Architecture** principles with **zero feature-to-feature dependencies**:
+
 ```
 Tawazn/
-├── composeApp/              # Main application
+├── composeApp/              # Main application & navigation
+│   └── navigation/          # Bottom tab navigation (Voyager)
 ├── core/
 │   ├── common/              # Shared utilities
 │   ├── design-system/       # Liquid glass UI components
@@ -44,7 +47,7 @@ Tawazn/
 │   └── network/             # Ktor client
 ├── domain/                  # Business logic (Pure Kotlin)
 ├── data/                    # Repository implementations
-├── feature/
+├── feature/                 # Independent feature modules
 │   ├── dashboard/           # Main dashboard
 │   ├── app-blocking/        # App blocking feature
 │   ├── usage-tracking/      # Usage statistics
@@ -56,6 +59,12 @@ Tawazn/
     ├── ios/                 # iOS-specific (Screen Time API)
     └── desktop/             # Desktop-specific monitoring
 ```
+
+**Key Architecture Principles:**
+- ✅ **Zero Feature Dependencies** - Features never import each other
+- ✅ **Navigation in composeApp** - App-level orchestration
+- ✅ **Clean Separation** - Clear layer boundaries
+- ✅ **Testable & Scalable** - Each feature can be built independently
 
 For detailed architecture documentation, see [ARCHITECTURE.md](ARCHITECTURE.md).
 
@@ -249,52 +258,215 @@ xcodebuild -project iosApp/iosApp.xcodeproj -scheme iosApp -configuration Debug
 
 ---
 
-## 📁 Project Structure
+## 📁 Detailed Project Structure
 
 ```
-/
-├── composeApp/                         # Main app module
-│   ├── src/commonMain/                 # Shared app code
-│   ├── src/androidMain/                # Android app code
-│   ├── src/iosMain/                    # iOS app code
-│   └── src/jvmMain/                    # Desktop app code
+Tawazn/
 │
-├── core/                               # Core modules
-│   ├── common/                         # Utilities, extensions
-│   ├── design-system/                  # Liquid glass UI
-│   ├── database/                       # SQLDelight
-│   ├── datastore/                      # Preferences
-│   └── network/                        # Ktor client
+├── composeApp/                                    # Main application module
+│   ├── build.gradle.kts                           # App build configuration
+│   └── src/
+│       ├── commonMain/kotlin/id/compagnie/tawazn/
+│       │   ├── App.kt                             # Root @Composable (theme + DI)
+│       │   └── navigation/
+│       │       ├── AppNavigation.kt               # TabNavigator + bottom bar
+│       │       └── NavigationDestination.kt       # Navigation abstraction
+│       ├── androidMain/kotlin/
+│       │   ├── MainActivity.kt                    # Android entry point
+│       │   └── TawaznApplication.kt               # Application class (Koin init)
+│       ├── iosMain/kotlin/
+│       │   └── MainViewController.kt              # iOS entry point
+│       └── jvmMain/kotlin/
+│           └── main.kt                            # Desktop entry point
 │
-├── domain/                             # Business logic
-│   ├── model/                          # Domain models
-│   ├── repository/                     # Repository interfaces
-│   └── usecase/                        # Use cases
+├── core/                                          # Shared infrastructure
+│   ├── common/
+│   │   └── src/commonMain/kotlin/                 # Utilities, extensions, constants
+│   ├── design-system/
+│   │   └── src/commonMain/kotlin/
+│   │       ├── component/                         # Reusable UI components
+│   │       │   ├── GlassCard.kt                   # Glassmorphism card
+│   │       │   ├── GradientButton.kt              # Gradient button
+│   │       │   ├── StatsCard.kt                   # Statistics display
+│   │       │   └── PermissionComponents.kt        # Permission UI
+│   │       └── theme/
+│   │           ├── Theme.kt                       # TawaznTheme composable
+│   │           ├── Color.kt                       # Color palette
+│   │           ├── Type.kt                        # Typography scale
+│   │           └── Shape.kt                       # Shape definitions
+│   ├── database/
+│   │   ├── build.gradle.kts                       # SQLDelight plugin config
+│   │   └── src/
+│   │       ├── commonMain/
+│   │       │   ├── sqldelight/                    # SQL schema definitions
+│   │       │   │   └── id/compagnie/tawazn/database/
+│   │       │   │       ├── App.sq                 # Apps table
+│   │       │   │       ├── BlockedApp.sq          # Blocked apps table
+│   │       │   │       ├── AppUsage.sq            # Usage stats table
+│   │       │   │       └── BlockSession.sq        # Sessions table
+│   │       │   └── kotlin/                        # Database factory
+│   │       ├── androidMain/kotlin/                # Android SQLite driver
+│   │       ├── iosMain/kotlin/                    # iOS native driver
+│   │       └── jvmMain/kotlin/                    # JVM SQLite driver
+│   ├── datastore/
+│   │   └── src/
+│   │       ├── commonMain/kotlin/                 # Preferences interfaces
+│   │       └── androidMain/kotlin/                # DataStore implementation
+│   └── network/
+│       └── src/
+│           ├── commonMain/kotlin/                 # Ktor client setup
+│           ├── androidMain/kotlin/                # OkHttp engine
+│           ├── iosMain/kotlin/                    # Darwin engine
+│           └── jvmMain/kotlin/                    # Java HTTP engine
 │
-├── data/                               # Data layer
-│   ├── repository/                     # Repository implementations
-│   └── di/                             # Koin modules
+├── domain/                                        # Pure Kotlin business logic
+│   └── src/commonMain/kotlin/id/compagnie/tawazn/domain/
+│       ├── model/
+│       │   ├── AppInfo.kt                         # App metadata model
+│       │   ├── BlockedApp.kt                      # Blocked app model
+│       │   ├── AppUsage.kt                        # Usage data model
+│       │   └── BlockSession.kt                    # Session model
+│       ├── repository/                            # Repository interfaces
+│       │   ├── AppRepository.kt
+│       │   ├── BlockedAppRepository.kt
+│       │   ├── UsageRepository.kt
+│       │   └── BlockSessionRepository.kt
+│       ├── usecase/                               # Business use cases
+│       │   ├── BlockAppUseCase.kt
+│       │   ├── UnblockAppUseCase.kt
+│       │   ├── GetActiveBlockedAppsUseCase.kt
+│       │   ├── GetUsageStatsUseCase.kt
+│       │   ├── CreateBlockSessionUseCase.kt
+│       │   ├── GetNonSystemAppsUseCase.kt
+│       │   └── SyncUsageUseCase.kt
+│       └── di/
+│           └── DomainModule.kt                    # Koin DI module
 │
-├── feature/                            # Feature modules
-│   ├── dashboard/                      # Main dashboard
-│   ├── app-blocking/                   # App blocking
-│   ├── usage-tracking/                 # Usage stats
-│   ├── analytics/                      # Analytics
-│   ├── settings/                       # Settings
-│   └── onboarding/                     # Onboarding
+├── data/                                          # Repository implementations
+│   └── src/
+│       ├── commonMain/kotlin/id/compagnie/tawazn/data/
+│       │   ├── repository/
+│       │   │   ├── AppRepositoryImpl.kt           # SQLDelight-backed impl
+│       │   │   ├── BlockedAppRepositoryImpl.kt
+│       │   │   ├── UsageRepositoryImpl.kt
+│       │   │   └── BlockSessionRepositoryImpl.kt
+│       │   ├── service/
+│       │   │   └── PlatformSyncService.kt         # expect declaration
+│       │   └── di/
+│       │       └── DataModule.kt                  # Common DI module
+│       ├── androidMain/kotlin/                    # Android-specific repos
+│       ├── iosMain/kotlin/                        # iOS-specific repos
+│       └── jvmMain/kotlin/                        # Desktop-specific repos
 │
-├── platform/                           # Platform-specific
-│   ├── android/                        # Android APIs
-│   ├── ios/                            # iOS APIs
-│   └── desktop/                        # Desktop APIs
+├── feature/                                       # Feature modules (INDEPENDENT)
+│   ├── dashboard/
+│   │   └── src/commonMain/kotlin/id/compagnie/tawazn/feature/dashboard/
+│   │       ├── DashboardScreen.kt                 # Screen + LocalNavigation
+│   │       ├── DashboardScreenModel.kt            # State management
+│   │       └── di/
+│   ├── app-blocking/
+│   │   └── src/commonMain/kotlin/id/compagnie/tawazn/feature/appblocking/
+│   │       ├── AppBlockingScreen.kt
+│   │       ├── AppBlockingScreenModel.kt
+│   │       └── di/
+│   ├── usage-tracking/
+│   │   └── src/commonMain/kotlin/id/compagnie/tawazn/feature/usagetracking/
+│   │       ├── UsageTrackingScreen.kt
+│   │       ├── UsageTrackingScreenModel.kt
+│   │       └── di/
+│   ├── analytics/
+│   │   └── src/commonMain/kotlin/id/compagnie/tawazn/feature/analytics/
+│   │       ├── AnalyticsScreen.kt                 # + LocalAnalyticsNavigation
+│   │       ├── AnalyticsScreenModel.kt
+│   │       └── di/
+│   ├── settings/
+│   │   └── src/
+│   │       ├── commonMain/kotlin/id/compagnie/tawazn/feature/settings/
+│   │       │   ├── SettingsScreen.kt              # Main settings (tabs entry)
+│   │       │   ├── ProfileScreen.kt
+│   │       │   ├── PrivacySecurityScreen.kt
+│   │       │   ├── UsageGoalsScreen.kt
+│   │       │   ├── AboutScreen.kt
+│   │       │   ├── FocusSessionListScreen.kt
+│   │       │   ├── CreateEditFocusSessionScreen.kt
+│   │       │   ├── SettingsScreenModel.kt
+│   │       │   ├── FocusSessionScreenModel.kt
+│   │       │   └── di/
+│   │       ├── androidMain/kotlin/                # Platform-specific settings
+│   │       ├── iosMain/kotlin/
+│   │       └── jvmMain/kotlin/
+│   └── onboarding/
+│       └── src/commonMain/kotlin/id/compagnie/tawazn/feature/onboarding/
+│           ├── OnboardingScreen.kt                # Welcome flow (4 pages)
+│           ├── OnboardingScreenModel.kt
+│           └── di/
 │
-├── iosApp/                             # iOS native wrapper
-├── gradle/                             # Gradle configuration
-│   └── libs.versions.toml              # Version catalog
+├── platform/                                      # Platform-specific implementations
+│   ├── android/
+│   │   └── src/
+│   │       ├── commonMain/kotlin/
+│   │       │   └── AppMonitor.kt                  # expect declaration
+│   │       └── androidMain/kotlin/
+│   │           ├── AndroidAppMonitor.kt           # UsageStatsManager impl
+│   │           ├── AppBlockingAccessibilityService.kt
+│   │           ├── UsageSyncWorker.kt             # WorkManager sync
+│   │           └── PermissionHelper.kt
+│   ├── ios/
+│   │   └── src/
+│   │       ├── commonMain/kotlin/
+│   │       │   └── IOSAppMonitor.kt               # expect declaration
+│   │       └── iosMain/kotlin/
+│   │           ├── IOSAppMonitorImpl.kt           # Screen Time API
+│   │           └── IOSPlatformSync.kt
+│   └── desktop/
+│       └── src/jvmMain/kotlin/
+│           ├── DesktopAppMonitor.kt
+│           ├── WindowsAppMonitor.kt               # WMI integration
+│           ├── MacOSAppMonitor.kt                 # system_profiler
+│           └── DesktopPlatformSync.kt
 │
-├── ARCHITECTURE.md                     # Architecture docs
-└── README.md                           # This file
+├── iosApp/                                        # iOS native app wrapper
+│   ├── iosApp.xcodeproj/
+│   └── iosApp/
+│       ├── ContentView.swift                      # SwiftUI wrapper
+│       ├── iOSApp.swift                           # App entry point
+│       └── Info.plist                             # iOS configuration
+│
+├── gradle/
+│   ├── libs.versions.toml                         # Centralized dependency versions
+│   └── wrapper/                                   # Gradle wrapper
+│
+├── build.gradle.kts                               # Root build configuration
+├── settings.gradle.kts                            # Module inclusion (18 modules)
+├── gradle.properties                              # Gradle runtime settings
+│
+├── ARCHITECTURE.md                                # Detailed architecture docs
+├── README.md                                      # This file
+├── IMPLEMENTATION_SUMMARY.md                      # Implementation details
+└── TESTING_*.md                                   # Testing guides
 ```
+
+### 📊 Module Count
+
+| Category | Modules | Description |
+|----------|---------|-------------|
+| **Core Infrastructure** | 5 | common, design-system, database, datastore, network |
+| **Business Logic** | 2 | domain, data |
+| **Platform-Specific** | 3 | android, ios, desktop |
+| **Feature Modules** | 6 | dashboard, app-blocking, usage-tracking, analytics, settings, onboarding |
+| **App Entry** | 1 | composeApp |
+| **Total** | **17 modules** | Clean, modular architecture |
+
+### 🔗 Key Files
+
+| File | Purpose |
+|------|---------|
+| `composeApp/App.kt` | Root composable with theme + DI |
+| `composeApp/navigation/AppNavigation.kt` | Bottom tab navigation (4 tabs) |
+| `domain/usecase/*.kt` | Business logic use cases |
+| `data/repository/*Impl.kt` | SQLDelight-backed repositories |
+| `core/design-system/theme/Theme.kt` | App theme + colors |
+| `core/database/src/commonMain/sqldelight/` | Database schema (SQL) |
 
 ---
 

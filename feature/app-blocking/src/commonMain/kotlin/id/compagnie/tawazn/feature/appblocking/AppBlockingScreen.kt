@@ -135,9 +135,8 @@ fun AppBlockingContent(screenModel: AppBlockingScreenModel) {
         derivedStateOf { apps.count { it.isBlocked } }
     }.value
 
-    TawaznTheme {
-        Scaffold(
-            topBar = {
+    Scaffold(
+        topBar = {
                 TopAppBar(
                     title = { Text("Block Apps") },
                     navigationIcon = {
@@ -228,7 +227,6 @@ fun AppBlockingContent(screenModel: AppBlockingScreenModel) {
                 }
             }
         }
-    }
 }
 
 @Composable
