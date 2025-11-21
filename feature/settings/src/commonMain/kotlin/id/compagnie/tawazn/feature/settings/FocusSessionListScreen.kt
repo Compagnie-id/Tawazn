@@ -68,6 +68,7 @@ class FocusSessionListScreen : Screen {
         val screenModel = koinScreenModel<FocusSessionScreenModel>()
         FocusSessionListContent(screenModel)
     }
+}
 
 @Composable
 fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
@@ -75,6 +76,7 @@ fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
     val sessions by screenModel.allSessions.collectAsState(initial = emptyList())
     var showDeleteDialog by remember { mutableStateOf<BlockSession?>(null) }
 
+    TawaznTheme {
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -149,6 +151,7 @@ fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
                     }
                 }
             }
+        }
 
         // Delete confirmation dialog
         showDeleteDialog?.let { session ->
@@ -186,6 +189,7 @@ fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
             )
         }
     }
+}
 
 @Composable
 fun SessionCard(
@@ -275,6 +279,7 @@ fun SessionCard(
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
+            }
 
             // Blocked apps count
             if (session.blockedApps.isNotEmpty()) {
@@ -293,6 +298,7 @@ fun SessionCard(
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
+            }
 
             // Action buttons
             Row(

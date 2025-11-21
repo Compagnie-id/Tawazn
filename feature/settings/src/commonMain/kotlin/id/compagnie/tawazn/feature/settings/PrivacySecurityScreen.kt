@@ -41,6 +41,7 @@ class PrivacySecurityScreen : Screen {
     override fun Content() {
         PrivacySecurityContent()
     }
+}
 
 @Composable
 fun PrivacySecurityContent() {
@@ -51,6 +52,7 @@ fun PrivacySecurityContent() {
     val crashReportsEnabled by appPreferences.crashReportsEnabled.collectAsState(initial = true)
     var showExportDialog by remember { mutableStateOf(false) }
 
+    TawaznTheme {
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -201,6 +203,7 @@ fun PrivacySecurityContent() {
                             }
                         }
                     }
+                }
 
                 // Permissions Section
                 item {
@@ -267,6 +270,7 @@ fun PrivacySecurityContent() {
                     )
                 }
             }
+        }
 
         // Export Dialog
         if (showExportDialog) {
@@ -291,6 +295,7 @@ fun PrivacySecurityContent() {
             )
         }
     }
+}
 
 @Composable
 fun PrivacySwitchItem(
@@ -334,6 +339,7 @@ fun PrivacySwitchItem(
             )
         }
     }
+}
 
 @Composable
 fun PrivacyActionItem(
@@ -377,6 +383,7 @@ fun PrivacyActionItem(
             )
         }
     }
+}
 
 @Composable
 fun PermissionInfoCard(icon: ImageVector, title: String, description: String) {

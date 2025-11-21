@@ -45,12 +45,14 @@ class OnboardingScreen : Screen {
         val screenModel = koinScreenModel<OnboardingScreenModel>()
         OnboardingContent(screenModel)
     }
+}
 
 @Composable
 fun OnboardingContent(screenModel: OnboardingScreenModel) {
     var currentPage by remember { mutableStateOf(0) }
     val permissionState by screenModel.permissionState.collectAsState()
 
+    TawaznTheme {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -94,6 +96,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                                 )
                         )
                     }
+                }
 
                 // Content
                 AnimatedVisibility(
@@ -114,6 +117,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                             onStartServices = { screenModel.startBackgroundServices() }
                         )
                     }
+                }
 
                 Spacer(modifier = Modifier.weight(1f))
 
@@ -142,6 +146,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                         ) {
                             Text("Back")
                         }
+                    }
 
                     if (currentPage < 3) {
                         TextButton(
@@ -158,6 +163,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
             }
         }
     }
+}
 
 @Composable
 fun WelcomePage() {
@@ -196,6 +202,7 @@ fun WelcomePage() {
             modifier = Modifier.padding(horizontal = 16.dp)
         )
     }
+}
 
 @Composable
 fun FeaturePage() {
@@ -237,6 +244,7 @@ fun FeaturePage() {
             description = "Understand your digital habits with weekly reports"
         )
     }
+}
 
 @Composable
 fun PermissionPage(
@@ -289,6 +297,7 @@ fun PermissionPage(
                     )
                 }
             }
+        }
 
         // Permission Cards
         PermissionCard(
@@ -326,6 +335,7 @@ fun PermissionPage(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
+        }
 
         // Refresh permissions button
         if (permissionState.permissionRequested && !permissionState.hasAllPermissions) {
@@ -338,6 +348,7 @@ fun PermissionPage(
                 Spacer(modifier = Modifier.width(4.dp))
                 Text("Check Again")
             }
+        }
 
         // Privacy note
         Row(
@@ -358,6 +369,7 @@ fun PermissionPage(
             )
         }
     }
+}
 
 @Composable
 fun ReadyPage(
@@ -412,6 +424,7 @@ fun ReadyPage(
                     QuickTip("Track your progress")
                 }
             }
+        }
 
         // Show permission warning if not granted
         if (!permissionState.hasAllPermissions) {
@@ -444,6 +457,7 @@ fun ReadyPage(
             }
         }
     }
+}
 
 @Composable
 fun FeatureItem(
@@ -477,6 +491,7 @@ fun FeatureItem(
             }
         }
     }
+}
 
 @Composable
 fun QuickTip(text: String) {

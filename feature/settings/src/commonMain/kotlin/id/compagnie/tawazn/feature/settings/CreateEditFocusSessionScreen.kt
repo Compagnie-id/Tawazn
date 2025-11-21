@@ -74,6 +74,7 @@ data class CreateEditFocusSessionScreen(
         val screenModel = koinScreenModel<FocusSessionScreenModel>()
         CreateEditFocusSessionContent(screenModel, existingSession)
     }
+}
 
 @Composable
 fun CreateEditFocusSessionContent(
@@ -99,6 +100,7 @@ fun CreateEditFocusSessionContent(
 
     val isFormValid = name.isNotBlank()
 
+    TawaznTheme {
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -150,6 +152,7 @@ fun CreateEditFocusSessionContent(
                             maxLines = 3
                         )
                     }
+                }
 
                 // Time Section
                 Text(
@@ -237,6 +240,7 @@ fun CreateEditFocusSessionContent(
                             Icon(PhosphorIcons.Bold.PencilSimple, "Edit")
                         }
                     }
+                }
 
                 // Repeat Section
                 Text(
@@ -335,6 +339,7 @@ fun CreateEditFocusSessionContent(
                             )
                         }
                     }
+                }
 
                 Spacer(Modifier.height(8.dp))
 
@@ -400,6 +405,7 @@ fun CreateEditFocusSessionContent(
                     }
                 }
             }
+        }
 
         // Time Picker Dialog
         showTimePickerDialog?.let { type ->
@@ -436,6 +442,7 @@ fun CreateEditFocusSessionContent(
             )
         }
     }
+}
 
 enum class TimePickerType {
     START, END

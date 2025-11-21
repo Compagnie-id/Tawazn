@@ -38,12 +38,14 @@ class AboutScreen : Screen {
     override fun Content() {
         AboutContent()
     }
+}
 
 @Composable
 fun AboutContent() {
     val navigator = LocalNavigator.current
     var showLicensesDialog by remember { mutableStateOf(false) }
 
+    TawaznTheme {
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -87,6 +89,7 @@ fun AboutContent() {
                                     tint = TawaznTheme.colors.gradientMiddle
                                 )
                             }
+                        }
 
                         Text(
                             text = "Tawazn",
@@ -107,6 +110,7 @@ fun AboutContent() {
                             textAlign = TextAlign.Center
                         )
                     }
+                }
 
                 // App Info
                 item {
@@ -131,6 +135,7 @@ fun AboutContent() {
                             )
                         }
                     }
+                }
 
                 // Features
                 item {
@@ -236,6 +241,7 @@ fun AboutContent() {
                             }
                         }
                     }
+                }
 
                 // Copyright
                 item {
@@ -262,6 +268,7 @@ fun AboutContent() {
                     )
                 }
             }
+        }
 
         // Licenses Dialog
         if (showLicensesDialog) {
@@ -291,6 +298,7 @@ fun AboutContent() {
             )
         }
     }
+}
 
 @Composable
 fun FeatureCard(icon: ImageVector, title: String, description: String) {
@@ -321,6 +329,7 @@ fun FeatureCard(icon: ImageVector, title: String, description: String) {
             }
         }
     }
+}
 
 @Composable
 fun AboutLinkItem(
@@ -367,6 +376,7 @@ fun AboutLinkItem(
             )
         }
     }
+}
 
 @Composable
 fun LicenseItem(name: String, license: String) {
