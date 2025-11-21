@@ -27,6 +27,9 @@ fun getEnglishTranslations(): Map<String, String> = mapOf(
     "onboarding.welcome.description" to "Find balance in your digital life. Track your screen time, block distracting apps, and achieve digital wellness.",
     "onboarding.get_started" to "Get Started",
 
+    "onboarding.language.title" to "Choose Your Language",
+    "onboarding.language.description" to "Select your preferred language. You can change this later in settings.",
+
     "onboarding.features.title" to "Powerful Features",
     "onboarding.feature.usage_tracking.title" to "Usage Tracking",
     "onboarding.feature.usage_tracking.description" to "Monitor your screen time with detailed statistics and insights",
@@ -375,6 +378,9 @@ fun getIndonesianTranslations(): Map<String, String> = mapOf(
     "onboarding.welcome.description" to "Temukan keseimbangan dalam kehidupan digital Anda. Lacak waktu layar, blokir aplikasi yang mengganggu, dan capai kesehatan digital.",
     "onboarding.get_started" to "Mulai",
 
+    "onboarding.language.title" to "Pilih Bahasa Anda",
+    "onboarding.language.description" to "Pilih bahasa pilihan Anda. Anda dapat mengubahnya nanti di pengaturan.",
+
     "onboarding.features.title" to "Fitur Powerful",
     "onboarding.feature.usage_tracking.title" to "Pelacakan Penggunaan",
     "onboarding.feature.usage_tracking.description" to "Pantau waktu layar Anda dengan statistik dan wawasan terperinci",
@@ -722,6 +728,9 @@ fun getArabicTranslations(): Map<String, String> = mapOf(
     "onboarding.welcome.subtitle" to "Tawazn",
     "onboarding.welcome.description" to "اعثر على التوازن في حياتك الرقمية. تتبع وقت الشاشة، احجب التطبيقات المشتتة، وحقق الصحة الرقمية.",
     "onboarding.get_started" to "ابدأ الآن",
+
+    "onboarding.language.title" to "اختر لغتك",
+    "onboarding.language.description" to "اختر لغتك المفضلة. يمكنك تغيير ذلك لاحقًا في الإعدادات.",
 
     "onboarding.features.title" to "ميزات قوية",
     "onboarding.feature.usage_tracking.title" to "تتبع الاستخدام",

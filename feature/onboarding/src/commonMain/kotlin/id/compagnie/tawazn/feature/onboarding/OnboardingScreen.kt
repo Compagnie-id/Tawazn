@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -13,6 +14,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
@@ -23,6 +25,8 @@ import cafe.adriel.voyager.koin.koinScreenModel
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.component.PermissionCard
+import id.compagnie.tawazn.i18n.Language
+import id.compagnie.tawazn.i18n.StringProvider
 import id.compagnie.tawazn.i18n.stringResource
 import com.adamglin.PhosphorIcons
 import com.adamglin.phosphoricons.Bold
@@ -38,7 +42,10 @@ import com.adamglin.phosphoricons.bold.ArrowsClockwise
 import com.adamglin.phosphoricons.bold.Lock
 import com.adamglin.phosphoricons.bold.Warning
 import com.adamglin.phosphoricons.bold.Check
+import com.adamglin.phosphoricons.bold.Translate
 import id.compagnie.tawazn.design.theme.TawaznTheme
+import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 
 class OnboardingScreen : Screen {
     @Composable
@@ -82,7 +89,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    repeat(4) { index ->
+                    repeat(5) { index ->
                         Box(
                             modifier = Modifier
                                 .padding(horizontal = 4.dp)
@@ -106,13 +113,14 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                 ) {
                     when (currentPage) {
                         0 -> WelcomePage()
-                        1 -> FeaturePage()
-                        2 -> PermissionPage(
+                        1 -> LanguageSelectionPage()
+                        2 -> FeaturePage()
+                        3 -> PermissionPage(
                             permissionState = permissionState,
                             onRequestPermissions = { screenModel.requestPermissions() },
                             onCheckPermissions = { screenModel.checkPermissions() }
                         )
-                        3 -> ReadyPage(
+                        4 -> ReadyPage(
                             permissionState = permissionState,
                             onStartServices = { screenModel.startBackgroundServices() }
                         )
@@ -127,9 +135,9 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     GradientButton(
-                        text = if (currentPage == 3) stringResource("onboarding.get_started") else stringResource("common.continue"),
+                        text = if (currentPage == 4) stringResource("onboarding.get_started") else stringResource("common.continue"),
                         onClick = {
-                            if (currentPage < 3) {
+                            if (currentPage < 4) {
                                 currentPage++
                             } else {
                                 // Complete onboarding - App.kt will automatically show the main app
@@ -139,7 +147,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                         modifier = Modifier.fillMaxWidth()
                     )
 
-                    if (currentPage > 0 && currentPage < 3) {
+                    if (currentPage > 0 && currentPage < 4) {
                         TextButton(
                             onClick = { currentPage-- },
                             modifier = Modifier.fillMaxWidth()
@@ -148,7 +156,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                         }
                     }
 
-                    if (currentPage < 3) {
+                    if (currentPage < 4) {
                         TextButton(
                             onClick = {
                                 // Skip onboarding - App.kt will automatically show the main app
@@ -200,6 +208,121 @@ fun WelcomePage() {
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(horizontal = 16.dp)
         )
+    }
+}
+
+@Composable
+fun LanguageSelectionPage() {
+    val stringProvider: StringProvider = koinInject()
+    val currentLanguage by stringProvider.currentLanguage.collectAsState()
+    val scope = rememberCoroutineScope()
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(24.dp)
+    ) {
+        Icon(
+            imageVector = PhosphorIcons.Bold.Translate,
+            contentDescription = "Language",
+            modifier = Modifier.size(100.dp),
+            tint = TawaznTheme.colors.gradientMiddle
+        )
+
+        Text(
+            text = stringResource("onboarding.language.title"),
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
+
+        Text(
+            text = stringResource("onboarding.language.description"),
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Language Options
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Language.entries.forEach { language ->
+                LanguageOption(
+                    language = language,
+                    isSelected = language == currentLanguage,
+                    onClick = {
+                        scope.launch {
+                            stringProvider.setLanguage(language)
+                        }
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun LanguageOption(
+    language: Language,
+    isSelected: Boolean,
+    onClick: () -> Unit
+) {
+    GlassCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(MaterialTheme.shapes.large)
+            .clickable(onClick = onClick)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Text(
+                    text = language.nativeName,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.SemiBold,
+                    color = if (isSelected) TawaznTheme.colors.gradientMiddle else MaterialTheme.colorScheme.onSurface
+                )
+
+                Text(
+                    text = language.displayName,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+
+            if (isSelected) {
+                Icon(
+                    imageVector = PhosphorIcons.Bold.CheckCircle,
+                    contentDescription = "Selected",
+                    tint = TawaznTheme.colors.gradientMiddle,
+                    modifier = Modifier.size(28.dp)
+                )
+            } else {
+                Box(
+                    modifier = Modifier
+                        .size(28.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.2f),
+                            shape = MaterialTheme.shapes.small
+                        )
+                )
+            }
+        }
     }
 }
 
