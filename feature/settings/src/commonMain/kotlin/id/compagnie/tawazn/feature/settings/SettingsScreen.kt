@@ -59,6 +59,7 @@ import com.adamglin.phosphoricons.bold.Fire
 import com.adamglin.phosphoricons.bold.Flag
 import com.adamglin.phosphoricons.bold.Gavel
 import com.adamglin.phosphoricons.bold.Gear
+import com.adamglin.phosphoricons.bold.Globe
 import com.adamglin.phosphoricons.bold.Info
 import com.adamglin.phosphoricons.bold.Moon
 import com.adamglin.phosphoricons.bold.Shield
@@ -69,6 +70,9 @@ import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.PermissionStatusBadge
 import id.compagnie.tawazn.design.component.PlatformInfoCard
 import id.compagnie.tawazn.design.theme.TawaznTheme
+import id.compagnie.tawazn.i18n.LanguageSelectorDialog
+import id.compagnie.tawazn.i18n.LocalStringProvider
+import id.compagnie.tawazn.i18n.stringResource
 
 class SettingsScreen : Screen {
     @Composable
@@ -97,14 +101,19 @@ fun SettingsContent(
     // Clear data dialog state
     var showClearDataDialog by remember { mutableStateOf(false) }
 
+    // Language selector dialog state
+    var showLanguageDialog by remember { mutableStateOf(false) }
+    val stringProvider = LocalStringProvider.current
+    val currentLanguage by stringProvider.currentLanguage.collectAsState()
+
     Scaffold(
             topBar = {
                 if (showBackButton) {
                     TopAppBar(
-                        title = { Text("Settings") },
+                        title = { Text(stringResource("settings.title")) },
                         navigationIcon = {
                             IconButton(onClick = { navigator?.pop() }) {
-                                Icon(PhosphorIcons.Bold.ArrowLeft, "Back")
+                                Icon(PhosphorIcons.Bold.ArrowLeft, stringResource("common.back"))
                             }
                         },
                         colors = TopAppBarDefaults.topAppBarColors(
@@ -124,14 +133,14 @@ fun SettingsContent(
             ) {
                 // Account Section
                 item {
-                    SectionHeader("Account")
+                    SectionHeader(stringResource("settings.section.account"))
                 }
 
                 item {
                     SettingsItem(
                         icon = PhosphorIcons.Bold.User,
-                        title = "Profile",
-                        subtitle = "Manage your profile",
+                        title = stringResource("settings.profile.title"),
+                        subtitle = stringResource("settings.profile.subtitle"),
                         onClick = { navigator?.push(ProfileScreen()) }
                     )
                 }
@@ -139,22 +148,22 @@ fun SettingsContent(
                 item {
                     SettingsItem(
                         icon = PhosphorIcons.Bold.Shield,
-                        title = "Privacy & Security",
-                        subtitle = "Control your data",
+                        title = stringResource("settings.privacy.title"),
+                        subtitle = stringResource("settings.privacy.subtitle"),
                         onClick = { navigator?.push(PrivacySecurityScreen()) }
                     )
                 }
 
                 // Notifications Section
                 item {
-                    SectionHeader("Notifications")
+                    SectionHeader(stringResource("settings.section.notifications"))
                 }
 
                 item {
                     SettingsSwitchItem(
                         icon = PhosphorIcons.Bold.Bell,
-                        title = "Notifications",
-                        subtitle = "Enable notifications",
+                        title = stringResource("settings.notifications.title"),
+                        subtitle = stringResource("settings.notifications.subtitle"),
                         checked = notificationsEnabled,
                         onCheckedChange = { screenModel.setNotificationsEnabled(it) }
                     )
@@ -163,8 +172,8 @@ fun SettingsContent(
                 item {
                     SettingsSwitchItem(
                         icon = PhosphorIcons.Bold.Calendar,
-                        title = "Daily Report",
-                        subtitle = "Get daily screen time summary",
+                        title = stringResource("settings.daily_report.title"),
+                        subtitle = stringResource("settings.daily_report.subtitle"),
                         checked = dailyReportEnabled,
                         onCheckedChange = { screenModel.setDailyReportEnabled(it) }
                     )
@@ -173,8 +182,8 @@ fun SettingsContent(
                 item {
                     SettingsSwitchItem(
                         icon = PhosphorIcons.Bold.Calendar,
-                        title = "Weekly Report",
-                        subtitle = "Get weekly insights",
+                        title = stringResource("settings.weekly_report.title"),
+                        subtitle = stringResource("settings.weekly_report.subtitle"),
                         checked = weeklyReportEnabled,
                         onCheckedChange = { screenModel.setWeeklyReportEnabled(it) }
                     )
@@ -182,14 +191,14 @@ fun SettingsContent(
 
                 // Focus & Productivity Section
                 item {
-                    SectionHeader("Focus & Productivity")
+                    SectionHeader(stringResource("settings.section.focus_productivity"))
                 }
 
                 item {
                     SettingsItem(
                         icon = PhosphorIcons.Bold.Flag,
-                        title = "Usage Goals",
-                        subtitle = "Set daily and weekly screen time goals",
+                        title = stringResource("settings.usage_goals.title"),
+                        subtitle = stringResource("settings.usage_goals.subtitle"),
                         onClick = { navigator?.push(UsageGoalsScreen()) }
                     )
                 }
@@ -197,22 +206,31 @@ fun SettingsContent(
                 item {
                     SettingsItem(
                         icon = PhosphorIcons.Bold.Fire,
-                        title = "Focus Sessions",
-                        subtitle = "Manage scheduled blocking sessions",
+                        title = stringResource("settings.focus_sessions.title"),
+                        subtitle = stringResource("settings.focus_sessions.subtitle"),
                         onClick = { navigator?.push(FocusSessionListScreen()) }
                     )
                 }
 
                 // Appearance Section
                 item {
-                    SectionHeader("Appearance")
+                    SectionHeader(stringResource("settings.section.appearance"))
+                }
+
+                item {
+                    SettingsItem(
+                        icon = PhosphorIcons.Bold.Globe,
+                        title = stringResource("settings.language.title"),
+                        subtitle = currentLanguage.nativeName,
+                        onClick = { showLanguageDialog = true }
+                    )
                 }
 
                 item {
                     SettingsSwitchItem(
                         icon = PhosphorIcons.Bold.Gear,
-                        title = "Use System Theme",
-                        subtitle = "Follow system dark mode setting",
+                        title = stringResource("settings.system_theme.title"),
+                        subtitle = stringResource("settings.system_theme.subtitle"),
                         checked = useSystemTheme,
                         onCheckedChange = { screenModel.setUseSystemTheme(it) }
                     )
@@ -221,8 +239,8 @@ fun SettingsContent(
                 item {
                     SettingsSwitchItem(
                         icon = PhosphorIcons.Bold.Moon,
-                        title = "Dark Mode",
-                        subtitle = if (useSystemTheme) "Disabled (using system theme)" else "Use dark theme",
+                        title = stringResource("settings.dark_mode.title"),
+                        subtitle = if (useSystemTheme) stringResource("settings.dark_mode.subtitle_disabled") else stringResource("settings.dark_mode.subtitle"),
                         checked = darkModeEnabled,
                         onCheckedChange = { screenModel.setDarkMode(it) },
                         enabled = !useSystemTheme
@@ -231,14 +249,14 @@ fun SettingsContent(
 
                 // Data & Storage Section
                 item {
-                    SectionHeader("Data & Storage")
+                    SectionHeader(stringResource("settings.section.data_storage"))
                 }
 
                 item {
                     SettingsItem(
                         icon = PhosphorIcons.Bold.CloudArrowUp,
-                        title = "Backup & Sync",
-                        subtitle = "Cloud backup (Coming soon)",
+                        title = stringResource("settings.backup.title"),
+                        subtitle = stringResource("settings.backup.subtitle"),
                         onClick = { /* TODO */ }
                     )
                 }
@@ -246,15 +264,15 @@ fun SettingsContent(
                 item {
                     SettingsItem(
                         icon = PhosphorIcons.Bold.Trash,
-                        title = "Clear Data",
-                        subtitle = "Delete all usage data",
+                        title = stringResource("settings.clear_data.title"),
+                        subtitle = stringResource("settings.clear_data.subtitle"),
                         onClick = { showClearDataDialog = true }
                     )
                 }
 
                 // Platform Status Section
                 item {
-                    SectionHeader("Platform Status")
+                    SectionHeader(stringResource("settings.section.platform_status"))
                 }
 
                 item {
@@ -268,7 +286,7 @@ fun SettingsContent(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = "Permissions",
+                                    text = stringResource("settings.permissions.title"),
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.SemiBold
                                 )
@@ -294,7 +312,7 @@ fun SettingsContent(
                                         )
                                         Spacer(modifier = Modifier.width(8.dp))
                                     }
-                                    Text(if (platformState.hasPermissions) "Granted" else "Grant Permissions")
+                                    Text(if (platformState.hasPermissions) stringResource("settings.permissions.granted") else stringResource("settings.permissions.grant"))
                                 }
 
                                 OutlinedButton(
@@ -311,11 +329,11 @@ fun SettingsContent(
                                     }
                                     Icon(
                                         imageVector = PhosphorIcons.Bold.ArrowsCounterClockwise,
-                                        contentDescription = "Sync",
+                                        contentDescription = stringResource("common.sync"),
                                         modifier = Modifier.size(16.dp)
                                     )
                                     Spacer(modifier = Modifier.width(4.dp))
-                                    Text("Sync")
+                                    Text(stringResource("common.sync"))
                                 }
                             }
                         }
@@ -331,14 +349,14 @@ fun SettingsContent(
 
                 // Permissions Section
                 item {
-                    SectionHeader("Permissions")
+                    SectionHeader(stringResource("settings.permissions.title"))
                 }
 
                 item {
                     SettingsItem(
                         icon = PhosphorIcons.Bold.DeviceMobile,
-                        title = "Usage Access",
-                        subtitle = "Required for tracking",
+                        title = stringResource("settings.usage_access.title"),
+                        subtitle = stringResource("settings.usage_access.subtitle"),
                         onClick = { screenModel.requestPermissions() }
                     )
                 }
@@ -346,22 +364,22 @@ fun SettingsContent(
                 item {
                     SettingsItem(
                         icon = PhosphorIcons.Bold.User,
-                        title = "Accessibility Service",
-                        subtitle = "Required for blocking",
+                        title = stringResource("settings.accessibility_service.title"),
+                        subtitle = stringResource("settings.accessibility_service.subtitle"),
                         onClick = { screenModel.requestPermissions() }
                     )
                 }
 
                 // About Section
                 item {
-                    SectionHeader("About")
+                    SectionHeader(stringResource("settings.section.about"))
                 }
 
                 item {
                     SettingsItem(
                         icon = PhosphorIcons.Bold.Info,
-                        title = "About Tawazn",
-                        subtitle = "Version 1.0.0",
+                        title = stringResource("settings.about.title"),
+                        subtitle = stringResource("settings.about.subtitle"),
                         onClick = { navigator?.push(AboutScreen()) }
                     )
                 }
@@ -369,8 +387,8 @@ fun SettingsContent(
                 item {
                     SettingsItem(
                         icon = PhosphorIcons.Bold.FileText,
-                        title = "Privacy Policy",
-                        subtitle = "Read our privacy policy",
+                        title = stringResource("settings.privacy_policy.title"),
+                        subtitle = stringResource("settings.privacy_policy.subtitle"),
                         onClick = { /* TODO */ }
                     )
                 }
@@ -378,8 +396,8 @@ fun SettingsContent(
                 item {
                     SettingsItem(
                         icon = PhosphorIcons.Bold.Gavel,
-                        title = "Terms of Service",
-                        subtitle = "Read our terms",
+                        title = stringResource("settings.terms.title"),
+                        subtitle = stringResource("settings.terms.subtitle"),
                         onClick = { /* TODO */ }
                     )
                 }
@@ -387,8 +405,8 @@ fun SettingsContent(
                 item {
                     SettingsItem(
                         icon = PhosphorIcons.Bold.Bug,
-                        title = "Report a Bug",
-                        subtitle = "Help us improve",
+                        title = stringResource("settings.report_bug.title"),
+                        subtitle = stringResource("settings.report_bug.subtitle"),
                         onClick = { /* TODO */ }
                     )
                 }
@@ -400,7 +418,7 @@ fun SettingsContent(
 
                 item {
                     Text(
-                        text = "Made with ❤️ using Compose Multiplatform",
+                        text = stringResource("settings.footer"),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.fillMaxWidth(),
@@ -417,19 +435,19 @@ fun SettingsContent(
                 icon = {
                     Icon(
                         imageVector = PhosphorIcons.Bold.Warning,
-                        contentDescription = "Warning",
+                        contentDescription = stringResource("settings.clear_data.dialog.title"),
                         tint = MaterialTheme.colorScheme.error
                     )
                 },
                 title = {
                     Text(
-                        text = "Clear All Data?",
+                        text = stringResource("settings.clear_data.dialog.title"),
                         style = MaterialTheme.typography.headlineSmall
                     )
                 },
                 text = {
                     Text(
-                        text = "This will permanently delete all your usage history, blocked apps, and settings. This action cannot be undone.",
+                        text = stringResource("settings.clear_data.dialog.message"),
                         style = MaterialTheme.typography.bodyMedium
                     )
                 },
@@ -443,14 +461,22 @@ fun SettingsContent(
                             containerColor = MaterialTheme.colorScheme.error
                         )
                     ) {
-                        Text("Clear All Data")
+                        Text(stringResource("settings.clear_data.dialog.confirm"))
                     }
                 },
                 dismissButton = {
                     TextButton(onClick = { showClearDataDialog = false }) {
-                        Text("Cancel")
+                        Text(stringResource("common.cancel"))
                     }
                 }
+            )
+        }
+
+        // Language Selector Dialog
+        if (showLanguageDialog) {
+            LanguageSelectorDialog(
+                onDismiss = { showLanguageDialog = false },
+                stringProvider = stringProvider
             )
         }
     }

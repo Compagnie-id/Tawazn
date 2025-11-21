@@ -27,6 +27,7 @@ import id.compagnie.tawazn.core.datastore.AppPreferences
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.theme.TawaznTheme
+import id.compagnie.tawazn.i18n.stringResource
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
@@ -63,10 +64,10 @@ fun ProfileContent() {
     Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Profile") },
+                    title = { Text(stringResource("profile.title")) },
                     navigationIcon = {
                         IconButton(onClick = { navigator?.pop() }) {
-                            Icon(PhosphorIcons.Bold.ArrowLeft, "Back")
+                            Icon(PhosphorIcons.Bold.ArrowLeft, stringResource("common.back"))
                         }
                     },
                     actions = {
@@ -80,18 +81,18 @@ fun ProfileContent() {
                                     }
                                 }
                             ) {
-                                Text("Save")
+                                Text(stringResource("common.save"))
                             }
                             TextButton(onClick = {
                                 editUsername = username
                                 editEmail = email
                                 editMode = false
                             }) {
-                                Text("Cancel")
+                                Text(stringResource("common.cancel"))
                             }
                         } else {
                             IconButton(onClick = { editMode = true }) {
-                                Icon(PhosphorIcons.Bold.PencilSimple, "Edit")
+                                Icon(PhosphorIcons.Bold.PencilSimple, stringResource("common.edit"))
                             }
                         }
                     },
@@ -127,7 +128,7 @@ fun ProfileContent() {
                             Box(contentAlignment = Alignment.Center) {
                                 Icon(
                                     imageVector = PhosphorIcons.Bold.User,
-                                    contentDescription = "Profile",
+                                    contentDescription = stringResource("profile.title"),
                                     modifier = Modifier.size(48.dp),
                                     tint = MaterialTheme.colorScheme.onPrimaryContainer
                                 )
@@ -138,25 +139,25 @@ fun ProfileContent() {
                             OutlinedTextField(
                                 value = editUsername,
                                 onValueChange = { editUsername = it },
-                                placeholder = { Text("Your Name") },
+                                placeholder = { Text(stringResource("profile.your_name")) },
                                 modifier = Modifier.fillMaxWidth(0.8f),
                                 singleLine = true
                             )
                             OutlinedTextField(
                                 value = editEmail,
                                 onValueChange = { editEmail = it },
-                                placeholder = { Text("your.email@example.com") },
+                                placeholder = { Text(stringResource("profile.your_email")) },
                                 modifier = Modifier.fillMaxWidth(0.8f),
                                 singleLine = true
                             )
                         } else {
                             Text(
-                                text = username.ifBlank { "Set your name" },
+                                text = username.ifBlank { stringResource("profile.set_name") },
                                 style = MaterialTheme.typography.headlineSmall,
                                 fontWeight = FontWeight.Bold
                             )
                             Text(
-                                text = email.ifBlank { "Add email" },
+                                text = email.ifBlank { stringResource("profile.add_email") },
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -166,7 +167,7 @@ fun ProfileContent() {
 
                 // Stats Section
                 Text(
-                    text = "Your Progress",
+                    text = stringResource("profile.your_progress"),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = TawaznTheme.colors.gradientMiddle
@@ -185,7 +186,7 @@ fun ProfileContent() {
                         ) {
                             Icon(
                                 imageVector = PhosphorIcons.Bold.Fire,
-                                contentDescription = "Streak",
+                                contentDescription = stringResource("profile.day_streak"),
                                 tint = TawaznTheme.colors.warning,
                                 modifier = Modifier.size(32.dp)
                             )
@@ -196,7 +197,7 @@ fun ProfileContent() {
                                 color = TawaznTheme.colors.warning
                             )
                             Text(
-                                text = "Day Streak",
+                                text = stringResource("profile.day_streak"),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -212,7 +213,7 @@ fun ProfileContent() {
                         ) {
                             Icon(
                                 imageVector = PhosphorIcons.Bold.Trophy,
-                                contentDescription = "Best",
+                                contentDescription = stringResource("profile.best_streak"),
                                 tint = TawaznTheme.colors.success,
                                 modifier = Modifier.size(32.dp)
                             )
@@ -223,7 +224,7 @@ fun ProfileContent() {
                                 color = TawaznTheme.colors.success
                             )
                             Text(
-                                text = "Best Streak",
+                                text = stringResource("profile.best_streak"),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -233,7 +234,7 @@ fun ProfileContent() {
 
                 // Account Information
                 Text(
-                    text = "Account Information",
+                    text = stringResource("profile.account_info"),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = TawaznTheme.colors.gradientMiddle
@@ -243,7 +244,7 @@ fun ProfileContent() {
                     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         InfoRow(
                             icon = PhosphorIcons.Bold.Calendar,
-                            label = "Member Since",
+                            label = stringResource("profile.member_since"),
                             value = "January 2024"
                         )
                         HorizontalDivider(
@@ -253,7 +254,7 @@ fun ProfileContent() {
                         )
                         InfoRow(
                             icon = PhosphorIcons.Bold.Devices,
-                            label = "Platform",
+                            label = stringResource("profile.platform"),
                             value = getPlatformName()
                         )
                     }
@@ -263,7 +264,7 @@ fun ProfileContent() {
 
                 // Note about data
                 Text(
-                    text = "Your profile data is stored locally on your device and is never shared with third parties.",
+                    text = stringResource("profile.data_note"),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(horizontal = 8.dp)

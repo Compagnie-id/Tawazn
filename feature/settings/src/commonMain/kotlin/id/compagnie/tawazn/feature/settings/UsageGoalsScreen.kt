@@ -23,6 +23,7 @@ import id.compagnie.tawazn.core.datastore.AppPreferences
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.theme.TawaznTheme
+import id.compagnie.tawazn.i18n.stringResource
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import kotlin.math.roundToInt
@@ -60,10 +61,10 @@ fun UsageGoalsContent() {
     Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Usage Goals") },
+                    title = { Text(stringResource("usage_goals.title")) },
                     navigationIcon = {
                         IconButton(onClick = { navigator?.pop() }) {
-                            Icon(PhosphorIcons.Bold.ArrowLeft, "Back")
+                            Icon(PhosphorIcons.Bold.ArrowLeft, stringResource("common.back"))
                         }
                     },
                     actions = {
@@ -77,7 +78,7 @@ fun UsageGoalsContent() {
                                     }
                                 }
                             ) {
-                                Text("Save")
+                                Text(stringResource("common.save"))
                             }
                         }
                     },
@@ -109,18 +110,18 @@ fun UsageGoalsContent() {
                         ) {
                             Icon(
                                 imageVector = PhosphorIcons.Bold.Flag,
-                                contentDescription = "Goals",
+                                contentDescription = stringResource("usage_goals.title"),
                                 modifier = Modifier.size(32.dp),
                                 tint = TawaznTheme.colors.gradientMiddle
                             )
                             Text(
-                                text = "Set Your Goals",
+                                text = stringResource("usage_goals.set_your_goals"),
                                 style = MaterialTheme.typography.titleLarge,
                                 fontWeight = FontWeight.Bold
                             )
                         }
                         Text(
-                            text = "Set daily and weekly screen time goals to help maintain a healthy digital balance.",
+                            text = stringResource("usage_goals.description"),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -129,7 +130,7 @@ fun UsageGoalsContent() {
 
                 // Daily Goal
                 Text(
-                    text = "Daily Goal",
+                    text = stringResource("usage_goals.daily_goal"),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = TawaznTheme.colors.gradientMiddle
@@ -144,12 +145,12 @@ fun UsageGoalsContent() {
                         ) {
                             Column {
                                 Text(
-                                    text = "Target Screen Time",
+                                    text = stringResource("usage_goals.target_screen_time"),
                                     style = MaterialTheme.typography.bodyLarge,
                                     fontWeight = FontWeight.Medium
                                 )
                                 Text(
-                                    text = "Maximum daily usage",
+                                    text = stringResource("usage_goals.max_daily"),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -194,7 +195,7 @@ fun UsageGoalsContent() {
 
                         // Quick Presets - Daily
                         Text(
-                            text = "Quick Presets",
+                            text = stringResource("usage_goals.quick_presets"),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -243,7 +244,7 @@ fun UsageGoalsContent() {
                 Spacer(Modifier.height(8.dp))
 
                 Text(
-                    text = "Weekly Goal",
+                    text = stringResource("usage_goals.weekly_goal"),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = TawaznTheme.colors.info
@@ -258,12 +259,12 @@ fun UsageGoalsContent() {
                         ) {
                             Column {
                                 Text(
-                                    text = "Target Screen Time",
+                                    text = stringResource("usage_goals.target_screen_time"),
                                     style = MaterialTheme.typography.bodyLarge,
                                     fontWeight = FontWeight.Medium
                                 )
                                 Text(
-                                    text = "Maximum weekly usage",
+                                    text = stringResource("usage_goals.max_weekly"),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -308,7 +309,7 @@ fun UsageGoalsContent() {
 
                         // Quick Presets - Weekly
                         Text(
-                            text = "Quick Presets",
+                            text = stringResource("usage_goals.quick_presets"),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -362,21 +363,18 @@ fun UsageGoalsContent() {
                         ) {
                             Icon(
                                 imageVector = PhosphorIcons.Bold.Lightbulb,
-                                contentDescription = "Tips",
+                                contentDescription = stringResource("usage_goals.tips_title"),
                                 tint = TawaznTheme.colors.warning,
                                 modifier = Modifier.size(20.dp)
                             )
                             Text(
-                                text = "Tips for Success",
+                                text = stringResource("usage_goals.tips_title"),
                                 style = MaterialTheme.typography.titleSmall,
                                 fontWeight = FontWeight.SemiBold
                             )
                         }
                         Text(
-                            text = "• Start with realistic goals you can achieve\n" +
-                                    "• Gradually reduce screen time over weeks\n" +
-                                    "• Use focus sessions during peak usage times\n" +
-                                    "• Review your analytics regularly for insights",
+                            text = stringResource("usage_goals.tips"),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -386,7 +384,7 @@ fun UsageGoalsContent() {
                 // Save button (if changes)
                 if (hasChanges) {
                     GradientButton(
-                        text = "Save Goals",
+                        text = stringResource("usage_goals.save_goals"),
                         onClick = {
                             scope.launch {
                                 appPreferences.setDailyUsageGoal((dailyGoalHours * 60).roundToInt())

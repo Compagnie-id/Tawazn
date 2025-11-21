@@ -25,6 +25,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.StatsCard
 import id.compagnie.tawazn.design.theme.TawaznTheme
+import id.compagnie.tawazn.i18n.stringResource
 import id.compagnie.tawazn.domain.model.AppUsageSummary
 import id.compagnie.tawazn.domain.model.UsageStats
 import id.compagnie.tawazn.domain.repository.UsageRepository
@@ -124,15 +125,15 @@ fun UsageTrackingContent(screenModel: UsageTrackingScreenModel) {
     Scaffold(
         topBar = {
                 TopAppBar(
-                    title = { Text("Usage Tracking") },
+                    title = { Text(stringResource("usage_tracking.title")) },
                     navigationIcon = {
                         IconButton(onClick = { navigator?.pop() }) {
-                            Icon(PhosphorIcons.Bold.ArrowLeft, "Back")
+                            Icon(PhosphorIcons.Bold.ArrowLeft, stringResource("common.back"))
                         }
                     },
                     actions = {
                         IconButton(onClick = { /* Refresh */ screenModel.loadUsageStats() }) {
-                            Icon(PhosphorIcons.Bold.ArrowsClockwise, "Refresh")
+                            Icon(PhosphorIcons.Bold.ArrowsClockwise, stringResource("usage_tracking.refresh"))
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -159,7 +160,11 @@ fun UsageTrackingContent(screenModel: UsageTrackingScreenModel) {
                             FilterChip(
                                 selected = selectedPeriod == period,
                                 onClick = { screenModel.selectPeriod(period) },
-                                label = { Text(period.name) },
+                                label = { Text(when(period) {
+                                    UsagePeriod.TODAY -> stringResource("usage_tracking.today")
+                                    UsagePeriod.WEEK -> stringResource("usage_tracking.week")
+                                    UsagePeriod.MONTH -> stringResource("usage_tracking.month")
+                                }) },
                                 modifier = Modifier.weight(1f)
                             )
                         }
@@ -169,7 +174,7 @@ fun UsageTrackingContent(screenModel: UsageTrackingScreenModel) {
                 // Overview Stats
                 item {
                     Text(
-                        text = "Overview",
+                        text = stringResource("usage_tracking.overview"),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold
                     )
@@ -182,17 +187,17 @@ fun UsageTrackingContent(screenModel: UsageTrackingScreenModel) {
                             horizontalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
                             StatsCard(
-                                title = "Screen Time",
+                                title = stringResource("dashboard.screen_time"),
                                 value = formatDuration(stats.totalScreenTime),
-                                subtitle = "Total time",
+                                subtitle = stringResource("usage_tracking.total_time"),
                                 modifier = Modifier.weight(1f),
                                 useGradient = true
                             )
 
                             StatsCard(
-                                title = "App Opens",
+                                title = stringResource("usage_tracking.most_used"),
                                 value = stats.totalLaunches.toString(),
-                                subtitle = "Times opened",
+                                subtitle = stringResource("usage_tracking.times_opened"),
                                 modifier = Modifier.weight(1f)
                             )
                         }
@@ -201,7 +206,7 @@ fun UsageTrackingContent(screenModel: UsageTrackingScreenModel) {
                     // Top Apps
                     item {
                         Text(
-                            text = "Most Used Apps",
+                            text = stringResource("usage_tracking.most_used"),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             modifier = Modifier.padding(top = 8.dp)
@@ -224,17 +229,17 @@ fun UsageTrackingContent(screenModel: UsageTrackingScreenModel) {
                                 ) {
                                     Icon(
                                         imageVector = PhosphorIcons.Bold.Clock,
-                                        contentDescription = "No data",
+                                        contentDescription = stringResource("usage_tracking.no_data"),
                                         modifier = Modifier.size(48.dp),
                                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                     Text(
-                                        text = "No usage data yet",
+                                        text = stringResource("usage_tracking.no_data"),
                                         style = MaterialTheme.typography.bodyLarge,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                     Text(
-                                        text = "Grant usage access permission to track your screen time",
+                                        text = stringResource("usage_tracking.grant_permission"),
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -277,7 +282,7 @@ fun UsageAppItem(appUsage: AppUsageSummary) {
                         fontWeight = FontWeight.Medium
                     )
                     Text(
-                        text = "${appUsage.totalLaunches} opens",
+                        text = stringResource("usage_tracking.opens", appUsage.totalLaunches),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )

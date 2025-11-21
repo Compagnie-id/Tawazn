@@ -57,6 +57,7 @@ import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.theme.TawaznTheme
 import id.compagnie.tawazn.domain.model.BlockSession
 import id.compagnie.tawazn.domain.model.CreateBlockSessionRequest
+import id.compagnie.tawazn.i18n.stringResource
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
@@ -103,10 +104,10 @@ fun CreateEditFocusSessionContent(
     Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text(if (isEditMode) "Edit Session" else "Create Session") },
+                    title = { Text(if (isEditMode) stringResource("focus_session.edit") else stringResource("focus_session.create")) },
                     navigationIcon = {
                         IconButton(onClick = { navigator?.pop() }) {
-                            Icon(PhosphorIcons.Bold.ArrowLeft, "Back")
+                            Icon(PhosphorIcons.Bold.ArrowLeft, stringResource("common.back"))
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -125,7 +126,7 @@ fun CreateEditFocusSessionContent(
             ) {
                 // Basic Info Section
                 Text(
-                    text = "Basic Information",
+                    text = stringResource("focus_session.basic_info"),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = TawaznTheme.colors.gradientMiddle
@@ -136,8 +137,8 @@ fun CreateEditFocusSessionContent(
                         OutlinedTextField(
                             value = name,
                             onValueChange = { name = it },
-                            label = { Text("Session Name") },
-                            placeholder = { Text("e.g., Work Focus, Study Time") },
+                            label = { Text(stringResource("focus_session.session_name_label")) },
+                            placeholder = { Text(stringResource("focus_session.session_name_hint")) },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true
                         )
@@ -145,8 +146,8 @@ fun CreateEditFocusSessionContent(
                         OutlinedTextField(
                             value = description,
                             onValueChange = { description = it },
-                            label = { Text("Description (Optional)") },
-                            placeholder = { Text("What's this session for?") },
+                            label = { Text(stringResource("focus_session.description_label")) },
+                            placeholder = { Text(stringResource("focus_session.description_hint")) },
                             modifier = Modifier.fillMaxWidth(),
                             maxLines = 3
                         )
@@ -155,7 +156,7 @@ fun CreateEditFocusSessionContent(
 
                 // Time Section
                 Text(
-                    text = "Schedule",
+                    text = stringResource("focus_session.schedule"),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = TawaznTheme.colors.gradientMiddle
@@ -177,12 +178,12 @@ fun CreateEditFocusSessionContent(
                             ) {
                                 Icon(
                                     imageVector = PhosphorIcons.Bold.Clock,
-                                    contentDescription = "Start Time",
+                                    contentDescription = stringResource("focus_session.start_time"),
                                     tint = TawaznTheme.colors.gradientMiddle
                                 )
                                 Column {
                                     Text(
-                                        text = "Start Time",
+                                        text = stringResource("focus_session.start_time"),
                                         style = MaterialTheme.typography.bodyMedium,
                                         fontWeight = FontWeight.Medium
                                     )
@@ -195,7 +196,7 @@ fun CreateEditFocusSessionContent(
                                     )
                                 }
                             }
-                            Icon(PhosphorIcons.Bold.PencilSimple, "Edit")
+                            Icon(PhosphorIcons.Bold.PencilSimple, stringResource("common.edit"))
                         }
 
                         HorizontalDivider(
@@ -218,12 +219,12 @@ fun CreateEditFocusSessionContent(
                             ) {
                                 Icon(
                                     imageVector = PhosphorIcons.Bold.Clock,
-                                    contentDescription = "End Time",
+                                    contentDescription = stringResource("focus_session.end_time"),
                                     tint = MaterialTheme.colorScheme.error
                                 )
                                 Column {
                                     Text(
-                                        text = "End Time",
+                                        text = stringResource("focus_session.end_time"),
                                         style = MaterialTheme.typography.bodyMedium,
                                         fontWeight = FontWeight.Medium
                                     )
@@ -236,14 +237,14 @@ fun CreateEditFocusSessionContent(
                                     )
                                 }
                             }
-                            Icon(PhosphorIcons.Bold.PencilSimple, "Edit")
+                            Icon(PhosphorIcons.Bold.PencilSimple, stringResource("common.edit"))
                         }
                     }
                 }
 
                 // Repeat Section
                 Text(
-                    text = "Repeat",
+                    text = stringResource("focus_session.repeat"),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = TawaznTheme.colors.gradientMiddle
@@ -258,7 +259,7 @@ fun CreateEditFocusSessionContent(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = "Repeat Daily",
+                                text = stringResource("focus_session.repeat_daily"),
                                 style = MaterialTheme.typography.bodyLarge
                             )
                             Switch(
@@ -284,7 +285,7 @@ fun CreateEditFocusSessionContent(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = "Repeat Weekly",
+                                text = stringResource("focus_session.repeat_weekly"),
                                 style = MaterialTheme.typography.bodyLarge
                             )
                             Switch(
@@ -315,7 +316,7 @@ fun CreateEditFocusSessionContent(
                         ) {
                             Column {
                                 Text(
-                                    text = "Specific Days",
+                                    text = stringResource("focus_session.specific_days"),
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = if (repeatDaily || repeatWeekly)
                                         MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
@@ -331,7 +332,7 @@ fun CreateEditFocusSessionContent(
                             }
                             Icon(
                                 PhosphorIcons.Bold.CaretRight,
-                                "Select Days",
+                                stringResource("focus_session.select_days"),
                                 tint = if (repeatDaily || repeatWeekly)
                                     MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
                                 else MaterialTheme.colorScheme.onSurfaceVariant
@@ -344,7 +345,7 @@ fun CreateEditFocusSessionContent(
 
                 // Action buttons
                 GradientButton(
-                    text = if (isEditMode) "Update Session" else "Create Session",
+                    text = if (isEditMode) stringResource("focus_session.update") else stringResource("focus_session.create"),
                     onClick = {
                         if (!isFormValid) return@GradientButton
 
@@ -400,7 +401,7 @@ fun CreateEditFocusSessionContent(
                         onClick = { navigator?.pop() },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Cancel")
+                        Text(stringResource("common.cancel"))
                     }
                 }
             }
@@ -458,7 +459,7 @@ fun TimePickerDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Select Time") },
+        title = { Text(stringResource("focus_session.select_time")) },
         text = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -502,12 +503,12 @@ fun TimePickerDialog(
         },
         confirmButton = {
             Button(onClick = { onConfirm(hour, minute) }) {
-                Text("OK")
+                Text(stringResource("common.ok"))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource("common.cancel"))
             }
         }
     )
@@ -535,7 +536,7 @@ fun DayPickerDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Select Days") },
+        title = { Text(stringResource("focus_session.select_days")) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 allDays.forEach { day ->
@@ -552,7 +553,7 @@ fun DayPickerDialog(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(day.name.lowercase().replaceFirstChar { it.uppercase() })
+                        Text(stringResource("day.${day.name.lowercase()}"))
                         Checkbox(
                             checked = day in selected,
                             onCheckedChange = {
@@ -565,12 +566,12 @@ fun DayPickerDialog(
         },
         confirmButton = {
             Button(onClick = { onConfirm(selected) }) {
-                Text("OK")
+                Text(stringResource("common.ok"))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource("common.cancel"))
             }
         }
     )
