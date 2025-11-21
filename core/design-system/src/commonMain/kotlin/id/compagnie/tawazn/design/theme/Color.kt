@@ -57,3 +57,11 @@ val ChartColor2 = Color(0xFF6B8E23) // Olive
 val ChartColor3 = Color(0xFFCD853F) // Peru
 val ChartColor4 = Color(0xFF20B2AA) // Sea Green
 val ChartColor5 = Color(0xFFDAA520) // Goldenrod
+
+// Dark Mode Card Colors - Muted versions for dark backgrounds
+val NeuYellowDark = Color(0xFF4A4420) // Dark Khaki
+val NeuGreenDark = Color(0xFF2D4A2D) // Dark Green
+val NeuOrangeDark = Color(0xFF4A3A2D) // Dark Tan
+val NeuCyanDark = Color(0xFF1A4A47) // Dark Cyan
+val NeuLavenderDark = Color(0xFF3D2F3D) // Dark Lavender
+val AccentDark = Color(0xFF4A3020) // Dark Terracotta
