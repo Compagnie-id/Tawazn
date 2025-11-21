@@ -121,9 +121,8 @@ fun UsageTrackingContent(screenModel: UsageTrackingScreenModel) {
     val selectedPeriod by screenModel.selectedPeriod.collectAsState()
     val navigator = LocalNavigator.current
 
-    TawaznTheme {
-        Scaffold(
-            topBar = {
+    Scaffold(
+        topBar = {
                 TopAppBar(
                     title = { Text("Usage Tracking") },
                     navigationIcon = {
@@ -246,7 +245,6 @@ fun UsageTrackingContent(screenModel: UsageTrackingScreenModel) {
                 }
             }
         }
-    }
 }
 
 @Composable

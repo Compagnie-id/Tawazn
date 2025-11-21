@@ -83,9 +83,8 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
         derivedStateOf { uiState.dailyGoal / 60f }
     }.value
 
-    TawaznTheme {
-        Scaffold(
-            topBar = {
+    Scaffold(
+        topBar = {
                 TopAppBar(
                     title = { Text("Analytics & Insights") },
                     navigationIcon = {
@@ -356,7 +355,6 @@ fun AnalyticsContent(screenModel: AnalyticsScreenModel) {
                 }
             }
         }
-    }
 }
 
 @Composable

@@ -76,8 +76,7 @@ fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
     val sessions by screenModel.allSessions.collectAsState(initial = emptyList())
     var showDeleteDialog by remember { mutableStateOf<BlockSession?>(null) }
 
-    TawaznTheme {
-        Scaffold(
+    Scaffold(
             topBar = {
                 TopAppBar(
                     title = { Text("Focus Sessions") },
@@ -189,7 +188,6 @@ fun FocusSessionListContent(screenModel: FocusSessionScreenModel) {
             )
         }
     }
-}
 
 @Composable
 fun SessionCard(

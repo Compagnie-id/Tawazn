@@ -52,11 +52,10 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
     var currentPage by remember { mutableStateOf(0) }
     val permissionState by screenModel.permissionState.collectAsState()
 
-    TawaznTheme {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
                     brush = Brush.verticalGradient(
                         colors = listOf(
                             TawaznTheme.colors.gradientStart.copy(alpha = 0.1f),
@@ -162,7 +161,6 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                 }
             }
         }
-    }
 }
 
 @Composable

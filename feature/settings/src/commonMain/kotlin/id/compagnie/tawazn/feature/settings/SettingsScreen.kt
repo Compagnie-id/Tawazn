@@ -97,8 +97,7 @@ fun SettingsContent(
     // Clear data dialog state
     var showClearDataDialog by remember { mutableStateOf(false) }
 
-    TawaznTheme {
-        Scaffold(
+    Scaffold(
             topBar = {
                 if (showBackButton) {
                     TopAppBar(
@@ -455,7 +454,6 @@ fun SettingsContent(
             )
         }
     }
-}
 
 @Composable
 fun SectionHeader(title: String) {

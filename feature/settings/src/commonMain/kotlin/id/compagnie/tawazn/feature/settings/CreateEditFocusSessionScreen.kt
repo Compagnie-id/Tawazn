@@ -100,8 +100,7 @@ fun CreateEditFocusSessionContent(
 
     val isFormValid = name.isNotBlank()
 
-    TawaznTheme {
-        Scaffold(
+    Scaffold(
             topBar = {
                 TopAppBar(
                     title = { Text(if (isEditMode) "Edit Session" else "Create Session") },
@@ -442,7 +441,6 @@ fun CreateEditFocusSessionContent(
             )
         }
     }
-}
 
 enum class TimePickerType {
     START, END

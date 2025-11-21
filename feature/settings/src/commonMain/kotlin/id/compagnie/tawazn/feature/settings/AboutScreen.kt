@@ -45,8 +45,7 @@ fun AboutContent() {
     val navigator = LocalNavigator.current
     var showLicensesDialog by remember { mutableStateOf(false) }
 
-    TawaznTheme {
-        Scaffold(
+    Scaffold(
             topBar = {
                 TopAppBar(
                     title = { Text("About") },
@@ -298,7 +297,6 @@ fun AboutContent() {
             )
         }
     }
-}
 
 @Composable
 fun FeatureCard(icon: ImageVector, title: String, description: String) {

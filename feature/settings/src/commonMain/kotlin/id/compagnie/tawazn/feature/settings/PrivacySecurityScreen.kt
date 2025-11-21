@@ -52,8 +52,7 @@ fun PrivacySecurityContent() {
     val crashReportsEnabled by appPreferences.crashReportsEnabled.collectAsState(initial = true)
     var showExportDialog by remember { mutableStateOf(false) }
 
-    TawaznTheme {
-        Scaffold(
+    Scaffold(
             topBar = {
                 TopAppBar(
                     title = { Text("Privacy & Security") },
@@ -295,7 +294,6 @@ fun PrivacySecurityContent() {
             )
         }
     }
-}
 
 @Composable
 fun PrivacySwitchItem(
