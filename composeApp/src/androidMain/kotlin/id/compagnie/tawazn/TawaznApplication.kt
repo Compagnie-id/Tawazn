@@ -42,10 +42,17 @@ class TawaznApplication : Application() {
             )
         }
 
-        // Initialize StringProvider
+        // Initialize StringProvider asynchronously
+        // Note: StringProviderImpl loads system locale translations synchronously in init,
+        // so the UI will have correct translations immediately. This async call only
+        // checks for saved user preferences and switches if needed.
         val stringProvider: StringProvider by inject()
-        CoroutineScope(Dispatchers.Main).launch {
-            (stringProvider as? StringProviderImpl)?.initialize()
+        CoroutineScope(Dispatchers.Default).launch {
+            try {
+                (stringProvider as? StringProviderImpl)?.initialize()
+            } catch (e: Exception) {
+                android.util.Log.e("TawaznApp", "Failed to initialize i18n", e)
+            }
         }
     }
 }

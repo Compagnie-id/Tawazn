@@ -12,7 +12,12 @@ import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
 
 /**
- * Implementation of StringProvider that loads translations from embedded JSON
+ * Implementation of StringProvider that loads translations
+ *
+ * Initialization strategy:
+ * 1. Immediately loads system locale translations in init block (no race conditions)
+ * 2. Asynchronously checks DataStore for saved user preference
+ * 3. If user has saved preference, switches to that language
  */
 class StringProviderImpl(
     private val dataStore: DataStore<Preferences>,
@@ -20,41 +25,58 @@ class StringProviderImpl(
     private val systemLocaleProvider: SystemLocaleProvider
 ) : StringProvider {
 
-    private val _currentLanguage = MutableStateFlow(Language.ENGLISH)
-    override val currentLanguage: StateFlow<Language> = _currentLanguage.asStateFlow()
+    private val _currentLanguage: MutableStateFlow<Language>
+    override val currentLanguage: StateFlow<Language>
 
-    private var translations: Map<String, String> = emptyMap()
+    @Volatile
+    private var translations: Map<String, String>
+
+    @Volatile
+    private var isInitialized = false
 
     private val languageKey = stringPreferencesKey("app_language")
 
     init {
-        // Load English translations immediately to prevent empty strings
-        // This ensures the app has translations available even before async init completes
-        translations = translationsProvider.getTranslations(Language.ENGLISH)
+        // Immediately detect and load system locale translations
+        // This ensures the UI always has correct translations from the start
+        val systemLocale = systemLocaleProvider.getSystemLocale()
+        val initialLanguage = Language.fromCode(systemLocale)
+
+        _currentLanguage = MutableStateFlow(initialLanguage)
+        currentLanguage = _currentLanguage.asStateFlow()
+
+        // Load translations for detected language synchronously
+        translations = translationsProvider.getTranslations(initialLanguage)
+
+        println("i18n: Initialized with system locale '$systemLocale' -> ${initialLanguage.displayName}")
     }
 
     suspend fun initialize() {
-        // Load saved language preference, or use system locale as fallback
-        val savedLanguageCode = dataStore.data.map { preferences ->
-            preferences[languageKey]
-        }.first()
+        // Check if user has explicitly saved a language preference
+        val savedLanguageCode = dataStore.data
+            .map { preferences -> preferences[languageKey] }
+            .first()
 
-        val language = if (savedLanguageCode != null) {
-            // User has explicitly selected a language
-            Language.fromCode(savedLanguageCode)
+        if (savedLanguageCode != null) {
+            val savedLanguage = Language.fromCode(savedLanguageCode)
+            println("i18n: Found saved preference '$savedLanguageCode' -> ${savedLanguage.displayName}")
+
+            // Only switch if it's different from current
+            if (savedLanguage != _currentLanguage.value) {
+                _currentLanguage.value = savedLanguage
+                loadTranslations(savedLanguage)
+            }
         } else {
-            // No saved preference, use system locale
-            val systemLocale = systemLocaleProvider.getSystemLocale()
-            Language.fromCode(systemLocale)
+            println("i18n: No saved preference, using system locale ${_currentLanguage.value.displayName}")
         }
 
-        _currentLanguage.value = language
-        loadTranslations(language)
+        isInitialized = true
     }
 
     override fun getString(key: String): String {
         return translations[key] ?: run {
-            println("Missing translation for key: $key")
+            // Log missing translation (only happens if key doesn't exist in translations)
+            println("i18n: Missing translation for key '$key' in language '${_currentLanguage.value.code}'")
             key
         }
     }
@@ -64,12 +86,17 @@ class StringProviderImpl(
         return try {
             String.format(template, *args)
         } catch (e: Exception) {
-            println("Error formatting string for key: $key")
+            println("i18n: Error formatting string for key '$key': ${e.message}")
             template
         }
     }
 
     override suspend fun setLanguage(language: Language) {
+        if (language == _currentLanguage.value) {
+            // Already using this language, no need to reload
+            return
+        }
+
         _currentLanguage.value = language
         loadTranslations(language)
 
@@ -77,6 +104,8 @@ class StringProviderImpl(
         dataStore.edit { preferences ->
             preferences[languageKey] = language.code
         }
+
+        println("i18n: Language changed to ${language.displayName} (${language.code})")
     }
 
     override fun hasKey(key: String): Boolean {
@@ -84,6 +113,9 @@ class StringProviderImpl(
     }
 
     private fun loadTranslations(language: Language) {
+        // Load new translations and assign atomically
+        // The @Volatile annotation ensures visibility across threads
         translations = translationsProvider.getTranslations(language)
+        println("i18n: Loaded ${translations.size} translations for ${language.displayName}")
     }
 }
