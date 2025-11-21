@@ -9,6 +9,13 @@ import id.compagnie.tawazn.feature.appblocking.di.appBlockingModule
 import id.compagnie.tawazn.feature.onboarding.di.onboardingModule
 import id.compagnie.tawazn.feature.settings.di.settingsModule
 import id.compagnie.tawazn.feature.usagetracking.di.usageTrackingModule
+import id.compagnie.tawazn.i18n.StringProvider
+import id.compagnie.tawazn.i18n.StringProviderImpl
+import id.compagnie.tawazn.i18n.di.i18nModule
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -25,12 +32,19 @@ class TawaznApplication : Application() {
                 platformModule(),
                 dataModule,
                 domainModule,
+                i18nModule,
                 onboardingModule,
                 appBlockingModule,
                 analyticsModule,
                 settingsModule,
                 usageTrackingModule
             )
+        }
+
+        // Initialize StringProvider
+        val stringProvider: StringProvider by inject()
+        CoroutineScope(Dispatchers.Main).launch {
+            (stringProvider as? StringProviderImpl)?.initialize()
         }
     }
 }

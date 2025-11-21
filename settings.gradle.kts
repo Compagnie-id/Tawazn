@@ -40,6 +40,7 @@ include(":core:design-system")
 include(":core:database")
 include(":core:datastore")
 include(":core:network")
+include(":core:i18n")
 
 // Domain Layer
 include(":domain")

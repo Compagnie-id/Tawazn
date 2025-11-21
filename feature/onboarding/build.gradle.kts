@@ -40,6 +40,7 @@ kotlin {
             implementation(project(":core:common"))
             implementation(project(":core:design-system"))
             implementation(project(":core:datastore"))
+            implementation(project(":core:i18n"))
             implementation(project(":domain"))
             implementation(project(":data"))
 

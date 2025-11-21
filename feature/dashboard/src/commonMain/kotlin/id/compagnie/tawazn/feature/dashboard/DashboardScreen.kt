@@ -22,6 +22,7 @@ import com.adamglin.phosphoricons.bold.SquaresFour
 import com.adamglin.phosphoricons.bold.Fire
 import com.adamglin.phosphoricons.bold.TrendDown
 import id.compagnie.tawazn.design.theme.TawaznTheme
+import id.compagnie.tawazn.i18n.stringResource
 
 /**
  * Navigation callbacks for Dashboard screen
@@ -65,13 +66,13 @@ fun DashboardContent() {
                     ) {
                         Column {
                             Text(
-                                text = "Dashboard",
+                                text = stringResource("dashboard.title"),
                                 style = MaterialTheme.typography.headlineLarge,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onBackground
                             )
                             Text(
-                                text = "Welcome back! 👋",
+                                text = stringResource("dashboard.welcome"),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -79,7 +80,7 @@ fun DashboardContent() {
 
                         Icon(
                             imageVector = PhosphorIcons.Bold.Bell,
-                            contentDescription = "Notifications",
+                            contentDescription = stringResource("dashboard.title"),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(28.dp)
                         )
@@ -88,7 +89,7 @@ fun DashboardContent() {
 
                 item {
                     Text(
-                        text = "Today's Overview",
+                        text = stringResource("dashboard.today_overview"),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(vertical = 8.dp)
@@ -101,17 +102,17 @@ fun DashboardContent() {
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         StatsCard(
-                            title = "Screen Time",
-                            value = "2h 34m",
-                            subtitle = "↓ 15% from yesterday",
+                            title = stringResource("dashboard.screen_time"),
+                            value = stringResource("dashboard.screen_time_value"),
+                            subtitle = stringResource("dashboard.screen_time_change"),
                             icon = PhosphorIcons.Bold.Clock,
                             modifier = Modifier.weight(1f)
                         )
 
                         StatsCard(
-                            title = "Apps Blocked",
-                            value = "12",
-                            subtitle = "Active now",
+                            title = stringResource("dashboard.apps_blocked"),
+                            value = stringResource("dashboard.apps_blocked_value"),
+                            subtitle = stringResource("dashboard.apps_blocked_status"),
                             icon = PhosphorIcons.Bold.Prohibit,
                             modifier = Modifier.weight(1f),
                             useGradient = false
@@ -121,9 +122,9 @@ fun DashboardContent() {
 
                 item {
                     StatsCard(
-                        title = "Most Used Today",
-                        value = "Instagram",
-                        subtitle = "45 minutes",
+                        title = stringResource("dashboard.most_used_today"),
+                        value = stringResource("dashboard.most_used_app"),
+                        subtitle = stringResource("dashboard.most_used_time"),
                         icon = PhosphorIcons.Bold.SquaresFour,
                         useGradient = true
                     )
@@ -131,7 +132,7 @@ fun DashboardContent() {
 
                 item {
                     Text(
-                        text = "Quick Actions",
+                        text = stringResource("dashboard.quick_actions"),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(vertical = 8.dp)
@@ -145,14 +146,14 @@ fun DashboardContent() {
                     ) {
                         QuickActionCard(
                             icon = PhosphorIcons.Bold.Prohibit,
-                            title = "Block Apps",
+                            title = stringResource("dashboard.action.block_apps"),
                             onClick = navigation.onBlockAppsClick,
                             modifier = Modifier.weight(1f)
                         )
 
                         QuickActionCard(
                             icon = PhosphorIcons.Bold.Clock,
-                            title = "View Usage",
+                            title = stringResource("dashboard.action.view_usage"),
                             onClick = navigation.onViewUsageClick,
                             modifier = Modifier.weight(1f)
                         )
@@ -171,20 +172,20 @@ fun DashboardContent() {
                             ) {
                                 Icon(
                                     imageVector = PhosphorIcons.Bold.Fire,
-                                    contentDescription = "Focus",
+                                    contentDescription = stringResource("dashboard.focus_mode.title"),
                                     tint = TawaznTheme.colors.warning,
                                     modifier = Modifier.size(32.dp)
                                 )
 
                                 Column(modifier = Modifier.weight(1f)) {
                                     Text(
-                                        text = "Start Focus Mode",
+                                        text = stringResource("dashboard.focus_mode.title"),
                                         style = MaterialTheme.typography.titleMedium,
                                         fontWeight = FontWeight.SemiBold
                                     )
 
                                     Text(
-                                        text = "Block distracting apps and stay productive",
+                                        text = stringResource("dashboard.focus_mode.description"),
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -192,7 +193,7 @@ fun DashboardContent() {
                             }
 
                             GradientButton(
-                                text = "Manage Sessions",
+                                text = stringResource("dashboard.action.manage_sessions"),
                                 onClick = navigation.onManageSessionsClick,
                                 modifier = Modifier.fillMaxWidth()
                             )
@@ -202,7 +203,7 @@ fun DashboardContent() {
 
                 item {
                     Text(
-                        text = "Weekly Insights",
+                        text = stringResource("dashboard.weekly_insights"),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(vertical = 8.dp)
@@ -221,26 +222,26 @@ fun DashboardContent() {
                                 verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = "Weekly Report",
+                                    text = stringResource("dashboard.weekly_report"),
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.SemiBold
                                 )
 
                                 Icon(
                                     imageVector = PhosphorIcons.Bold.TrendDown,
-                                    contentDescription = "Trending",
+                                    contentDescription = stringResource("dashboard.weekly_report"),
                                     tint = TawaznTheme.colors.success
                                 )
                             }
 
                             Text(
-                                text = "Average: 3h 12m per day",
+                                text = stringResource("dashboard.weekly_average"),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
 
                             Text(
-                                text = "You're doing great! 📈",
+                                text = stringResource("dashboard.doing_great"),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = TawaznTheme.colors.success,
                                 fontWeight = FontWeight.SemiBold

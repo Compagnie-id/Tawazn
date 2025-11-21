@@ -51,6 +51,7 @@ kotlin {
             implementation(project(":core:database"))
             implementation(project(":core:datastore"))
             implementation(project(":core:network"))
+            implementation(project(":core:i18n"))
             implementation(project(":domain"))
             implementation(project(":data"))
 

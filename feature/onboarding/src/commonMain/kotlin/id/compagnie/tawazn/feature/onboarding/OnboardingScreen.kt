@@ -23,6 +23,7 @@ import cafe.adriel.voyager.koin.koinScreenModel
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.component.PermissionCard
+import id.compagnie.tawazn.i18n.stringResource
 import com.adamglin.PhosphorIcons
 import com.adamglin.phosphoricons.Bold
 import com.adamglin.phosphoricons.bold.DeviceMobile
@@ -126,7 +127,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     GradientButton(
-                        text = if (currentPage == 3) "Get Started" else "Continue",
+                        text = if (currentPage == 3) stringResource("onboarding.get_started") else stringResource("common.continue"),
                         onClick = {
                             if (currentPage < 3) {
                                 currentPage++
@@ -143,7 +144,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                             onClick = { currentPage-- },
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text("Back")
+                            Text(stringResource("common.back"))
                         }
                     }
 
@@ -155,7 +156,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                             },
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text("Skip", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text(stringResource("common.skip"), color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     }
                 }
@@ -180,21 +181,21 @@ fun WelcomePage() {
         )
 
         Text(
-            text = "Welcome to Tawazn",
+            text = stringResource("onboarding.welcome.title"),
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
         )
 
         Text(
-            text = "توازن",
+            text = stringResource("onboarding.welcome.subtitle"),
             style = MaterialTheme.typography.headlineSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center
         )
 
         Text(
-            text = "Find balance in your digital life. Track your screen time, block distracting apps, and achieve digital wellness.",
+            text = stringResource("onboarding.welcome.description"),
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(horizontal = 16.dp)
@@ -212,7 +213,7 @@ fun FeaturePage() {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            text = "Powerful Features",
+            text = stringResource("onboarding.features.title"),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(bottom = 8.dp)
@@ -220,26 +221,26 @@ fun FeaturePage() {
 
         FeatureItem(
             icon = PhosphorIcons.Bold.Clock,
-            title = "Usage Tracking",
-            description = "Monitor your screen time with detailed statistics and insights"
+            title = stringResource("onboarding.feature.usage_tracking.title"),
+            description = stringResource("onboarding.feature.usage_tracking.description")
         )
 
         FeatureItem(
             icon = PhosphorIcons.Bold.Prohibit,
-            title = "App Blocking",
-            description = "Block distracting apps and create focus sessions"
+            title = stringResource("onboarding.feature.app_blocking.title"),
+            description = stringResource("onboarding.feature.app_blocking.description")
         )
 
         FeatureItem(
             icon = PhosphorIcons.Bold.ClockCountdown,
-            title = "Smart Scheduling",
-            description = "Set up automatic blocking schedules for better productivity"
+            title = stringResource("onboarding.feature.smart_scheduling.title"),
+            description = stringResource("onboarding.feature.smart_scheduling.description")
         )
 
         FeatureItem(
             icon = PhosphorIcons.Bold.ChartBar,
-            title = "Insights & Analytics",
-            description = "Understand your digital habits with weekly reports"
+            title = stringResource("onboarding.feature.insights.title"),
+            description = stringResource("onboarding.feature.insights.description")
         )
     }
 }
@@ -265,7 +266,7 @@ fun PermissionPage(
         )
 
         Text(
-            text = "Required Permissions",
+            text = stringResource("onboarding.permissions.title"),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold
         )
@@ -288,7 +289,7 @@ fun PermissionPage(
                         modifier = Modifier.size(24.dp)
                     )
                     Text(
-                        text = "All permissions granted!",
+                        text = stringResource("onboarding.permissions.all_granted"),
                         style = MaterialTheme.typography.titleMedium,
                         color = TawaznTheme.colors.success,
                         fontWeight = FontWeight.SemiBold
@@ -299,8 +300,8 @@ fun PermissionPage(
 
         // Permission Cards
         PermissionCard(
-            title = "Screen Time Access",
-            description = "Track app usage and screen time statistics. Your data stays private on this device.",
+            title = stringResource("onboarding.permissions.screen_time.title"),
+            description = stringResource("onboarding.permissions.screen_time.description"),
             icon = PhosphorIcons.Bold.DeviceMobile,
             isGranted = permissionState.hasUsageStatsPermission,
             isRequired = true,
@@ -308,8 +309,8 @@ fun PermissionPage(
         )
 
         PermissionCard(
-            title = "App Blocking",
-            description = "Allow Tawazn to block distracting apps and help you stay focused.",
+            title = stringResource("onboarding.permissions.app_blocking.title"),
+            description = stringResource("onboarding.permissions.app_blocking.description"),
             icon = PhosphorIcons.Bold.User,
             isGranted = permissionState.hasAccessibilityPermission,
             isRequired = false,
@@ -328,7 +329,7 @@ fun PermissionPage(
                     strokeWidth = 2.dp
                 )
                 Text(
-                    text = "Requesting permissions...",
+                    text = stringResource("onboarding.permissions.requesting"),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -344,7 +345,7 @@ fun PermissionPage(
                     modifier = Modifier.size(16.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
-                Text("Check Again")
+                Text(stringResource("common.check_again"))
             }
         }
 
@@ -361,7 +362,7 @@ fun PermissionPage(
                 modifier = Modifier.size(16.dp)
             )
             Text(
-                text = "Your data is private and secure",
+                text = stringResource("onboarding.permissions.privacy_note"),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -394,7 +395,7 @@ fun ReadyPage(
         )
 
         Text(
-            text = "You're All Set!",
+            text = stringResource("onboarding.ready.title"),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold
         )
@@ -405,21 +406,21 @@ fun ReadyPage(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
-                    text = "Start Your Journey",
+                    text = stringResource("onboarding.ready.subtitle"),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold
                 )
 
                 Text(
-                    text = "Tawazn is ready to help you achieve digital wellness. Here's what you can do:",
+                    text = stringResource("onboarding.ready.description"),
                     style = MaterialTheme.typography.bodyMedium
                 )
 
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    QuickTip("View your daily screen time")
-                    QuickTip("Block distracting apps instantly")
-                    QuickTip("Create focus sessions")
-                    QuickTip("Track your progress")
+                    QuickTip(stringResource("onboarding.ready.tip1"))
+                    QuickTip(stringResource("onboarding.ready.tip2"))
+                    QuickTip(stringResource("onboarding.ready.tip3"))
+                    QuickTip(stringResource("onboarding.ready.tip4"))
                 }
             }
         }
@@ -440,13 +441,13 @@ fun ReadyPage(
                     )
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = "Limited Functionality",
+                            text = stringResource("onboarding.ready.limited_functionality"),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = TawaznTheme.colors.warning
                         )
                         Text(
-                            text = "Some features require permissions. You can grant them later in Settings.",
+                            text = stringResource("onboarding.ready.limited_description"),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
