@@ -25,6 +25,7 @@ import cafe.adriel.voyager.koin.koinScreenModel
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.component.PermissionCard
+import id.compagnie.tawazn.domain.model.DistractingApp
 import id.compagnie.tawazn.i18n.Language
 import id.compagnie.tawazn.i18n.StringProvider
 import id.compagnie.tawazn.i18n.stringResource
