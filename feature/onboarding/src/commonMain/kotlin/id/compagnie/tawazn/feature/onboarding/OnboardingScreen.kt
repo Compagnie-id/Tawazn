@@ -1382,6 +1382,9 @@ fun DistractingAppsPage(screenModel: OnboardingScreenModel) {
                     )
                 )
             },
+            onAppRemoved = { packageName ->
+                screenModel.removeDistractingApp(packageName)
+            },
             onDismiss = { showAppPicker = false }
         )
     }
@@ -1392,6 +1395,7 @@ fun AppPickerDialog(
     installedApps: List<id.compagnie.tawazn.domain.model.AppInfo>,
     selectedApps: List<String>,
     onAppSelected: (id.compagnie.tawazn.domain.model.AppInfo, Int) -> Unit,
+    onAppRemoved: (String) -> Unit,
     onDismiss: () -> Unit
 ) {
     var selectedCategory by remember { mutableStateOf<id.compagnie.tawazn.domain.model.AppCategory?>(null) }
@@ -1493,8 +1497,12 @@ fun AppPickerDialog(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(MaterialTheme.shapes.medium)
-                            .clickable(enabled = !isSelected) {
-                                onAppSelected(app, timeLimit)
+                            .clickable {
+                                if (isSelected) {
+                                    onAppRemoved(app.packageName)
+                                } else {
+                                    onAppSelected(app, timeLimit)
+                                }
                             }
                     ) {
                         Row(

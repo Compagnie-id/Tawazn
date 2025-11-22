@@ -51,6 +51,12 @@ class AndroidAppMonitor(
 
             packages.mapNotNull { appInfo ->
                 try {
+                    // Skip Tawazn app itself
+                    if (appInfo.packageName == "id.compagnie.tawazn") {
+                        logger.d { "Skipping Tawazn app" }
+                        return@mapNotNull null
+                    }
+
                     // Only include apps that have a launcher intent (can be launched by user)
                     val launchIntent = packageManager.getLaunchIntentForPackage(appInfo.packageName)
                     if (launchIntent == null) {
