@@ -125,7 +125,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                         4 -> HabitChangePage(screenModel)
                         5 -> GuessScreenTimePage(screenModel)
                         6 -> ScreenTimeRevealPage(screenModel)
-                        7 -> TawagnIntroPage()
+                        7 -> TawaznIntroPage()
                         8 -> FeaturePage()
                         9 -> PermissionPage(
                             permissionState = permissionState,
@@ -1107,7 +1107,7 @@ fun ScreenTimeRevealPage(screenModel: OnboardingScreenModel) {
 }
 
 @Composable
-fun TawagnIntroPage() {
+fun TawaznIntroPage() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
