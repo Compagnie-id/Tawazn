@@ -6,6 +6,9 @@ import androidx.datastore.preferences.core.edit
 import id.compagnie.tawazn.core.datastore.AppPreferences
 import id.compagnie.tawazn.domain.model.DistractingApp
 import id.compagnie.tawazn.domain.model.PhoneHabit
+import id.compagnie.tawazn.domain.model.TimeLimitType
+import id.compagnie.tawazn.domain.model.TimeSchedule
+import id.compagnie.tawazn.domain.model.TimeWindow
 import id.compagnie.tawazn.domain.model.UserProfile
 import id.compagnie.tawazn.domain.repository.UserProfileRepository
 import kotlinx.coroutines.flow.Flow
@@ -114,17 +117,64 @@ class UserProfileRepositoryImpl(
     }
 
     @Serializable
+    private data class TimeWindowDto(
+        val startHour: Int,
+        val startMinute: Int,
+        val endHour: Int,
+        val endMinute: Int
+    ) {
+        fun toDomain() = TimeWindow(
+            startHour = startHour,
+            startMinute = startMinute,
+            endHour = endHour,
+            endMinute = endMinute
+        )
+
+        companion object {
+            fun fromDomain(window: TimeWindow) = TimeWindowDto(
+                startHour = window.startHour,
+                startMinute = window.startMinute,
+                endHour = window.endHour,
+                endMinute = window.endMinute
+            )
+        }
+    }
+
+    @Serializable
+    private data class TimeScheduleDto(
+        val allowedWindows: List<TimeWindowDto>
+    ) {
+        fun toDomain() = TimeSchedule(
+            allowedWindows = allowedWindows.map { it.toDomain() }
+        )
+
+        companion object {
+            fun fromDomain(schedule: TimeSchedule) = TimeScheduleDto(
+                allowedWindows = schedule.allowedWindows.map { TimeWindowDto.fromDomain(it) }
+            )
+        }
+    }
+
+    @Serializable
     private data class DistractingAppDto(
         val packageName: String,
         val appName: String,
         val category: String,
-        val dailyLimitMinutes: Int
+        val limitType: String = "DURATION", // Serialized as String for compatibility
+        val dailyLimitMinutes: Int? = null,
+        val schedule: TimeScheduleDto? = null
     ) {
         fun toDomain() = DistractingApp(
             packageName = packageName,
             appName = appName,
             category = category,
-            dailyLimitMinutes = dailyLimitMinutes
+            limitType = try {
+                TimeLimitType.valueOf(limitType)
+            } catch (e: Exception) {
+                TimeLimitType.DURATION // Default fallback
+            },
+            dailyLimitMinutes = dailyLimitMinutes,
+            schedule = schedule?.toDomain()
         )
 
         companion object {
@@ -132,7 +182,9 @@ class UserProfileRepositoryImpl(
                 packageName = app.packageName,
                 appName = app.appName,
                 category = app.category,
-                dailyLimitMinutes = app.dailyLimitMinutes
+                limitType = app.limitType.name,
+                dailyLimitMinutes = app.dailyLimitMinutes,
+                schedule = app.schedule?.let { TimeScheduleDto.fromDomain(it) }
             )
         }
     }
