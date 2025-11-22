@@ -1184,8 +1184,15 @@ fun TawagnIntroPage() {
 fun DistractingAppsPage(screenModel: OnboardingScreenModel) {
     val installedApps by screenModel.installedApps.collectAsState()
     val distractingApps by screenModel.distractingApps.collectAsState()
-    var selectedApp by remember { mutableStateOf<id.compagnie.tawazn.domain.model.AppInfo?>(null) }
-    var timeLimit by remember { mutableStateOf(60) } // minutes
+    val isLoadingApps by screenModel.isLoadingApps.collectAsState()
+    var showAppPicker by remember { mutableStateOf(false) }
+
+    // Auto-refresh apps when page is shown if installedApps is empty
+    LaunchedEffect(Unit) {
+        if (installedApps.isEmpty()) {
+            screenModel.refreshInstalledApps()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -1225,6 +1232,13 @@ fun DistractingAppsPage(screenModel: OnboardingScreenModel) {
                     .replace("{count}", distractingApps.size.toString()),
             style = MaterialTheme.typography.titleMedium,
             color = TawaznTheme.colors.gradientMiddle
+        )
+
+        // Add app button
+        GradientButton(
+            text = "+ ${stringResource("onboarding.distracting_apps.select_all")}",
+            onClick = { showAppPicker = true },
+            modifier = Modifier.fillMaxWidth()
         )
 
         // Show selected apps
@@ -1277,10 +1291,202 @@ fun DistractingAppsPage(screenModel: OnboardingScreenModel) {
             }
         }
 
+        // Show loading indicator or empty state
+        when {
+            isLoadingApps -> {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(48.dp),
+                    color = TawaznTheme.colors.gradientMiddle
+                )
+                Text(
+                    text = stringResource("onboarding.distracting_apps.loading"),
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+            installedApps.isEmpty() && !isLoadingApps -> {
+                Text(
+                    text = stringResource("onboarding.distracting_apps.no_apps_found"),
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(16.dp)
+                )
+                OutlinedButton(
+                    onClick = { screenModel.refreshInstalledApps() },
+                    modifier = Modifier.padding(top = 8.dp)
+                ) {
+                    Icon(
+                        imageVector = PhosphorIcons.Bold.ArrowsClockwise,
+                        contentDescription = "Refresh",
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(stringResource("onboarding.distracting_apps.refresh"))
+                }
+            }
+        }
+
         LaunchedEffect(distractingApps) {
             if (distractingApps.isNotEmpty()) {
                 screenModel.saveDistractingApps()
             }
         }
     }
+
+    // App Picker Dialog
+    if (showAppPicker && installedApps.isNotEmpty()) {
+        AppPickerDialog(
+            installedApps = installedApps,
+            selectedApps = distractingApps.map { it.packageName },
+            onAppSelected = { appInfo, timeLimit ->
+                screenModel.updateDistractingApp(
+                    DistractingApp(
+                        packageName = appInfo.packageName,
+                        appName = appInfo.appName,
+                        category = appInfo.category.name,
+                        dailyLimitMinutes = timeLimit
+                    )
+                )
+            },
+            onDismiss = { showAppPicker = false }
+        )
+    }
+}
+
+@Composable
+fun AppPickerDialog(
+    installedApps: List<id.compagnie.tawazn.domain.model.AppInfo>,
+    selectedApps: List<String>,
+    onAppSelected: (id.compagnie.tawazn.domain.model.AppInfo, Int) -> Unit,
+    onDismiss: () -> Unit
+) {
+    var selectedCategory by remember { mutableStateOf<id.compagnie.tawazn.domain.model.AppCategory?>(null) }
+    var timeLimit by remember { mutableStateOf(60) } // minutes
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Select Distracting Apps") },
+        text = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                // Category filter
+                Text(
+                    text = "Filter by category:",
+                    style = MaterialTheme.typography.labelMedium,
+                    modifier = Modifier.padding(bottom = 4.dp)
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    FilterChip(
+                        selected = selectedCategory == null,
+                        onClick = { selectedCategory = null },
+                        label = { Text("All") }
+                    )
+                    FilterChip(
+                        selected = selectedCategory == id.compagnie.tawazn.domain.model.AppCategory.SOCIAL_MEDIA,
+                        onClick = { selectedCategory = id.compagnie.tawazn.domain.model.AppCategory.SOCIAL_MEDIA },
+                        label = { Text("Social") }
+                    )
+                    FilterChip(
+                        selected = selectedCategory == id.compagnie.tawazn.domain.model.AppCategory.GAMES,
+                        onClick = { selectedCategory = id.compagnie.tawazn.domain.model.AppCategory.GAMES },
+                        label = { Text("Games") }
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Time limit slider
+                Text(
+                    text = "Daily limit: ${timeLimit / 60}h ${timeLimit % 60}m",
+                    style = MaterialTheme.typography.labelMedium
+                )
+                Slider(
+                    value = timeLimit.toFloat(),
+                    onValueChange = { timeLimit = it.toInt() },
+                    valueRange = 15f..480f,
+                    steps = 30,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // App list
+                val filteredApps = if (selectedCategory != null) {
+                    installedApps.filter { it.category == selectedCategory }
+                } else {
+                    installedApps
+                }
+
+                filteredApps.forEach { app ->
+                    val isSelected = selectedApps.contains(app.packageName)
+
+                    GlassCard(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(MaterialTheme.shapes.medium)
+                            .clickable {
+                                if (!isSelected) {
+                                    onAppSelected(app, timeLimit)
+                                }
+                            }
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(12.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = app.appName,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                                )
+                                Text(
+                                    text = app.category.name,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+
+                            if (isSelected) {
+                                Icon(
+                                    imageVector = PhosphorIcons.Bold.CheckCircle,
+                                    contentDescription = "Selected",
+                                    tint = TawaznTheme.colors.gradientMiddle,
+                                    modifier = Modifier.size(24.dp)
+                                )
+                            }
+                        }
+                    }
+                }
+
+                if (filteredApps.isEmpty()) {
+                    Text(
+                        text = "No apps in this category",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Done")
+            }
+        }
+    )
 }

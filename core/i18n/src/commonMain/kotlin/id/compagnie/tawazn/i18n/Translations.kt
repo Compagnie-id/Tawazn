@@ -124,6 +124,9 @@ fun getEnglishTranslations(): Map<String, String> = mapOf(
     "onboarding.distracting_apps.minutes" to "m",
     "onboarding.distracting_apps.no_apps_selected" to "No apps selected",
     "onboarding.distracting_apps.apps_selected" to "{count} apps selected",
+    "onboarding.distracting_apps.loading" to "Loading apps...",
+    "onboarding.distracting_apps.no_apps_found" to "No apps found. This feature will be available after granting permissions.",
+    "onboarding.distracting_apps.refresh" to "Refresh",
 
     // Dashboard
     "dashboard.title" to "Dashboard",
@@ -541,6 +544,9 @@ fun getIndonesianTranslations(): Map<String, String> = mapOf(
     "onboarding.distracting_apps.minutes" to "m",
     "onboarding.distracting_apps.no_apps_selected" to "Belum ada aplikasi yang dipilih",
     "onboarding.distracting_apps.apps_selected" to "{count} aplikasi dipilih",
+    "onboarding.distracting_apps.loading" to "Lagi dimuat...",
+    "onboarding.distracting_apps.no_apps_found" to "Aplikasi nggak ketemu. Fitur ini bakalan tersedia setelah izin dikasih.",
+    "onboarding.distracting_apps.refresh" to "Muat Ulang",
 
     // Dashboard
     "dashboard.title" to "Dasbor",
@@ -958,6 +964,9 @@ fun getArabicTranslations(): Map<String, String> = mapOf(
     "onboarding.distracting_apps.minutes" to "د",
     "onboarding.distracting_apps.no_apps_selected" to "لم يتم اختيار تطبيقات",
     "onboarding.distracting_apps.apps_selected" to "{count} تطبيقات محددة",
+    "onboarding.distracting_apps.loading" to "جارٍ التحميل...",
+    "onboarding.distracting_apps.no_apps_found" to "لم يتم العثور على تطبيقات. ستتوفر هذه الميزة بعد منح الأذونات.",
+    "onboarding.distracting_apps.refresh" to "تحديث",
 
     // Dashboard
     "dashboard.title" to "لوحة التحكم",

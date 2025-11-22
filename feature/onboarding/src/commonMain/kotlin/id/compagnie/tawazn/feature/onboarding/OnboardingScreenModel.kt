@@ -59,6 +59,9 @@ class OnboardingScreenModel : ScreenModel, KoinComponent {
     private val _installedApps = MutableStateFlow<List<AppInfo>>(emptyList())
     val installedApps: StateFlow<List<AppInfo>> = _installedApps.asStateFlow()
 
+    private val _isLoadingApps = MutableStateFlow(false)
+    val isLoadingApps: StateFlow<Boolean> = _isLoadingApps.asStateFlow()
+
     init {
         checkPermissions()
         loadPlatformInfo()
@@ -277,12 +280,33 @@ class OnboardingScreenModel : ScreenModel, KoinComponent {
     private fun loadInstalledApps() {
         screenModelScope.launch {
             try {
+                _isLoadingApps.value = true
                 getNonSystemAppsUseCase().collect { apps ->
                     _installedApps.value = apps
+                    _isLoadingApps.value = false
                     logger.i { "Installed apps loaded: ${apps.size} apps" }
                 }
             } catch (e: Exception) {
                 logger.e(e) { "Failed to load installed apps" }
+                _isLoadingApps.value = false
+            }
+        }
+    }
+
+    /**
+     * Manually refresh installed apps from system
+     * Useful when apps haven't been synced yet
+     */
+    fun refreshInstalledApps() {
+        screenModelScope.launch {
+            try {
+                _isLoadingApps.value = true
+                logger.i { "Manually refreshing installed apps..." }
+                platformSyncService.syncInstalledApps()
+                logger.i { "Manual app refresh completed" }
+            } catch (e: Exception) {
+                logger.e(e) { "Failed to manually refresh apps" }
+                _isLoadingApps.value = false
             }
         }
     }
