@@ -59,6 +59,72 @@ fun getEnglishTranslations(): Map<String, String> = mapOf(
     "onboarding.ready.limited_functionality" to "Limited Functionality",
     "onboarding.ready.limited_description" to "Some features require permissions. You can grant them later in Settings.",
 
+    // Onboarding - User Profile
+    "onboarding.profile.title" to "Let's Get to Know You",
+    "onboarding.profile.description" to "We'll personalize your experience to help you achieve digital balance.",
+    "onboarding.profile.name_label" to "What's your name?",
+    "onboarding.profile.name_placeholder" to "Enter your name",
+    "onboarding.profile.age_label" to "How old are you?",
+    "onboarding.profile.age_placeholder" to "Enter your age",
+    "onboarding.profile.greeting" to "Nice to meet you,",
+
+    // Onboarding - Screen Time Input
+    "onboarding.screentime.title" to "Daily Screen Time",
+    "onboarding.screentime.description" to "how much time do you typically spend on your phone each day?",
+    "onboarding.screentime.hours_label" to "Hours per day",
+    "onboarding.screentime.hours_suffix" to "hours",
+    "onboarding.screentime.16plus" to "16+ hours",
+
+    // Onboarding - Habit Change
+    "onboarding.habits.title" to "What Would You Like to Change?",
+    "onboarding.habits.description" to "Select the phone habits you want to improve. You can select multiple.",
+    "onboarding.habits.feeling_bad" to "Feeling bad after using phone",
+    "onboarding.habits.using_in_bed" to "Using phone in bed",
+    "onboarding.habits.scrolling_morning" to "Scrolling first in the morning",
+    "onboarding.habits.constantly_checking" to "Constantly checking phone",
+    "onboarding.habits.mindless_scrolling" to "Mindless scrolling",
+    "onboarding.habits.ignoring_people" to "Ignoring people around",
+    "onboarding.habits.using_when_gathering" to "Using phone when gathering",
+
+    // Onboarding - Guess Screen Time
+    "onboarding.guess.title" to "Take a Guess",
+    "onboarding.guess.description" to "Based on your daily usage, how many hours do you think you spend on your phone in a year?",
+    "onboarding.guess.slider_label" to "Your guess (hours per year)",
+    "onboarding.guess.days_label" to "days",
+
+    // Onboarding - Screen Time Reveal
+    "onboarding.reveal.title" to "The Reality",
+    "onboarding.reveal.yearly_title" to "Time Spent This Year",
+    "onboarding.reveal.yearly_hours" to "hours",
+    "onboarding.reveal.yearly_days" to "days",
+    "onboarding.reveal.projection_title" to "Lifetime Projection",
+    "onboarding.reveal.projection_description" to "If you continue this pattern from age {age} to 80:",
+    "onboarding.reveal.projection_years" to "years of your life",
+    "onboarding.reveal.projection_percentage" to "of your remaining life",
+    "onboarding.reveal.thats" to "That's",
+    "onboarding.reveal.or" to "or",
+
+    // Onboarding - Tawazn Intro
+    "onboarding.intro.title" to "Reclaim Your Time",
+    "onboarding.intro.subtitle" to "Tawazn Can Help",
+    "onboarding.intro.description" to "We know breaking phone addiction isn't easy. That's why Tawazn offers proven programs to:",
+    "onboarding.intro.benefit1" to "Reduce your daily screen time",
+    "onboarding.intro.benefit2" to "Eliminate distractions during work hours",
+    "onboarding.intro.benefit3" to "Develop sustainable focus plans",
+    "onboarding.intro.benefit4" to "Build healthier digital habits",
+    "onboarding.intro.cta" to "Let's see how Tawazn works",
+
+    // Onboarding - Distracting Apps
+    "onboarding.distracting_apps.title" to "Manage Distractions",
+    "onboarding.distracting_apps.description" to "Select apps that distract you and set daily time limits.",
+    "onboarding.distracting_apps.category_label" to "Category",
+    "onboarding.distracting_apps.select_all" to "Select All",
+    "onboarding.distracting_apps.time_limit" to "Daily Time Limit",
+    "onboarding.distracting_apps.hours" to "h",
+    "onboarding.distracting_apps.minutes" to "m",
+    "onboarding.distracting_apps.no_apps_selected" to "No apps selected",
+    "onboarding.distracting_apps.apps_selected" to "{count} apps selected",
+
     // Dashboard
     "dashboard.title" to "Dashboard",
     "dashboard.welcome" to "Welcome back! 👋",
@@ -760,6 +826,72 @@ fun getArabicTranslations(): Map<String, String> = mapOf(
     "onboarding.ready.tip4" to "تتبع تقدمك",
     "onboarding.ready.limited_functionality" to "وظائف محدودة",
     "onboarding.ready.limited_description" to "بعض الميزات تتطلب أذونات. يمكنك منحها لاحقًا في الإعدادات.",
+
+    // Onboarding - User Profile
+    "onboarding.profile.title" to "دعنا نتعرف عليك",
+    "onboarding.profile.description" to "سنقوم بتخصيص تجربتك لمساعدتك على تحقيق التوازن الرقمي.",
+    "onboarding.profile.name_label" to "ما اسمك؟",
+    "onboarding.profile.name_placeholder" to "أدخل اسمك",
+    "onboarding.profile.age_label" to "كم عمرك؟",
+    "onboarding.profile.age_placeholder" to "أدخل عمرك",
+    "onboarding.profile.greeting" to "سررت بلقائك،",
+
+    // Onboarding - Screen Time Input
+    "onboarding.screentime.title" to "وقت الشاشة اليومي",
+    "onboarding.screentime.description" to "كم من الوقت تقضيه عادةً على هاتفك كل يوم؟",
+    "onboarding.screentime.hours_label" to "ساعات في اليوم",
+    "onboarding.screentime.hours_suffix" to "ساعات",
+    "onboarding.screentime.16plus" to "16+ ساعة",
+
+    // Onboarding - Habit Change
+    "onboarding.habits.title" to "ما الذي تود تغييره؟",
+    "onboarding.habits.description" to "اختر عادات الهاتف التي تريد تحسينها. يمكنك اختيار أكثر من واحدة.",
+    "onboarding.habits.feeling_bad" to "الشعور بالسوء بعد استخدام الهاتف",
+    "onboarding.habits.using_in_bed" to "استخدام الهاتف في السرير",
+    "onboarding.habits.scrolling_morning" to "التمرير أول شيء في الصباح",
+    "onboarding.habits.constantly_checking" to "التحقق المستمر من الهاتف",
+    "onboarding.habits.mindless_scrolling" to "التمرير بلا وعي",
+    "onboarding.habits.ignoring_people" to "تجاهل الأشخاص من حولك",
+    "onboarding.habits.using_when_gathering" to "استخدام الهاتف عند التجمع",
+
+    // Onboarding - Guess Screen Time
+    "onboarding.guess.title" to "خمّن",
+    "onboarding.guess.description" to "بناءً على استخدامك اليومي، كم ساعة تعتقد أنك تقضيها على هاتفك في السنة؟",
+    "onboarding.guess.slider_label" to "تخمينك (ساعات في السنة)",
+    "onboarding.guess.days_label" to "أيام",
+
+    // Onboarding - Screen Time Reveal
+    "onboarding.reveal.title" to "الواقع",
+    "onboarding.reveal.yearly_title" to "الوقت المستغرق هذا العام",
+    "onboarding.reveal.yearly_hours" to "ساعات",
+    "onboarding.reveal.yearly_days" to "أيام",
+    "onboarding.reveal.projection_title" to "التوقعات مدى الحياة",
+    "onboarding.reveal.projection_description" to "إذا واصلت هذا النمط من عمر {age} إلى 80:",
+    "onboarding.reveal.projection_years" to "سنوات من حياتك",
+    "onboarding.reveal.projection_percentage" to "من حياتك المتبقية",
+    "onboarding.reveal.thats" to "أي",
+    "onboarding.reveal.or" to "أو",
+
+    // Onboarding - Tawazn Intro
+    "onboarding.intro.title" to "استعد وقتك",
+    "onboarding.intro.subtitle" to "توازن يمكنه المساعدة",
+    "onboarding.intro.description" to "نعلم أن كسر إدمان الهاتف ليس سهلاً. لهذا السبب يقدم توازن برامج مثبتة من أجل:",
+    "onboarding.intro.benefit1" to "تقليل وقت شاشتك اليومي",
+    "onboarding.intro.benefit2" to "القضاء على المشتتات خلال ساعات العمل",
+    "onboarding.intro.benefit3" to "تطوير خطط تركيز مستدامة",
+    "onboarding.intro.benefit4" to "بناء عادات رقمية صحية",
+    "onboarding.intro.cta" to "دعنا نرى كيف يعمل توازن",
+
+    // Onboarding - Distracting Apps
+    "onboarding.distracting_apps.title" to "إدارة المشتتات",
+    "onboarding.distracting_apps.description" to "اختر التطبيقات التي تشتت انتباهك وحدد حدود زمنية يومية.",
+    "onboarding.distracting_apps.category_label" to "الفئة",
+    "onboarding.distracting_apps.select_all" to "تحديد الكل",
+    "onboarding.distracting_apps.time_limit" to "الحد الزمني اليومي",
+    "onboarding.distracting_apps.hours" to "س",
+    "onboarding.distracting_apps.minutes" to "د",
+    "onboarding.distracting_apps.no_apps_selected" to "لم يتم اختيار تطبيقات",
+    "onboarding.distracting_apps.apps_selected" to "{count} تطبيقات محددة",
 
     // Dashboard
     "dashboard.title" to "لوحة التحكم",

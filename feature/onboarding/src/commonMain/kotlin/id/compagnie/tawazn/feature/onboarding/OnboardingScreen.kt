@@ -89,7 +89,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    repeat(5) { index ->
+                    repeat(12) { index ->
                         Box(
                             modifier = Modifier
                                 .padding(horizontal = 4.dp)
@@ -114,13 +114,20 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                     when (currentPage) {
                         0 -> WelcomePage()
                         1 -> LanguageSelectionPage()
-                        2 -> FeaturePage()
-                        3 -> PermissionPage(
+                        2 -> UserProfilePage(screenModel)
+                        3 -> ScreenTimeInputPage(screenModel)
+                        4 -> HabitChangePage(screenModel)
+                        5 -> GuessScreenTimePage(screenModel)
+                        6 -> ScreenTimeRevealPage(screenModel)
+                        7 -> TawagnIntroPage()
+                        8 -> FeaturePage()
+                        9 -> PermissionPage(
                             permissionState = permissionState,
                             onRequestPermissions = { screenModel.requestPermissions() },
                             onCheckPermissions = { screenModel.checkPermissions() }
                         )
-                        4 -> ReadyPage(
+                        10 -> DistractingAppsPage(screenModel)
+                        11 -> ReadyPage(
                             permissionState = permissionState,
                             onStartServices = { screenModel.startBackgroundServices() }
                         )
@@ -135,9 +142,9 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     GradientButton(
-                        text = if (currentPage == 4) stringResource("onboarding.get_started") else stringResource("common.continue"),
+                        text = if (currentPage == 11) stringResource("onboarding.get_started") else stringResource("common.continue"),
                         onClick = {
-                            if (currentPage < 4) {
+                            if (currentPage < 11) {
                                 currentPage++
                             } else {
                                 // Complete onboarding - App.kt will automatically show the main app
@@ -147,7 +154,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                         modifier = Modifier.fillMaxWidth()
                     )
 
-                    if (currentPage > 0 && currentPage < 4) {
+                    if (currentPage > 0 && currentPage < 11) {
                         TextButton(
                             onClick = { currentPage-- },
                             modifier = Modifier.fillMaxWidth()
@@ -156,7 +163,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                         }
                     }
 
-                    if (currentPage < 4) {
+                    if (currentPage < 11) {
                         TextButton(
                             onClick = {
                                 // Skip onboarding - App.kt will automatically show the main app
@@ -631,5 +638,649 @@ fun QuickTip(text: String) {
             text = text,
             style = MaterialTheme.typography.bodyMedium
         )
+    }
+}
+
+// NEW ONBOARDING PAGES
+
+@Composable
+fun UserProfilePage(screenModel: OnboardingScreenModel) {
+    var name by remember { mutableStateOf("") }
+    var age by remember { mutableStateOf("") }
+    val userName by screenModel.userName.collectAsState()
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(24.dp)
+    ) {
+        Icon(
+            imageVector = PhosphorIcons.Bold.User,
+            contentDescription = "Profile",
+            modifier = Modifier.size(100.dp),
+            tint = TawaznTheme.colors.gradientMiddle
+        )
+
+        Text(
+            text = stringResource("onboarding.profile.title"),
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
+
+        Text(
+            text = stringResource("onboarding.profile.description"),
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Name Input
+        OutlinedTextField(
+            value = name,
+            onValueChange = { name = it },
+            label = { Text(stringResource("onboarding.profile.name_label")) },
+            placeholder = { Text(stringResource("onboarding.profile.name_placeholder")) },
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true
+        )
+
+        // Age Input
+        OutlinedTextField(
+            value = age,
+            onValueChange = { if (it.all { char -> char.isDigit() } && it.length <= 3) age = it },
+            label = { Text(stringResource("onboarding.profile.age_label")) },
+            placeholder = { Text(stringResource("onboarding.profile.age_placeholder")) },
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true
+        )
+
+        // Save button
+        if (name.isNotBlank() && age.isNotBlank()) {
+            LaunchedEffect(name, age) {
+                val ageInt = age.toIntOrNull()
+                if (ageInt != null && ageInt > 0) {
+                    screenModel.saveUserInfo(name, ageInt)
+                }
+            }
+        }
+
+        if (userName.isNotBlank()) {
+            Text(
+                text = "${stringResource("onboarding.profile.greeting")} $userName! 👋",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                color = TawaznTheme.colors.gradientMiddle
+            )
+        }
+    }
+}
+
+@Composable
+fun ScreenTimeInputPage(screenModel: OnboardingScreenModel) {
+    var selectedHours by remember { mutableStateOf(4) }
+    val userName by screenModel.userName.collectAsState()
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(24.dp)
+    ) {
+        Icon(
+            imageVector = PhosphorIcons.Bold.Clock,
+            contentDescription = "Screen Time",
+            modifier = Modifier.size(100.dp),
+            tint = TawaznTheme.colors.gradientMiddle
+        )
+
+        if (userName.isNotBlank()) {
+            Text(
+                text = "$userName,",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        Text(
+            text = stringResource("onboarding.screentime.title"),
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
+
+        Text(
+            text = stringResource("onboarding.screentime.description"),
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Hours display
+        Text(
+            text = if (selectedHours <= 16) "$selectedHours ${stringResource("onboarding.screentime.hours_suffix")}"
+                  else stringResource("onboarding.screentime.16plus"),
+            style = MaterialTheme.typography.displayMedium,
+            fontWeight = FontWeight.Bold,
+            color = TawaznTheme.colors.gradientMiddle
+        )
+
+        // Slider
+        Slider(
+            value = selectedHours.toFloat(),
+            onValueChange = { selectedHours = it.toInt() },
+            valueRange = 1f..17f,
+            steps = 15,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+        )
+
+        LaunchedEffect(selectedHours) {
+            val hours = if (selectedHours > 16) 16 else selectedHours
+            screenModel.saveDailyScreenTime(hours)
+        }
+    }
+}
+
+@Composable
+fun HabitChangePage(screenModel: OnboardingScreenModel) {
+    val selectedHabits by screenModel.selectedHabits.collectAsState()
+    val userName by screenModel.userName.collectAsState()
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(24.dp)
+    ) {
+        if (userName.isNotBlank()) {
+            Text(
+                text = "$userName,",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        Text(
+            text = stringResource("onboarding.habits.title"),
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
+
+        Text(
+            text = stringResource("onboarding.habits.description"),
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            id.compagnie.tawazn.domain.model.PhoneHabit.entries.forEach { habit ->
+                HabitOption(
+                    habit = habit,
+                    isSelected = selectedHabits.contains(habit),
+                    onClick = { screenModel.toggleHabit(habit) }
+                )
+            }
+        }
+
+        LaunchedEffect(selectedHabits) {
+            if (selectedHabits.isNotEmpty()) {
+                screenModel.saveSelectedHabits()
+            }
+        }
+    }
+}
+
+@Composable
+fun HabitOption(
+    habit: id.compagnie.tawazn.domain.model.PhoneHabit,
+    isSelected: Boolean,
+    onClick: () -> Unit
+) {
+    GlassCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(MaterialTheme.shapes.medium)
+            .clickable(onClick = onClick)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource("onboarding.habits.${habit.key}"),
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.weight(1f)
+            )
+
+            if (isSelected) {
+                Icon(
+                    imageVector = PhosphorIcons.Bold.CheckCircle,
+                    contentDescription = "Selected",
+                    tint = TawaznTheme.colors.gradientMiddle,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun GuessScreenTimePage(screenModel: OnboardingScreenModel) {
+    var guessedDays by remember { mutableStateOf(100f) }
+    val userName by screenModel.userName.collectAsState()
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(24.dp)
+    ) {
+        if (userName.isNotBlank()) {
+            Text(
+                text = "$userName,",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        Text(
+            text = stringResource("onboarding.guess.title"),
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
+
+        Text(
+            text = stringResource("onboarding.guess.description"),
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Guessed days display
+        Text(
+            text = "${guessedDays.toInt()}",
+            style = MaterialTheme.typography.displayLarge,
+            fontWeight = FontWeight.Bold,
+            color = TawaznTheme.colors.gradientMiddle
+        )
+
+        Text(
+            text = stringResource("onboarding.guess.days_label"),
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+
+        // Slider (range 0-365 days, step by 10)
+        Slider(
+            value = guessedDays,
+            onValueChange = { guessedDays = it },
+            valueRange = 0f..365f,
+            steps = 36,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+        )
+
+        LaunchedEffect(guessedDays) {
+            val hours = (guessedDays.toInt() * 24)
+            screenModel.saveGuessedYearlyHours(hours)
+        }
+    }
+}
+
+@Composable
+fun ScreenTimeRevealPage(screenModel: OnboardingScreenModel) {
+    val dailyHours by screenModel.dailyScreenTimeHours.collectAsState()
+    val userAge by screenModel.userAge.collectAsState()
+    val userName by screenModel.userName.collectAsState()
+
+    val yearlyHours = (dailyHours ?: 0) * 365
+    val yearlyDays = yearlyHours / 24
+    val lifetimeYears = screenModel.calculateLifetimeProjection()
+    val remainingYears = 80 - (userAge ?: 0)
+    val percentage = if (remainingYears > 0) (lifetimeYears / remainingYears * 100) else 0.0
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(24.dp)
+    ) {
+        if (userName.isNotBlank()) {
+            Text(
+                text = "$userName,",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        Text(
+            text = stringResource("onboarding.reveal.title"),
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.error
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Yearly Stats
+        GlassCard {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Text(
+                    text = stringResource("onboarding.reveal.yearly_title"),
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(24.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            text = "$yearlyHours",
+                            style = MaterialTheme.typography.displayMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = TawaznTheme.colors.gradientMiddle
+                        )
+                        Text(
+                            text = stringResource("onboarding.reveal.yearly_hours"),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+
+                    Text(
+                        text = "=",
+                        style = MaterialTheme.typography.headlineLarge
+                    )
+
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            text = "$yearlyDays",
+                            style = MaterialTheme.typography.displayMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = TawaznTheme.colors.gradientEnd
+                        )
+                        Text(
+                            text = stringResource("onboarding.reveal.yearly_days"),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+            }
+        }
+
+        // Lifetime Projection
+        GlassCard {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Text(
+                    text = stringResource("onboarding.reveal.projection_title"),
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Text(
+                    text = stringResource("onboarding.reveal.projection_description")
+                        .replace("{age}", (userAge ?: 0).toString()),
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = "${stringResource("onboarding.reveal.thats")} ${String.format("%.1f", lifetimeYears)}",
+                    style = MaterialTheme.typography.headlineLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.error
+                )
+
+                Text(
+                    text = stringResource("onboarding.reveal.projection_years"),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                Text(
+                    text = "${stringResource("onboarding.reveal.or")} ${String.format("%.1f", percentage)}%",
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.error
+                )
+
+                Text(
+                    text = stringResource("onboarding.reveal.projection_percentage"),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun TawagnIntroPage() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(24.dp)
+    ) {
+        Icon(
+            imageVector = PhosphorIcons.Bold.Shield,
+            contentDescription = "Tawazn",
+            modifier = Modifier.size(120.dp),
+            tint = TawaznTheme.colors.gradientMiddle
+        )
+
+        Text(
+            text = stringResource("onboarding.intro.title"),
+            style = MaterialTheme.typography.headlineLarge,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
+
+        Text(
+            text = stringResource("onboarding.intro.subtitle"),
+            style = MaterialTheme.typography.titleLarge,
+            textAlign = TextAlign.Center,
+            color = TawaznTheme.colors.gradientMiddle
+        )
+
+        Text(
+            text = stringResource("onboarding.intro.description"),
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        GlassCard {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                listOf(
+                    "onboarding.intro.benefit1",
+                    "onboarding.intro.benefit2",
+                    "onboarding.intro.benefit3",
+                    "onboarding.intro.benefit4"
+                ).forEach { benefit ->
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = PhosphorIcons.Bold.CheckCircle,
+                            contentDescription = null,
+                            tint = TawaznTheme.colors.gradientMiddle,
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Text(
+                            text = stringResource(benefit),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+                }
+            }
+        }
+
+        Text(
+            text = stringResource("onboarding.intro.cta"),
+            style = MaterialTheme.typography.titleMedium,
+            textAlign = TextAlign.Center,
+            color = TawaznTheme.colors.gradientMiddle
+        )
+    }
+}
+
+@Composable
+fun DistractingAppsPage(screenModel: OnboardingScreenModel) {
+    val installedApps by screenModel.installedApps.collectAsState()
+    val distractingApps by screenModel.distractingApps.collectAsState()
+    var selectedApp by remember { mutableStateOf<id.compagnie.tawazn.domain.model.AppInfo?>(null) }
+    var timeLimit by remember { mutableStateOf(60) } // minutes
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(24.dp)
+    ) {
+        Icon(
+            imageVector = PhosphorIcons.Bold.Prohibit,
+            contentDescription = "Distracting Apps",
+            modifier = Modifier.size(100.dp),
+            tint = TawaznTheme.colors.gradientMiddle
+        )
+
+        Text(
+            text = stringResource("onboarding.distracting_apps.title"),
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
+
+        Text(
+            text = stringResource("onboarding.distracting_apps.description"),
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
+        // Selected apps count
+        Text(
+            text = if (distractingApps.isEmpty())
+                stringResource("onboarding.distracting_apps.no_apps_selected")
+            else
+                stringResource("onboarding.distracting_apps.apps_selected")
+                    .replace("{count}", distractingApps.size.toString()),
+            style = MaterialTheme.typography.titleMedium,
+            color = TawaznTheme.colors.gradientMiddle
+        )
+
+        // Show selected apps
+        if (distractingApps.isNotEmpty()) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                distractingApps.take(5).forEach { app ->
+                    GlassCard {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(12.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = app.appName,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                                Text(
+                                    text = "${app.dailyLimitMinutes / 60}${stringResource("onboarding.distracting_apps.hours")} " +
+                                          "${app.dailyLimitMinutes % 60}${stringResource("onboarding.distracting_apps.minutes")}",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                            IconButton(onClick = { screenModel.removeDistractingApp(app.packageName) }) {
+                                Icon(
+                                    imageVector = PhosphorIcons.Bold.Warning,
+                                    contentDescription = "Remove",
+                                    tint = MaterialTheme.colorScheme.error
+                                )
+                            }
+                        }
+                    }
+                }
+
+                if (distractingApps.size > 5) {
+                    Text(
+                        text = "+${distractingApps.size - 5} more",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(start = 12.dp)
+                    )
+                }
+            }
+        }
+
+        LaunchedEffect(distractingApps) {
+            if (distractingApps.isNotEmpty()) {
+                screenModel.saveDistractingApps()
+            }
+        }
     }
 }
