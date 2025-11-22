@@ -25,6 +25,7 @@ import cafe.adriel.voyager.koin.koinScreenModel
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.component.PermissionCard
+import id.compagnie.tawazn.design.component.AppIcon
 import id.compagnie.tawazn.domain.model.DistractingApp
 import id.compagnie.tawazn.i18n.Language
 import id.compagnie.tawazn.i18n.StringProvider
@@ -1246,35 +1247,64 @@ fun DistractingAppsPage(screenModel: OnboardingScreenModel) {
         if (distractingApps.isNotEmpty()) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 distractingApps.take(5).forEach { app ->
-                    GlassCard {
+                    GlassCard(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(12.dp),
+                                .padding(16.dp),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = app.appName,
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    fontWeight = FontWeight.SemiBold
+                            Row(
+                                modifier = Modifier.weight(1f),
+                                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                // App Icon
+                                AppIcon(
+                                    packageName = app.packageName,
+                                    contentDescription = app.appName,
+                                    size = 48.dp
                                 )
-                                Text(
-                                    text = "${app.dailyLimitMinutes / 60}${stringResource("onboarding.distracting_apps.hours")} " +
-                                          "${app.dailyLimitMinutes % 60}${stringResource("onboarding.distracting_apps.minutes")}",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
+
+                                Column {
+                                    Text(
+                                        text = app.appName,
+                                        style = MaterialTheme.typography.bodyLarge,
+                                        fontWeight = FontWeight.SemiBold
+                                    )
+                                    Row(
+                                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Icon(
+                                            imageVector = PhosphorIcons.Bold.Clock,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(14.dp),
+                                            tint = TawaznTheme.colors.gradientMiddle
+                                        )
+                                        Text(
+                                            text = "${app.dailyLimitMinutes / 60}${stringResource("onboarding.distracting_apps.hours")} " +
+                                                  "${app.dailyLimitMinutes % 60}${stringResource("onboarding.distracting_apps.minutes")}",
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = TawaznTheme.colors.gradientMiddle,
+                                            fontWeight = FontWeight.Medium
+                                        )
+                                    }
+                                }
                             }
+
                             IconButton(onClick = { screenModel.removeDistractingApp(app.packageName) }) {
                                 Icon(
                                     imageVector = PhosphorIcons.Bold.Warning,
                                     contentDescription = "Remove",
-                                    tint = MaterialTheme.colorScheme.error
+                                    tint = MaterialTheme.colorScheme.error,
+                                    modifier = Modifier.size(20.dp)
                                 )
                             }
                         }
@@ -1369,58 +1399,79 @@ fun AppPickerDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Select Distracting Apps") },
+        title = {
+            Text(
+                text = stringResource("onboarding.distracting_apps.select_all"),
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold
+            )
+        },
         text = {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                // Category filter
-                Text(
-                    text = "Filter by category:",
-                    style = MaterialTheme.typography.labelMedium,
-                    modifier = Modifier.padding(bottom = 4.dp)
-                )
+                // Category filter section
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(
+                        text = stringResource("onboarding.distracting_apps.category_label"),
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.SemiBold
+                    )
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    FilterChip(
-                        selected = selectedCategory == null,
-                        onClick = { selectedCategory = null },
-                        label = { Text("All") }
-                    )
-                    FilterChip(
-                        selected = selectedCategory == id.compagnie.tawazn.domain.model.AppCategory.SOCIAL_MEDIA,
-                        onClick = { selectedCategory = id.compagnie.tawazn.domain.model.AppCategory.SOCIAL_MEDIA },
-                        label = { Text("Social") }
-                    )
-                    FilterChip(
-                        selected = selectedCategory == id.compagnie.tawazn.domain.model.AppCategory.GAMES,
-                        onClick = { selectedCategory = id.compagnie.tawazn.domain.model.AppCategory.GAMES },
-                        label = { Text("Games") }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        FilterChip(
+                            selected = selectedCategory == null,
+                            onClick = { selectedCategory = null },
+                            label = { Text("All") }
+                        )
+                        FilterChip(
+                            selected = selectedCategory == id.compagnie.tawazn.domain.model.AppCategory.SOCIAL_MEDIA,
+                            onClick = { selectedCategory = id.compagnie.tawazn.domain.model.AppCategory.SOCIAL_MEDIA },
+                            label = { Text("Social") }
+                        )
+                        FilterChip(
+                            selected = selectedCategory == id.compagnie.tawazn.domain.model.AppCategory.GAMES,
+                            onClick = { selectedCategory = id.compagnie.tawazn.domain.model.AppCategory.GAMES },
+                            label = { Text("Games") }
+                        )
+                    }
+                }
+
+                // Time limit section
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource("onboarding.distracting_apps.time_limit"),
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        Text(
+                            text = "${timeLimit / 60}${stringResource("onboarding.distracting_apps.hours")} ${timeLimit % 60}${stringResource("onboarding.distracting_apps.minutes")}",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = TawaznTheme.colors.gradientMiddle,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                    Slider(
+                        value = timeLimit.toFloat(),
+                        onValueChange = { timeLimit = it.toInt() },
+                        valueRange = 15f..480f,
+                        steps = 30,
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
 
-                Spacer(modifier = Modifier.height(8.dp))
-
-                // Time limit slider
-                Text(
-                    text = "Daily limit: ${timeLimit / 60}h ${timeLimit % 60}m",
-                    style = MaterialTheme.typography.labelMedium
-                )
-                Slider(
-                    value = timeLimit.toFloat(),
-                    onValueChange = { timeLimit = it.toInt() },
-                    valueRange = 15f..480f,
-                    steps = 30,
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
+                HorizontalDivider()
 
                 // App list
                 val filteredApps = if (selectedCategory != null) {
@@ -1429,6 +1480,12 @@ fun AppPickerDialog(
                     installedApps
                 }
 
+                Text(
+                    text = "${filteredApps.size} apps available",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
                 filteredApps.forEach { app ->
                     val isSelected = selectedApps.contains(app.packageName)
 
@@ -1436,10 +1493,8 @@ fun AppPickerDialog(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(MaterialTheme.shapes.medium)
-                            .clickable {
-                                if (!isSelected) {
-                                    onAppSelected(app, timeLimit)
-                                }
+                            .clickable(enabled = !isSelected) {
+                                onAppSelected(app, timeLimit)
                             }
                     ) {
                         Row(
@@ -1449,17 +1504,30 @@ fun AppPickerDialog(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = app.appName,
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                // App Icon
+                                AppIcon(
+                                    packageName = app.packageName,
+                                    contentDescription = app.appName,
+                                    size = 40.dp
                                 )
-                                Text(
-                                    text = app.category.name,
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
+
+                                Column {
+                                    Text(
+                                        text = app.appName,
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                                    )
+                                    Text(
+                                        text = app.category.name.lowercase().replace("_", " "),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
                             }
 
                             if (isSelected) {
@@ -1475,12 +1543,30 @@ fun AppPickerDialog(
                 }
 
                 if (filteredApps.isEmpty()) {
-                    Text(
-                        text = "No apps in this category",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(16.dp)
-                    )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(32.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Icon(
+                                imageVector = PhosphorIcons.Bold.Warning,
+                                contentDescription = null,
+                                modifier = Modifier.size(48.dp),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Text(
+                                text = "No apps in this category",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
                 }
             }
         },
