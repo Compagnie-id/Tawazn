@@ -128,6 +128,18 @@ fun getEnglishTranslations(): Map<String, String> = mapOf(
     "onboarding.distracting_apps.no_apps_found" to "No apps found. This feature will be available after granting permissions.",
     "onboarding.distracting_apps.refresh" to "Refresh",
 
+    // Onboarding - Time Limit Configuration
+    "onboarding.time_limit.title" to "Configure Time Limits",
+    "onboarding.time_limit.description" to "Choose how to limit each app - by total daily duration or by schedule.",
+    "onboarding.time_limit.no_apps" to "No apps selected. Go back to select apps.",
+    "onboarding.time_limit.duration" to "Duration",
+    "onboarding.time_limit.schedule" to "Schedule",
+    "onboarding.time_limit.daily_limit" to "Daily Limit",
+    "onboarding.time_limit.per_day" to "per day",
+    "onboarding.time_limit.schedule_based" to "Schedule-based",
+    "onboarding.time_limit.not_configured" to "Not configured",
+    "onboarding.time_limit.schedule_coming_soon" to "Schedule configuration coming soon! For now, use duration-based limits.",
+
     // Dashboard
     "dashboard.title" to "Dashboard",
     "dashboard.welcome" to "Welcome back! 👋",
@@ -548,6 +560,18 @@ fun getIndonesianTranslations(): Map<String, String> = mapOf(
     "onboarding.distracting_apps.no_apps_found" to "Aplikasi nggak ketemu. Fitur ini bakalan tersedia setelah izin dikasih.",
     "onboarding.distracting_apps.refresh" to "Muat Ulang",
 
+    // Onboarding - Time Limit Configuration
+    "onboarding.time_limit.title" to "Atur Batas Waktu",
+    "onboarding.time_limit.description" to "Pilih cara membatasi setiap aplikasi - berdasarkan durasi harian atau jadwal.",
+    "onboarding.time_limit.no_apps" to "Belum ada aplikasi yang dipilih. Balik ke halaman sebelumnya untuk pilih aplikasi.",
+    "onboarding.time_limit.duration" to "Durasi",
+    "onboarding.time_limit.schedule" to "Jadwal",
+    "onboarding.time_limit.daily_limit" to "Batas Harian",
+    "onboarding.time_limit.per_day" to "per hari",
+    "onboarding.time_limit.schedule_based" to "Berdasarkan jadwal",
+    "onboarding.time_limit.not_configured" to "Belum dikonfigurasi",
+    "onboarding.time_limit.schedule_coming_soon" to "Konfigurasi jadwal segera hadir! Sementara ini pakai batas durasi aja dulu ya.",
+
     // Dashboard
     "dashboard.title" to "Dasbor",
     "dashboard.welcome" to "Selamat datang kembali! 👋",
@@ -967,6 +991,18 @@ fun getArabicTranslations(): Map<String, String> = mapOf(
     "onboarding.distracting_apps.loading" to "جارٍ التحميل...",
     "onboarding.distracting_apps.no_apps_found" to "لم يتم العثور على تطبيقات. ستتوفر هذه الميزة بعد منح الأذونات.",
     "onboarding.distracting_apps.refresh" to "تحديث",
+
+    // Onboarding - Time Limit Configuration
+    "onboarding.time_limit.title" to "تكوين حدود الوقت",
+    "onboarding.time_limit.description" to "اختر كيفية تحديد كل تطبيق - حسب المدة اليومية الإجمالية أو حسب الجدول الزمني.",
+    "onboarding.time_limit.no_apps" to "لم يتم اختيار تطبيقات. ارجع لاختيار التطبيقات.",
+    "onboarding.time_limit.duration" to "المدة",
+    "onboarding.time_limit.schedule" to "الجدول",
+    "onboarding.time_limit.daily_limit" to "الحد اليومي",
+    "onboarding.time_limit.per_day" to "في اليوم",
+    "onboarding.time_limit.schedule_based" to "حسب الجدول",
+    "onboarding.time_limit.not_configured" to "غير مكون",
+    "onboarding.time_limit.schedule_coming_soon" to "تكوين الجدول الزمني قريبًا! في الوقت الحالي، استخدم حدود المدة.",
 
     // Dashboard
     "dashboard.title" to "لوحة التحكم",

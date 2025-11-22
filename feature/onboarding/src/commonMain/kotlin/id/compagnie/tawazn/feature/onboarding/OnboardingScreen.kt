@@ -27,6 +27,8 @@ import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.component.PermissionCard
 import id.compagnie.tawazn.design.component.AppIcon
 import id.compagnie.tawazn.domain.model.DistractingApp
+import id.compagnie.tawazn.domain.model.TimeLimitType
+import id.compagnie.tawazn.domain.model.TimeSchedule
 import id.compagnie.tawazn.i18n.Language
 import id.compagnie.tawazn.i18n.StringProvider
 import id.compagnie.tawazn.i18n.stringResource
@@ -45,6 +47,8 @@ import com.adamglin.phosphoricons.bold.Lock
 import com.adamglin.phosphoricons.bold.Warning
 import com.adamglin.phosphoricons.bold.Check
 import com.adamglin.phosphoricons.bold.Translate
+import com.adamglin.phosphoricons.bold.CaretUp
+import com.adamglin.phosphoricons.bold.CaretDown
 import id.compagnie.tawazn.design.theme.TawaznTheme
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
@@ -129,7 +133,8 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                             onCheckPermissions = { screenModel.checkPermissions() }
                         )
                         10 -> DistractingAppsPage(screenModel)
-                        11 -> ReadyPage(
+                        11 -> TimeLimitConfigPage(screenModel)
+                        12 -> ReadyPage(
                             permissionState = permissionState,
                             onStartServices = { screenModel.startBackgroundServices() }
                         )
@@ -144,9 +149,9 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     GradientButton(
-                        text = if (currentPage == 11) stringResource("onboarding.get_started") else stringResource("common.continue"),
+                        text = if (currentPage == 12) stringResource("onboarding.get_started") else stringResource("common.continue"),
                         onClick = {
-                            if (currentPage < 11) {
+                            if (currentPage < 12) {
                                 currentPage++
                             } else {
                                 // Complete onboarding - App.kt will automatically show the main app
@@ -156,7 +161,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                         modifier = Modifier.fillMaxWidth()
                     )
 
-                    if (currentPage > 0 && currentPage < 11) {
+                    if (currentPage > 0 && currentPage < 12) {
                         TextButton(
                             onClick = { currentPage-- },
                             modifier = Modifier.fillMaxWidth()
@@ -165,7 +170,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                         }
                     }
 
-                    if (currentPage < 11) {
+                    if (currentPage < 12) {
                         TextButton(
                             onClick = {
                                 // Skip onboarding - App.kt will automatically show the main app
@@ -1541,4 +1546,228 @@ fun AppPickerDialog(
             }
         }
     )
+}
+
+@Composable
+fun TimeLimitConfigPage(screenModel: OnboardingScreenModel) {
+    val distractingApps by screenModel.distractingApps.collectAsState()
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 32.dp)
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(24.dp)
+    ) {
+        Icon(
+            imageVector = PhosphorIcons.Bold.ClockCountdown,
+            contentDescription = "Time Limits",
+            modifier = Modifier.size(100.dp),
+            tint = TawaznTheme.colors.gradientMiddle
+        )
+
+        Text(
+            text = stringResource("onboarding.time_limit.title"),
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
+
+        Text(
+            text = stringResource("onboarding.time_limit.description"),
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
+        if (distractingApps.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(32.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource("onboarding.time_limit.no_apps"),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center
+                )
+            }
+        } else {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                distractingApps.forEach { app ->
+                    TimeLimitAppCard(
+                        app = app,
+                        onUpdateLimit = { newApp -> screenModel.updateDistractingApp(newApp) }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun TimeLimitAppCard(
+    app: DistractingApp,
+    onUpdateLimit: (DistractingApp) -> Unit
+) {
+    var limitType by remember(app.packageName) { mutableStateOf(app.limitType) }
+    var dailyMinutes by remember(app.packageName) { mutableStateOf(app.dailyLimitMinutes ?: 60) }
+    var expanded by remember { mutableStateOf(false) }
+
+    GlassCard(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            // App header
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                AppIcon(
+                    packageName = app.packageName,
+                    contentDescription = app.appName,
+                    size = 48.dp
+                )
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = app.appName,
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Text(
+                        text = app.category.lowercase().replace("_", " "),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+
+                IconButton(onClick = { expanded = !expanded }) {
+                    Icon(
+                        imageVector = if (expanded) PhosphorIcons.Bold.CaretUp else PhosphorIcons.Bold.CaretDown,
+                        contentDescription = if (expanded) "Collapse" else "Expand"
+                    )
+                }
+            }
+
+            // Configuration section (collapsible)
+            AnimatedVisibility(visible = expanded) {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    // Limit type selector
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        FilterChip(
+                            selected = limitType == TimeLimitType.DURATION,
+                            onClick = {
+                                limitType = TimeLimitType.DURATION
+                                onUpdateLimit(app.copy(
+                                    limitType = TimeLimitType.DURATION,
+                                    dailyLimitMinutes = dailyMinutes,
+                                    schedule = null
+                                ))
+                            },
+                            label = { Text(stringResource("onboarding.time_limit.duration")) },
+                            modifier = Modifier.weight(1f)
+                        )
+                        FilterChip(
+                            selected = limitType == TimeLimitType.SCHEDULE,
+                            onClick = {
+                                limitType = TimeLimitType.SCHEDULE
+                                onUpdateLimit(app.copy(
+                                    limitType = TimeLimitType.SCHEDULE,
+                                    dailyLimitMinutes = null,
+                                    schedule = TimeSchedule(emptyList()) // Will be configured
+                                ))
+                            },
+                            label = { Text(stringResource("onboarding.time_limit.schedule")) },
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+
+                    // Duration-based configuration
+                    if (limitType == TimeLimitType.DURATION) {
+                        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = stringResource("onboarding.time_limit.daily_limit"),
+                                    style = MaterialTheme.typography.titleSmall
+                                )
+                                Text(
+                                    text = "${dailyMinutes / 60}h ${dailyMinutes % 60}m",
+                                    style = MaterialTheme.typography.titleMedium,
+                                    color = TawaznTheme.colors.gradientMiddle,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+                            Slider(
+                                value = dailyMinutes.toFloat(),
+                                onValueChange = {
+                                    dailyMinutes = it.toInt()
+                                },
+                                onValueChangeFinished = {
+                                    onUpdateLimit(app.copy(
+                                        limitType = TimeLimitType.DURATION,
+                                        dailyLimitMinutes = dailyMinutes,
+                                        schedule = null
+                                    ))
+                                },
+                                valueRange = 15f..480f,
+                                steps = 30
+                            )
+                        }
+                    }
+
+                    // Schedule-based configuration
+                    if (limitType == TimeLimitType.SCHEDULE) {
+                        Text(
+                            text = stringResource("onboarding.time_limit.schedule_coming_soon"),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                        )
+                    }
+                }
+            }
+
+            // Current configuration summary
+            if (!expanded) {
+                Text(
+                    text = when {
+                        app.limitType == TimeLimitType.DURATION && app.dailyLimitMinutes != null -> 
+                            "${app.dailyLimitMinutes / 60}h ${app.dailyLimitMinutes % 60}m ${stringResource("onboarding.time_limit.per_day")}"
+                        app.limitType == TimeLimitType.SCHEDULE -> 
+                            stringResource("onboarding.time_limit.schedule_based")
+                        else -> 
+                            stringResource("onboarding.time_limit.not_configured")
+                    },
+                    style = MaterialTheme.typography.bodySmall,
+                    color = TawaznTheme.colors.gradientMiddle
+                )
+            }
+        }
+    }
 }
