@@ -476,6 +476,72 @@ fun getIndonesianTranslations(): Map<String, String> = mapOf(
     "onboarding.ready.limited_functionality" to "Fungsionalitas Terbatas",
     "onboarding.ready.limited_description" to "Beberapa fitur memerlukan izin. Anda dapat memberikannya nanti di Pengaturan.",
 
+    // Onboarding - User Profile
+    "onboarding.profile.title" to "Mari Berkenalan",
+    "onboarding.profile.description" to "Kami akan mempersonalisasi pengalaman Anda untuk membantu mencapai keseimbangan digital.",
+    "onboarding.profile.name_label" to "Siapa nama Anda?",
+    "onboarding.profile.name_placeholder" to "Masukkan nama Anda",
+    "onboarding.profile.age_label" to "Berapa umur Anda?",
+    "onboarding.profile.age_placeholder" to "Masukkan umur Anda",
+    "onboarding.profile.greeting" to "Senang bertemu dengan Anda,",
+
+    // Onboarding - Screen Time Input
+    "onboarding.screentime.title" to "Waktu Layar Harian",
+    "onboarding.screentime.description" to "berapa lama biasanya Anda menggunakan ponsel setiap hari?",
+    "onboarding.screentime.hours_label" to "Jam per hari",
+    "onboarding.screentime.hours_suffix" to "jam",
+    "onboarding.screentime.16plus" to "16+ jam",
+
+    // Onboarding - Habit Change
+    "onboarding.habits.title" to "Apa yang Ingin Anda Ubah?",
+    "onboarding.habits.description" to "Pilih kebiasaan ponsel yang ingin Anda perbaiki. Anda dapat memilih lebih dari satu.",
+    "onboarding.habits.feeling_bad" to "Merasa buruk setelah menggunakan ponsel",
+    "onboarding.habits.using_in_bed" to "Menggunakan ponsel di tempat tidur",
+    "onboarding.habits.scrolling_morning" to "Scrolling pertama di pagi hari",
+    "onboarding.habits.constantly_checking" to "Terus-menerus memeriksa ponsel",
+    "onboarding.habits.mindless_scrolling" to "Scrolling tanpa tujuan",
+    "onboarding.habits.ignoring_people" to "Mengabaikan orang di sekitar",
+    "onboarding.habits.using_when_gathering" to "Menggunakan ponsel saat berkumpul",
+
+    // Onboarding - Guess Screen Time
+    "onboarding.guess.title" to "Coba Tebak",
+    "onboarding.guess.description" to "Berdasarkan penggunaan harian Anda, berapa jam menurut Anda yang dihabiskan di ponsel dalam setahun?",
+    "onboarding.guess.slider_label" to "Tebakan Anda (jam per tahun)",
+    "onboarding.guess.days_label" to "hari",
+
+    // Onboarding - Screen Time Reveal
+    "onboarding.reveal.title" to "Kenyataannya",
+    "onboarding.reveal.yearly_title" to "Waktu yang Dihabiskan Tahun Ini",
+    "onboarding.reveal.yearly_hours" to "jam",
+    "onboarding.reveal.yearly_days" to "hari",
+    "onboarding.reveal.projection_title" to "Proyeksi Seumur Hidup",
+    "onboarding.reveal.projection_description" to "Jika Anda melanjutkan pola ini dari usia {age} hingga 80:",
+    "onboarding.reveal.projection_years" to "tahun dari hidup Anda",
+    "onboarding.reveal.projection_percentage" to "dari sisa hidup Anda",
+    "onboarding.reveal.thats" to "Itu adalah",
+    "onboarding.reveal.or" to "atau",
+
+    // Onboarding - Tawazn Intro
+    "onboarding.intro.title" to "Raih Kembali Waktu Anda",
+    "onboarding.intro.subtitle" to "Tawazn Dapat Membantu",
+    "onboarding.intro.description" to "Kami tahu memutus kecanduan ponsel tidak mudah. Itulah mengapa Tawazn menawarkan program terbukti untuk:",
+    "onboarding.intro.benefit1" to "Mengurangi waktu layar harian Anda",
+    "onboarding.intro.benefit2" to "Menghilangkan gangguan selama jam kerja",
+    "onboarding.intro.benefit3" to "Mengembangkan rencana fokus yang berkelanjutan",
+    "onboarding.intro.benefit4" to "Membangun kebiasaan digital yang lebih sehat",
+    "onboarding.intro.cta" to "Mari lihat cara kerja Tawazn",
+
+    // Onboarding - Distracting Apps
+    "onboarding.distracting_apps.title" to "Kelola Gangguan",
+    "onboarding.distracting_apps.description" to "Pilih aplikasi yang mengganggu Anda dan tetapkan batas waktu harian.",
+    "onboarding.distracting_apps.category_label" to "Kategori",
+    "onboarding.distracting_apps.select_all" to "Pilih Semua",
+    "onboarding.distracting_apps.time_limit" to "Batas Waktu Harian",
+    "onboarding.distracting_apps.hours" to "j",
+    "onboarding.distracting_apps.minutes" to "m",
+    "onboarding.distracting_apps.no_apps_selected" to "Tidak ada aplikasi yang dipilih",
+    "onboarding.distracting_apps.apps_selected" to "{count} aplikasi dipilih",
+
     // Dashboard
     "dashboard.title" to "Dasbor",
     "dashboard.welcome" to "Selamat datang kembali! 👋",
