@@ -25,7 +25,6 @@ import id.compagnie.tawazn.design.theme.TawaznTheme
 import id.compagnie.tawazn.i18n.stringResource
 import id.compagnie.tawazn.domain.repository.UserProfileRepository
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
 /**
@@ -54,13 +53,10 @@ fun DashboardContent() {
     val userProfileRepository: UserProfileRepository = koinInject()
 
     var userName by remember { mutableStateOf<String?>(null) }
-    val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
-        scope.launch {
-            val profile = userProfileRepository.getUserProfile().firstOrNull()
-            userName = profile?.name
-        }
+        val profile = userProfileRepository.getUserProfile().firstOrNull()
+        userName = profile?.name
     }
 
     Surface(

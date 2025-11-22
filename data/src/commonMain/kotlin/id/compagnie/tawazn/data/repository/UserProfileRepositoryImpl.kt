@@ -11,6 +11,7 @@ import id.compagnie.tawazn.domain.repository.UserProfileRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -92,9 +93,13 @@ class UserProfileRepositoryImpl(
     }
 
     override suspend fun getUserName(): String? {
-        return dataStore.data.map { prefs ->
-            prefs[AppPreferences.USER_NAME]
-        }.map { it }.collect { return it }
+        return try {
+            dataStore.data
+                .map { prefs -> prefs[AppPreferences.USER_NAME] }
+                .firstOrNull()
+        } catch (e: Exception) {
+            null
+        }
     }
 
     override suspend fun clearUserProfile() {
