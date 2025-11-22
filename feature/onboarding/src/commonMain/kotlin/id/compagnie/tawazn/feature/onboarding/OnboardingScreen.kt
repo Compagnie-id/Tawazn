@@ -95,7 +95,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    repeat(12) { index ->
+                    repeat(13) { index ->
                         Box(
                             modifier = Modifier
                                 .padding(horizontal = 4.dp)
@@ -1555,8 +1555,7 @@ fun TimeLimitConfigPage(screenModel: OnboardingScreenModel) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 32.dp)
-            .verticalScroll(rememberScrollState()),
+            .padding(vertical = 32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
