@@ -1278,24 +1278,11 @@ fun DistractingAppsPage(screenModel: OnboardingScreenModel) {
                                         style = MaterialTheme.typography.bodyLarge,
                                         fontWeight = FontWeight.SemiBold
                                     )
-                                    Row(
-                                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Icon(
-                                            imageVector = PhosphorIcons.Bold.Clock,
-                                            contentDescription = null,
-                                            modifier = Modifier.size(14.dp),
-                                            tint = TawaznTheme.colors.gradientMiddle
-                                        )
-                                        Text(
-                                            text = "${app.dailyLimitMinutes / 60}${stringResource("onboarding.distracting_apps.hours")} " +
-                                                  "${app.dailyLimitMinutes % 60}${stringResource("onboarding.distracting_apps.minutes")}",
-                                            style = MaterialTheme.typography.bodySmall,
-                                            color = TawaznTheme.colors.gradientMiddle,
-                                            fontWeight = FontWeight.Medium
-                                        )
-                                    }
+                                    Text(
+                                        text = app.category.lowercase().replace("_", " "),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
                                 }
                             }
 
@@ -1372,13 +1359,12 @@ fun DistractingAppsPage(screenModel: OnboardingScreenModel) {
         AppPickerDialog(
             installedApps = installedApps,
             selectedApps = distractingApps.map { it.packageName },
-            onAppSelected = { appInfo, timeLimit ->
+            onAppSelected = { appInfo ->
                 screenModel.updateDistractingApp(
                     DistractingApp(
                         packageName = appInfo.packageName,
                         appName = appInfo.appName,
-                        category = appInfo.category.name,
-                        dailyLimitMinutes = timeLimit
+                        category = appInfo.category.name
                     )
                 )
             },
@@ -1394,12 +1380,11 @@ fun DistractingAppsPage(screenModel: OnboardingScreenModel) {
 fun AppPickerDialog(
     installedApps: List<id.compagnie.tawazn.domain.model.AppInfo>,
     selectedApps: List<String>,
-    onAppSelected: (id.compagnie.tawazn.domain.model.AppInfo, Int) -> Unit,
+    onAppSelected: (id.compagnie.tawazn.domain.model.AppInfo) -> Unit,
     onAppRemoved: (String) -> Unit,
     onDismiss: () -> Unit
 ) {
     var selectedCategory by remember { mutableStateOf<id.compagnie.tawazn.domain.model.AppCategory?>(null) }
-    var timeLimit by remember { mutableStateOf(60) } // minutes
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -1447,34 +1432,6 @@ fun AppPickerDialog(
                     }
                 }
 
-                // Time limit section
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = stringResource("onboarding.distracting_apps.time_limit"),
-                            style = MaterialTheme.typography.titleSmall,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                        Text(
-                            text = "${timeLimit / 60}${stringResource("onboarding.distracting_apps.hours")} ${timeLimit % 60}${stringResource("onboarding.distracting_apps.minutes")}",
-                            style = MaterialTheme.typography.titleMedium,
-                            color = TawaznTheme.colors.gradientMiddle,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                    Slider(
-                        value = timeLimit.toFloat(),
-                        onValueChange = { timeLimit = it.toInt() },
-                        valueRange = 15f..480f,
-                        steps = 30,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-
                 HorizontalDivider()
 
                 // App list
@@ -1501,7 +1458,7 @@ fun AppPickerDialog(
                                 if (isSelected) {
                                     onAppRemoved(app.packageName)
                                 } else {
-                                    onAppSelected(app, timeLimit)
+                                    onAppSelected(app)
                                 }
                             }
                     ) {
