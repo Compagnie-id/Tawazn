@@ -1755,15 +1755,19 @@ fun TimeLimitAppCard(
 
             // Current configuration summary
             if (!expanded) {
+                val summaryText = when {
+                    app.limitType == TimeLimitType.DURATION && app.dailyLimitMinutes != null -> {
+                        val minutes = app.dailyLimitMinutes ?: 0
+                        "${minutes / 60}h ${minutes % 60}m ${stringResource("onboarding.time_limit.per_day")}"
+                    }
+                    app.limitType == TimeLimitType.SCHEDULE ->
+                        stringResource("onboarding.time_limit.schedule_based")
+                    else ->
+                        stringResource("onboarding.time_limit.not_configured")
+                }
+
                 Text(
-                    text = when {
-                        app.limitType == TimeLimitType.DURATION && app.dailyLimitMinutes != null -> 
-                            "${app.dailyLimitMinutes / 60}h ${app.dailyLimitMinutes % 60}m ${stringResource("onboarding.time_limit.per_day")}"
-                        app.limitType == TimeLimitType.SCHEDULE -> 
-                            stringResource("onboarding.time_limit.schedule_based")
-                        else -> 
-                            stringResource("onboarding.time_limit.not_configured")
-                    },
+                    text = summaryText,
                     style = MaterialTheme.typography.bodySmall,
                     color = TawaznTheme.colors.gradientMiddle
                 )
