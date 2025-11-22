@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.koinScreenModel
+import id.compagnie.tawazn.core.common.util.formatDecimal
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.component.PermissionCard
@@ -1077,7 +1078,7 @@ fun ScreenTimeRevealPage(screenModel: OnboardingScreenModel) {
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "${stringResource("onboarding.reveal.thats")} ${String.format("%.1f", lifetimeYears)}",
+                    text = "${stringResource("onboarding.reveal.thats")} ${formatDecimal(lifetimeYears)}",
                     style = MaterialTheme.typography.headlineLarge,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.error
@@ -1090,7 +1091,7 @@ fun ScreenTimeRevealPage(screenModel: OnboardingScreenModel) {
                 )
 
                 Text(
-                    text = "${stringResource("onboarding.reveal.or")} ${String.format("%.1f", percentage)}%",
+                    text = "${stringResource("onboarding.reveal.or")} ${formatDecimal(percentage)}%",
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.error
