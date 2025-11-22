@@ -275,20 +275,18 @@ class OnboardingScreenModel : ScreenModel, KoinComponent {
     }
 
     /**
-     * Load installed apps
+     * Observe installed apps from database
+     * This continuously syncs the state with the database
      */
     private fun loadInstalledApps() {
         screenModelScope.launch {
             try {
-                _isLoadingApps.value = true
                 getNonSystemAppsUseCase().collect { apps ->
                     _installedApps.value = apps
-                    _isLoadingApps.value = false
-                    logger.i { "Installed apps loaded: ${apps.size} apps" }
+                    logger.i { "Installed apps updated: ${apps.size} apps" }
                 }
             } catch (e: Exception) {
-                logger.e(e) { "Failed to load installed apps" }
-                _isLoadingApps.value = false
+                logger.e(e) { "Failed to observe installed apps" }
             }
         }
     }
@@ -298,12 +296,20 @@ class OnboardingScreenModel : ScreenModel, KoinComponent {
      * Useful when apps haven't been synced yet
      */
     fun refreshInstalledApps() {
+        // Prevent multiple simultaneous refreshes
+        if (_isLoadingApps.value) {
+            logger.w { "App refresh already in progress, skipping" }
+            return
+        }
+
         screenModelScope.launch {
             try {
                 _isLoadingApps.value = true
                 logger.i { "Manually refreshing installed apps..." }
                 platformSyncService.syncInstalledApps()
                 logger.i { "Manual app refresh completed" }
+                // Flow will emit and update the list, but ensure loading state is cleared
+                _isLoadingApps.value = false
             } catch (e: Exception) {
                 logger.e(e) { "Failed to manually refresh apps" }
                 _isLoadingApps.value = false
