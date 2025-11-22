@@ -51,14 +51,28 @@ class AndroidAppMonitor(
 
             packages.mapNotNull { appInfo ->
                 try {
+                    // Only include apps that have a launcher intent (can be launched by user)
+                    val launchIntent = packageManager.getLaunchIntentForPackage(appInfo.packageName)
+                    if (launchIntent == null) {
+                        logger.d { "Skipping ${appInfo.packageName} - no launcher intent" }
+                        return@mapNotNull null
+                    }
+
                     val packageInfo = packageManager.getPackageInfo(appInfo.packageName, 0)
+
+                    // An app is considered a "system app" only if:
+                    // 1. It's in the system partition (FLAG_SYSTEM) AND
+                    // 2. It has NEVER been updated (FLAG_UPDATED_SYSTEM_APP not set)
+                    // This excludes pure system apps but includes pre-installed user apps like YouTube, Gmail
+                    val isPureSystemApp = (appInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0 &&
+                                         (appInfo.flags and ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) == 0
 
                     AppInfo(
                         packageName = appInfo.packageName,
                         appName = packageManager.getApplicationLabel(appInfo).toString(),
                         iconPath = null, // Icon handling would require additional implementation
                         category = categorizeApp(appInfo),
-                        isSystemApp = (appInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0,
+                        isSystemApp = isPureSystemApp,
                         installDate = Instant.fromEpochMilliseconds(packageInfo.firstInstallTime),
                         lastUpdated = Instant.fromEpochMilliseconds(packageInfo.lastUpdateTime)
                     )
