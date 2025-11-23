@@ -11,12 +11,12 @@ object AndroidNotificationConfig {
      * Creates Android notification configuration.
      *
      * @param context Application context
-     * @param notificationIconResId Resource ID for the notification icon (optional)
+     * @param notificationIconResId Resource ID for the notification icon
      * @return Android notification platform configuration
      */
     fun create(
         context: Context,
-        notificationIconResId: Int? = null
+        notificationIconResId: Int
     ): NotificationPlatformConfiguration {
         return NotificationPlatformConfiguration.Android(
             notificationIconResId = notificationIconResId
