@@ -439,7 +439,7 @@ fun PermissionPage(
             description = stringResource("onboarding.permissions.app_blocking.description"),
             icon = PhosphorIcons.Bold.User,
             isGranted = permissionState.hasAccessibilityPermission,
-            isRequired = false,
+            isRequired = true,
             onRequestClick = onRequestPermissions
         )
 

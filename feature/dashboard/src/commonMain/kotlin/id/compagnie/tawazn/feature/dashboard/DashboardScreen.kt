@@ -7,7 +7,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import cafe.adriel.voyager.core.screen.Screen
 import id.compagnie.tawazn.design.component.GlassCard
@@ -77,13 +76,13 @@ fun DashboardContent() {
                     ) {
                         Column {
                             Text(
-                                text = stringResource("dashboard.title"),
+                                text = if (userName != null) "Welcome back, $userName! 👋" else stringResource(getTimeBasedGreeting()),
                                 style = MaterialTheme.typography.headlineLarge,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onBackground
                             )
                             Text(
-                                text = if (userName != null) "Welcome back, $userName! 👋" else stringResource("dashboard.welcome"),
+                                text = getFormattedDateTime(),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
