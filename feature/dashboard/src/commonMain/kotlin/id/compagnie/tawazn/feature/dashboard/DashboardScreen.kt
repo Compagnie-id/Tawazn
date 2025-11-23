@@ -46,15 +46,15 @@ class DashboardScreen : Screen {
 
     @Composable
     override fun Content() {
-        DashboardContent()
+        val screenModel = koinScreenModel<DashboardScreenModel>()
+        DashboardContent(screenModel)
     }
 }
 
 @Composable
-fun DashboardContent() {
+fun DashboardContent(screenModel: DashboardScreenModel) {
     val navigation = LocalDashboardNavigation.current
     val userProfileRepository: UserProfileRepository = koinInject()
-    val screenModel = koinScreenModel<DashboardScreenModel>()
 
     val uiState by screenModel.uiState.collectAsState()
     var userName by remember { mutableStateOf<String?>(null) }
