@@ -46,6 +46,11 @@ class AppPreferences(private val dataStore: DataStore<Preferences>) {
         // User Profile
         val USER_NAME = stringPreferencesKey("user_name")
         val USER_EMAIL = stringPreferencesKey("user_email")
+        val USER_AGE = intPreferencesKey("user_age")
+        val DAILY_SCREEN_TIME_HOURS = intPreferencesKey("daily_screen_time_hours")
+        val SELECTED_HABITS = stringPreferencesKey("selected_habits") // Comma-separated habit keys
+        val GUESSED_YEARLY_HOURS = intPreferencesKey("guessed_yearly_hours")
+        val DISTRACTING_APPS = stringPreferencesKey("distracting_apps") // JSON encoded list
     }
 
     // Theme preferences

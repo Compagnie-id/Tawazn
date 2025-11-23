@@ -23,6 +23,9 @@ import com.adamglin.phosphoricons.bold.Fire
 import com.adamglin.phosphoricons.bold.TrendDown
 import id.compagnie.tawazn.design.theme.TawaznTheme
 import id.compagnie.tawazn.i18n.stringResource
+import id.compagnie.tawazn.domain.repository.UserProfileRepository
+import kotlinx.coroutines.flow.firstOrNull
+import org.koin.compose.koinInject
 
 /**
  * Navigation callbacks for Dashboard screen
@@ -47,6 +50,14 @@ class DashboardScreen : Screen {
 @Composable
 fun DashboardContent() {
     val navigation = LocalDashboardNavigation.current
+    val userProfileRepository: UserProfileRepository = koinInject()
+
+    var userName by remember { mutableStateOf<String?>(null) }
+
+    LaunchedEffect(Unit) {
+        val profile = userProfileRepository.getUserProfile().firstOrNull()
+        userName = profile?.name
+    }
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -72,7 +83,7 @@ fun DashboardContent() {
                                 color = MaterialTheme.colorScheme.onBackground
                             )
                             Text(
-                                text = stringResource("dashboard.welcome"),
+                                text = if (userName != null) "Welcome back, $userName! 👋" else stringResource("dashboard.welcome"),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )

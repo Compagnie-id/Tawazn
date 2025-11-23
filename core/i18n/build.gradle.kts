@@ -36,6 +36,9 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.material3)
 
+            // Core modules
+            implementation(project(":core:common"))
+
             // Koin for DI
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
