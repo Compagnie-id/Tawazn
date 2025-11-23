@@ -4,12 +4,13 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import id.compagnie.tawazn.core.common.util.formatString
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.serialization.json.Json
+import kotlin.concurrent.Volatile
 
 /**
  * Implementation of StringProvider that loads translations
@@ -84,7 +85,7 @@ class StringProviderImpl(
     override fun getString(key: String, vararg args: Any): String {
         val template = getString(key)
         return try {
-            String.format(template, *args)
+            template.formatString(*args)
         } catch (e: Exception) {
             println("i18n: Error formatting string for key '$key': ${e.message}")
             template
