@@ -133,6 +133,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                         8 -> FeaturePage()
                         9 -> PermissionPage(
                             permissionState = permissionState,
+                            onRequestPermissions = { screenModel.requestPermissions() },
                             onCheckPermissions = { screenModel.checkPermissions() }
                         )
                         10 -> DistractingAppsPage(screenModel)
@@ -377,6 +378,7 @@ fun FeaturePage() {
 @Composable
 fun PermissionPage(
     permissionState: PermissionState,
+    onRequestPermissions: () -> Unit,
     onCheckPermissions: () -> Unit
 ) {
     Column(
@@ -459,6 +461,18 @@ fun PermissionPage(
             isGranted = permissionState.hasNotificationPermission,
             isRequired = true
         )
+
+        // Grant Permissions Button
+        if (!permissionState.hasAllPermissions && !permissionState.isRequesting) {
+            NeuButton(
+                text = stringResource("onboarding.permissions.grant_button"),
+                onClick = onRequestPermissions,
+                modifier = Modifier.fillMaxWidth(),
+                backgroundColor = TawaznTheme.colors.primary,
+                textColor = Color.White,
+                icon = PhosphorIcons.Bold.Shield
+            )
+        }
 
         // Loading indicator
         if (permissionState.isRequesting) {

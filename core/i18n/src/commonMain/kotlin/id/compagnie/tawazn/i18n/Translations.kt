@@ -49,6 +49,7 @@ fun getEnglishTranslations(): Map<String, String> = mapOf(
     "onboarding.permissions.app_blocking.description" to "Allow Tawazn to block distracting apps and help you stay focused.",
     "onboarding.permissions.notifications.title" to "Notifications",
     "onboarding.permissions.notifications.description" to "Receive helpful reminders and alerts to stay on track with your goals.",
+    "onboarding.permissions.grant_button" to "Grant Permissions",
     "onboarding.permissions.privacy_note" to "Your data is private and secure",
 
     "onboarding.ready.title" to "You're All Set!",
@@ -483,6 +484,7 @@ fun getIndonesianTranslations(): Map<String, String> = mapOf(
     "onboarding.permissions.app_blocking.description" to "Izinkan Tawazn buat memblokir aplikasi yang mengganggu dan bantu kamu tetap fokus.",
     "onboarding.permissions.notifications.title" to "Notifikasi",
     "onboarding.permissions.notifications.description" to "Terima pengingat dan peringatan bermanfaat buat tetap sesuai target.",
+    "onboarding.permissions.grant_button" to "Berikan Izin",
     "onboarding.permissions.privacy_note" to "Datamu aman dan privat",
 
     "onboarding.ready.title" to "Semua Udah Siap!",
@@ -917,6 +919,7 @@ fun getArabicTranslations(): Map<String, String> = mapOf(
     "onboarding.permissions.app_blocking.description" to "اسمح لتوازن بحظر التطبيقات المشتتة ومساعدتك على التركيز.",
     "onboarding.permissions.notifications.title" to "الإشعارات",
     "onboarding.permissions.notifications.description" to "تلقي تذكيرات وتنبيهات مفيدة للبقاء على المسار الصحيح مع أهدافك.",
+    "onboarding.permissions.grant_button" to "منح الأذونات",
     "onboarding.permissions.privacy_note" to "بياناتك خاصة وآمنة",
 
     "onboarding.ready.title" to "كل شيء جاهز!",
