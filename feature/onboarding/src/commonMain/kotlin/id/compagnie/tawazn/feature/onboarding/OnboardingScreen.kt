@@ -443,6 +443,15 @@ fun PermissionPage(
             onRequestClick = onRequestPermissions
         )
 
+        PermissionCard(
+            title = stringResource("onboarding.permissions.notifications.title"),
+            description = stringResource("onboarding.permissions.notifications.description"),
+            icon = PhosphorIcons.Bold.Bell,
+            isGranted = permissionState.hasNotificationPermission,
+            isRequired = true,
+            onRequestClick = onRequestPermissions
+        )
+
         // Loading indicator
         if (permissionState.isRequesting) {
             Row(

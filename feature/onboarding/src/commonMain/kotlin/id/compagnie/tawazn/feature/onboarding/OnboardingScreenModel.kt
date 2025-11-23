@@ -385,6 +385,7 @@ data class PermissionState(
     val hasAllPermissions: Boolean = false,
     val hasUsageStatsPermission: Boolean = false,
     val hasAccessibilityPermission: Boolean = false,
+    val hasNotificationPermission: Boolean = false,
     val isChecking: Boolean = true,
     val isRequesting: Boolean = false,
     val permissionRequested: Boolean = false,
