@@ -66,7 +66,6 @@ class OnboardingScreenModel : ScreenModel, KoinComponent {
         checkPermissions()
         loadPlatformInfo()
         loadInstalledApps()
-        loadUserProfile()
     }
 
     /**
@@ -288,29 +287,6 @@ class OnboardingScreenModel : ScreenModel, KoinComponent {
                 }
             } catch (e: Exception) {
                 logger.e(e) { "Failed to observe installed apps" }
-            }
-        }
-    }
-
-    /**
-     * Load existing user profile data for autofill
-     */
-    private fun loadUserProfile() {
-        screenModelScope.launch {
-            try {
-                userProfileRepository.getUserProfile().collect { profile ->
-                    if (profile != null) {
-                        _userName.value = profile.name
-                        _userAge.value = profile.age
-                        _dailyScreenTimeHours.value = profile.dailyScreenTimeHours
-                        _selectedHabits.value = profile.selectedHabits
-                        _guessedYearlyHours.value = profile.guessedYearlyHours
-                        _distractingApps.value = profile.distractingApps
-                        logger.i { "User profile loaded: ${profile.name}, ${profile.distractingApps.size} apps" }
-                    }
-                }
-            } catch (e: Exception) {
-                logger.e(e) { "Failed to load user profile" }
             }
         }
     }
