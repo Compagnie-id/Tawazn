@@ -26,6 +26,7 @@ import id.compagnie.tawazn.core.common.util.formatDecimal
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.component.PermissionCard
+import id.compagnie.tawazn.design.component.PlatformInfoCard
 import id.compagnie.tawazn.design.component.AppIcon
 import id.compagnie.tawazn.domain.model.DistractingApp
 import id.compagnie.tawazn.domain.model.TimeLimitType
