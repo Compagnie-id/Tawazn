@@ -2,6 +2,7 @@ package id.compagnie.tawazn.core.notification
 
 import co.touchlab.kermit.Logger
 import com.mmk.kmpnotifier.notification.NotifierManager
+import com.mmk.kmpnotifier.notification.PayloadData
 import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +16,6 @@ import kotlin.random.Random
 class NotificationManager {
     private val logger = Logger.withTag("NotificationManager")
     private val localNotifier = NotifierManager.getLocalNotifier()
-    private val pushNotifier = NotifierManager.getPushNotifier()
 
     private val _fcmToken = MutableStateFlow<String?>(null)
     val fcmToken: StateFlow<String?> = _fcmToken.asStateFlow()
@@ -25,20 +25,22 @@ class NotificationManager {
     }
 
     private fun setupPushNotificationListeners() {
-        pushNotifier?.onNewToken = { token ->
-            logger.d { "New FCM token received: $token" }
-            _fcmToken.value = token
-        }
+        NotifierManager.addListener(object : NotifierManager.Listener {
+            override fun onNewToken(token: String) {
+                logger.d { "New FCM token received: $token" }
+                _fcmToken.value = token
+            }
 
-        pushNotifier?.onPushNotification = { title, body ->
-            logger.i { "Push notification received - Title: $title, Body: $body" }
-            // Handle push notification received
-        }
+            override fun onPushNotification(title: String?, body: String?) {
+                logger.i { "Push notification received - Title: $title, Body: $body" }
+                // Handle push notification received
+            }
 
-        pushNotifier?.onPayloadData = { data ->
-            logger.d { "Push notification payload: $data" }
-            // Handle custom payload data
-        }
+            override fun onPayloadData(data: PayloadData) {
+                logger.d { "Push notification payload: $data" }
+                // Handle custom payload data
+            }
+        })
     }
 
     /**
@@ -54,7 +56,8 @@ class NotificationManager {
         notificationId: Int = Random.nextInt(0, Int.MAX_VALUE)
     ) {
         try {
-            localNotifier.notify(notificationId) {
+            localNotifier.notify {
+                this.id = notificationId
                 this.title = title
                 this.body = body
             }
