@@ -52,6 +52,7 @@ import com.adamglin.phosphoricons.bold.Bell
 import com.adamglin.phosphoricons.bold.Bug
 import com.adamglin.phosphoricons.bold.Calendar
 import com.adamglin.phosphoricons.bold.CaretRight
+import com.adamglin.phosphoricons.bold.CheckCircle
 import com.adamglin.phosphoricons.bold.CloudArrowUp
 import com.adamglin.phosphoricons.bold.DeviceMobile
 import com.adamglin.phosphoricons.bold.FileText
@@ -98,8 +99,16 @@ fun SettingsContent(
     val dailyReportEnabled by screenModel.dailyReportEnabled.collectAsState(initial = true)
     val weeklyReportEnabled by screenModel.weeklyReportEnabled.collectAsState(initial = true)
 
-    // Clear data dialog state
+    // Clear data states
+    val dataCleared by screenModel.dataCleared.collectAsState()
     var showClearDataDialog by remember { mutableStateOf(false) }
+    var showDataClearedDialog by remember { mutableStateOf(false) }
+
+    // Show success dialog when data is cleared
+    if (dataCleared && !showDataClearedDialog) {
+        showDataClearedDialog = true
+        showClearDataDialog = false
+    }
 
     // Language selector dialog state
     var showLanguageDialog by remember { mutableStateOf(false) }
@@ -477,6 +486,37 @@ fun SettingsContent(
             LanguageSelectorDialog(
                 onDismiss = { showLanguageDialog = false },
                 stringProvider = stringProvider
+            )
+        }
+
+        // Data Cleared Success Dialog
+        if (showDataClearedDialog) {
+            AlertDialog(
+                onDismissRequest = { /* User must acknowledge */ },
+                icon = {
+                    Icon(
+                        imageVector = PhosphorIcons.Bold.CheckCircle,
+                        contentDescription = "Success",
+                        tint = TawaznTheme.colors.success
+                    )
+                },
+                title = {
+                    Text(
+                        text = stringResource("settings.clear_data.success.title"),
+                        style = MaterialTheme.typography.headlineSmall
+                    )
+                },
+                text = {
+                    Text(
+                        text = stringResource("settings.clear_data.success.message"),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                },
+                confirmButton = {
+                    Button(onClick = { showDataClearedDialog = false }) {
+                        Text(stringResource("common.ok"))
+                    }
+                }
             )
         }
     }

@@ -203,6 +203,8 @@ fun getEnglishTranslations(): Map<String, String> = mapOf(
     "settings.clear_data.dialog.title" to "Clear All Data?",
     "settings.clear_data.dialog.message" to "This will permanently delete all your usage history, blocked apps, and settings. This action cannot be undone.",
     "settings.clear_data.dialog.confirm" to "Clear All Data",
+    "settings.clear_data.success.title" to "Data Cleared Successfully",
+    "settings.clear_data.success.message" to "All your data has been cleared. The onboarding process will start automatically.",
 
     "settings.section.platform_status" to "Platform Status",
     "settings.permissions.title" to "Permissions",
@@ -635,6 +637,8 @@ fun getIndonesianTranslations(): Map<String, String> = mapOf(
     "settings.clear_data.dialog.title" to "Hapus Semua Data?",
     "settings.clear_data.dialog.message" to "Ini akan menghapus secara permanen semua riwayat penggunaan, aplikasi yang diblokir, dan pengaturan Anda. Tindakan ini tidak dapat dibatalkan.",
     "settings.clear_data.dialog.confirm" to "Hapus Semua Data",
+    "settings.clear_data.success.title" to "Data Berhasil Dihapus",
+    "settings.clear_data.success.message" to "Semua data kamu sudah dihapus. Onboarding akan dimulai otomatis.",
 
     "settings.section.platform_status" to "Status Platform",
     "settings.permissions.title" to "Izin",
@@ -1067,6 +1071,8 @@ fun getArabicTranslations(): Map<String, String> = mapOf(
     "settings.clear_data.dialog.title" to "مسح جميع البيانات؟",
     "settings.clear_data.dialog.message" to "سيؤدي هذا إلى حذف جميع سجل الاستخدام والتطبيقات المحظورة والإعدادات بشكل دائم. لا يمكن التراجع عن هذا الإجراء.",
     "settings.clear_data.dialog.confirm" to "مسح جميع البيانات",
+    "settings.clear_data.success.title" to "تم مسح البيانات بنجاح",
+    "settings.clear_data.success.message" to "تم مسح جميع بياناتك. ستبدأ عملية الإعداد الأولي تلقائيًا.",
 
     "settings.section.platform_status" to "حالة المنصة",
     "settings.permissions.title" to "الأذونات",

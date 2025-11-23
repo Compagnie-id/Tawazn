@@ -26,6 +26,12 @@ class SettingsScreenModel : ScreenModel, KoinComponent {
     private val _platformState = MutableStateFlow(PlatformState())
     val platformState: StateFlow<PlatformState> = _platformState.asStateFlow()
 
+    private val _isClearingData = MutableStateFlow(false)
+    val isClearingData: StateFlow<Boolean> = _isClearingData.asStateFlow()
+
+    private val _dataCleared = MutableStateFlow(false)
+    val dataCleared: StateFlow<Boolean> = _dataCleared.asStateFlow()
+
     // Preferences flows
     val darkMode = appPreferences.darkMode
     val useSystemTheme = appPreferences.useSystemTheme
@@ -215,23 +221,41 @@ class SettingsScreenModel : ScreenModel, KoinComponent {
 
     /**
      * Clear all app data (database + preferences)
+     * This will:
+     * - Delete all usage tracking data
+     * - Delete all blocked apps and block sessions
+     * - Delete all installed apps from cache
+     * - Clear user profile (name, age, screen time, habits)
+     * - Clear all distracting apps configurations
+     * - Reset onboarding status (will show onboarding again)
+     * - Clear all preferences
      */
     fun clearAllData() {
         screenModelScope.launch {
             try {
+                _isClearingData.value = true
+                _dataCleared.value = false
                 logger.i { "Clearing all data..." }
-                // Clear database
+
+                // Clear database tables
                 database.apply {
                     appUsageQueries.deleteAll()
                     blockedAppQueries.deleteAll()
                     blockSessionQueries.deleteAllSessions()
                     appQueries.deleteAll()
                 }
-                // Clear preferences
+
+                // Clear ALL preferences (including user profile and onboarding status)
+                // This includes: USER_NAME, USER_AGE, DAILY_SCREEN_TIME_HOURS,
+                // SELECTED_HABITS, GUESSED_YEARLY_HOURS, DISTRACTING_APPS, and ONBOARDING_COMPLETED
                 appPreferences.clearAll()
-                logger.i { "All data cleared successfully" }
+
+                _dataCleared.value = true
+                logger.i { "All data cleared successfully - onboarding will restart automatically" }
             } catch (e: Exception) {
                 logger.e(e) { "Failed to clear data" }
+            } finally {
+                _isClearingData.value = false
             }
         }
     }
