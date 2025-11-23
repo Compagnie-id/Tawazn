@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -26,6 +27,7 @@ import id.compagnie.tawazn.core.common.util.formatDecimal
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.component.PermissionCard
+import id.compagnie.tawazn.design.component.PlatformInfoCard
 import id.compagnie.tawazn.design.component.AppIcon
 import id.compagnie.tawazn.domain.model.DistractingApp
 import id.compagnie.tawazn.domain.model.TimeLimitType
@@ -50,6 +52,9 @@ import com.adamglin.phosphoricons.bold.Check
 import com.adamglin.phosphoricons.bold.Translate
 import com.adamglin.phosphoricons.bold.CaretUp
 import com.adamglin.phosphoricons.bold.CaretDown
+import com.adamglin.phosphoricons.bold.Bell
+import id.compagnie.tawazn.design.component.NeuButton
+import id.compagnie.tawazn.design.theme.Primary
 import id.compagnie.tawazn.design.theme.TawaznTheme
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
@@ -66,6 +71,7 @@ class OnboardingScreen : Screen {
 fun OnboardingContent(screenModel: OnboardingScreenModel) {
     var currentPage by remember { mutableStateOf(0) }
     val permissionState by screenModel.permissionState.collectAsState()
+    val platformInfo by screenModel.platformInfo.collectAsState()
 
     Box(
         modifier = Modifier
@@ -137,6 +143,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                         11 -> TimeLimitConfigPage(screenModel)
                         12 -> ReadyPage(
                             permissionState = permissionState,
+                            platformInfo = platformInfo,
                             onStartServices = { screenModel.startBackgroundServices() }
                         )
                     }
@@ -381,21 +388,28 @@ fun PermissionPage(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        Icon(
-            imageVector = PhosphorIcons.Bold.Shield,
-            contentDescription = "Permissions",
-            modifier = Modifier.size(80.dp),
-            tint = TawaznTheme.colors.gradientMiddle
-        )
+        // Header section - centered
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Icon(
+                imageVector = PhosphorIcons.Bold.Shield,
+                contentDescription = "Permissions",
+                modifier = Modifier.size(80.dp),
+                tint = TawaznTheme.colors.gradientMiddle
+            )
 
-        Text(
-            text = stringResource("onboarding.permissions.title"),
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold
-        )
+            Text(
+                text = stringResource("onboarding.permissions.title"),
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold
+            )
+        }
 
         // Status Banner
         if (permissionState.hasAllPermissions) {
@@ -404,7 +418,9 @@ fun PermissionPage(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Row(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -430,8 +446,7 @@ fun PermissionPage(
             description = stringResource("onboarding.permissions.screen_time.description"),
             icon = PhosphorIcons.Bold.DeviceMobile,
             isGranted = permissionState.hasUsageStatsPermission,
-            isRequired = true,
-            onRequestClick = onRequestPermissions
+            isRequired = true
         )
 
         PermissionCard(
@@ -439,15 +454,35 @@ fun PermissionPage(
             description = stringResource("onboarding.permissions.app_blocking.description"),
             icon = PhosphorIcons.Bold.User,
             isGranted = permissionState.hasAccessibilityPermission,
-            isRequired = false,
-            onRequestClick = onRequestPermissions
+            isRequired = false
         )
+
+        PermissionCard(
+            title = stringResource("onboarding.permissions.notifications.title"),
+            description = stringResource("onboarding.permissions.notifications.description"),
+            icon = PhosphorIcons.Bold.Bell,
+            isGranted = permissionState.hasNotificationPermission,
+            isRequired = true
+        )
+
+        // Grant Permissions Button
+        if (!permissionState.hasAllPermissions && !permissionState.isRequesting) {
+            NeuButton(
+                text = stringResource("onboarding.permissions.grant_button"),
+                onClick = onRequestPermissions,
+                modifier = Modifier.fillMaxWidth(),
+                backgroundColor = Primary,
+                textColor = Color.White,
+            )
+        }
 
         // Loading indicator
         if (permissionState.isRequesting) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.Start),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 CircularProgressIndicator(
@@ -477,8 +512,10 @@ fun PermissionPage(
 
         // Privacy note
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.Start),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -499,6 +536,7 @@ fun PermissionPage(
 @Composable
 fun ReadyPage(
     permissionState: PermissionState,
+    platformInfo: Map<String, String>,
     onStartServices: () -> Unit
 ) {
     // Start background services when page is shown
@@ -580,6 +618,11 @@ fun ReadyPage(
                     }
                 }
             }
+        }
+
+        // Platform Information
+        if (platformInfo.isNotEmpty()) {
+            PlatformInfoCard(platformInfo = platformInfo)
         }
     }
 }
@@ -961,7 +1004,7 @@ fun ScreenTimeRevealPage(screenModel: OnboardingScreenModel) {
     val userAge by screenModel.userAge.collectAsState()
     val userName by screenModel.userName.collectAsState()
 
-    val yearlyHours = (dailyHours ?: 0) * 365
+    val yearlyHours = screenModel.calculateYearlyHours()
     val yearlyDays = yearlyHours / 24
     val lifetimeYears = screenModel.calculateLifetimeProjection()
     val remainingYears = 80 - (userAge ?: 0)

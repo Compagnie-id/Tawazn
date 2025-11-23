@@ -7,6 +7,10 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
+
+    // Uncomment after adding google-services.json and GoogleService-Info.plist
+    // See core/notification/FIREBASE_SETUP.md for setup instructions
+    // alias(libs.plugins.googleServices)
 }
 
 kotlin {
@@ -52,6 +56,7 @@ kotlin {
             implementation(project(":core:datastore"))
             implementation(project(":core:network"))
             implementation(project(":core:i18n"))
+            implementation(project(":core:notification"))
             implementation(project(":domain"))
             implementation(project(":data"))
 

@@ -41,6 +41,7 @@ kotlin {
             implementation(project(":core:design-system"))
             implementation(project(":core:datastore"))
             implementation(project(":core:i18n"))
+            implementation(project(":core:notification"))
             implementation(project(":domain"))
             implementation(project(":data"))
 

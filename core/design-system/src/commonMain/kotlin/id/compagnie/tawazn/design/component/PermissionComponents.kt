@@ -2,9 +2,17 @@ package id.compagnie.tawazn.design.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,19 +25,19 @@ import com.adamglin.PhosphorIcons
 import com.adamglin.phosphoricons.Bold
 import com.adamglin.phosphoricons.bold.Check
 import com.adamglin.phosphoricons.bold.Warning
+import com.adamglin.phosphoricons.bold.X
 import id.compagnie.tawazn.design.theme.NeuBlack
 import id.compagnie.tawazn.design.theme.TawaznTheme
 
 /**
- * Permission card component for displaying permission requests
+ * Permission card component for displaying permission status
  * Neubrutalism style with bold borders and hard shadows
  *
  * @param title Permission title (e.g., "Usage Stats Permission")
  * @param description Permission description
  * @param icon Icon to display
- * @param isGranted Whether the permission is granted
- * @param isRequired Whether this permission is required
- * @param onRequestClick Callback when request button is clicked
+ * @param isGranted Whether the permission is granted (shows checkmark if true, X if false)
+ * @param isRequired Whether this permission is required (shows "Required" badge)
  * @param modifier Modifier for the card
  */
 @Composable
@@ -39,7 +47,6 @@ fun PermissionCard(
     icon: ImageVector,
     isGranted: Boolean,
     isRequired: Boolean = true,
-    onRequestClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val cardColor = if (isGranted) {
@@ -90,36 +97,31 @@ fun PermissionCard(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = title,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = NeuBlack
-                    )
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = NeuBlack
+                )
 
-                    if (isRequired) {
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(4.dp))
-                                .background(TawaznTheme.colors.error)
-                                .border(
-                                    width = 1.dp,
-                                    color = NeuBlack,
-                                    shape = RoundedCornerShape(4.dp)
-                                )
-                                .padding(horizontal = 6.dp, vertical = 2.dp)
-                        ) {
-                            Text(
-                                text = "Required",
-                                style = MaterialTheme.typography.labelSmall,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White
+                if (isRequired) {
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(4.dp))
+                            .background(TawaznTheme.colors.error)
+                            .border(
+                                width = 1.dp,
+                                color = NeuBlack,
+                                shape = RoundedCornerShape(4.dp)
                             )
-                        }
+                            .padding(horizontal = 6.dp, vertical = 2.dp)
+                    ) {
+                        Text(
+                            text = "Required",
+                            style = MaterialTheme.typography.labelSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
                     }
                 }
 
@@ -131,35 +133,27 @@ fun PermissionCard(
                 )
             }
 
-            // Status/Action Button
-            if (isGranted) {
-                Box(
-                    modifier = Modifier
-                        .size(32.dp)
-                        .clip(RoundedCornerShape(6.dp))
-                        .background(TawaznTheme.colors.success)
-                        .border(
-                            width = 2.dp,
-                            color = NeuBlack,
-                            shape = RoundedCornerShape(6.dp)
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = PhosphorIcons.Bold.Check,
-                        contentDescription = "Granted",
-                        tint = Color.White,
-                        modifier = Modifier.size(18.dp)
+            // Status Indicator
+            Box(
+                modifier = Modifier
+                    .size(32.dp)
+                    .clip(RoundedCornerShape(6.dp))
+                    .background(
+                        if (isGranted) TawaznTheme.colors.success
+                        else TawaznTheme.colors.error
                     )
-                }
-            } else {
-                NeuButton(
-                    text = "Grant",
-                    onClick = onRequestClick,
-                    backgroundColor = TawaznTheme.colors.warning,
-                    textColor = NeuBlack,
-                    cornerRadius = 8.dp,
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+                    .border(
+                        width = 2.dp,
+                        color = NeuBlack,
+                        shape = RoundedCornerShape(6.dp)
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = if (isGranted) PhosphorIcons.Bold.Check else PhosphorIcons.Bold.X,
+                    contentDescription = if (isGranted) "Granted" else "Not Granted",
+                    tint = Color.White,
+                    modifier = Modifier.size(18.dp)
                 )
             }
         }

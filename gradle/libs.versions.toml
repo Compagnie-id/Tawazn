@@ -35,12 +35,16 @@ kotlinx-datetime = "0.7.1"
 # Logging
 kermit = "2.0.4"
 
+# Notifications
+kmpnotifier = "1.6.0"
+
 # Icons
 phosphor-icons = "1.0.0"
 
 # Android-specific
 androidx-workmanager = "2.10.0"
 androidx-splashscreen = "1.2.0"
+google-services = "4.4.2"
 
 # Testing
 turbine = "1.2.0"
@@ -109,6 +113,9 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 # Logging
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 
+# Notifications - KMPNotifier
+kmpnotifier = { module = "io.github.mirzemehdi:kmpnotifier", version.ref = "kmpnotifier" }
+
 # Icons - Phosphor (Bold style for neubrutalism)
 phosphor-icons = { module = "com.adamglin:phosphor-icon", version.ref = "phosphor-icons" }
 
@@ -127,3 +134,4 @@ composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "k
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
+googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }

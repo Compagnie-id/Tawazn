@@ -34,9 +34,6 @@ class OnboardingScreenModel : ScreenModel, KoinComponent {
     private val _platformInfo = MutableStateFlow<Map<String, String>>(emptyMap())
     val platformInfo: StateFlow<Map<String, String>> = _platformInfo.asStateFlow()
 
-    private val _onboardingCompleted = MutableStateFlow(false)
-    val onboardingCompleted: StateFlow<Boolean> = _onboardingCompleted.asStateFlow()
-
     // User profile states
     private val _userName = MutableStateFlow("")
     val userName: StateFlow<String> = _userName.asStateFlow()
@@ -369,7 +366,6 @@ class OnboardingScreenModel : ScreenModel, KoinComponent {
         screenModelScope.launch {
             try {
                 appPreferences.setOnboardingCompleted(true)
-                _onboardingCompleted.value = true
                 logger.i { "Onboarding completed" }
             } catch (e: Exception) {
                 logger.e(e) { "Failed to save onboarding completion" }
@@ -385,6 +381,7 @@ data class PermissionState(
     val hasAllPermissions: Boolean = false,
     val hasUsageStatsPermission: Boolean = false,
     val hasAccessibilityPermission: Boolean = false,
+    val hasNotificationPermission: Boolean = false,
     val isChecking: Boolean = true,
     val isRequesting: Boolean = false,
     val permissionRequested: Boolean = false,

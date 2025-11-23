@@ -1,6 +1,7 @@
 package id.compagnie.tawazn
 
 import android.app.Application
+import id.compagnie.tawazn.core.notification.di.notificationModule
 import id.compagnie.tawazn.data.di.dataModule
 import id.compagnie.tawazn.data.di.platformModule
 import id.compagnie.tawazn.domain.di.domainModule
@@ -33,6 +34,7 @@ class TawaznApplication : Application() {
                 platformModule(),
                 dataModule,
                 domainModule,
+                notificationModule,
                 i18nModule,
                 id.compagnie.tawazn.i18n.di.platformLocaleModule,
                 onboardingModule,

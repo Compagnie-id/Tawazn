@@ -41,6 +41,7 @@ include(":core:database")
 include(":core:datastore")
 include(":core:network")
 include(":core:i18n")
+include(":core:notification")
 
 // Domain Layer
 include(":domain")
