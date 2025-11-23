@@ -4,12 +4,15 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.koinScreenModel
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.component.StatsCard
@@ -43,15 +46,17 @@ class DashboardScreen : Screen {
 
     @Composable
     override fun Content() {
-        DashboardContent()
+        val screenModel = koinScreenModel<DashboardScreenModel>()
+        DashboardContent(screenModel)
     }
 }
 
 @Composable
-fun DashboardContent() {
+fun DashboardContent(screenModel: DashboardScreenModel) {
     val navigation = LocalDashboardNavigation.current
     val userProfileRepository: UserProfileRepository = koinInject()
 
+    val uiState by screenModel.uiState.collectAsState()
     var userName by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(Unit) {
@@ -114,16 +119,16 @@ fun DashboardContent() {
                     ) {
                         StatsCard(
                             title = stringResource("dashboard.screen_time"),
-                            value = stringResource("dashboard.screen_time_value"),
-                            subtitle = stringResource("dashboard.screen_time_change"),
+                            value = if (uiState.isLoading) "..." else uiState.screenTimeToday.toHoursMinutesString(),
+                            subtitle = if (uiState.isLoading) "" else uiState.screenTimeChange,
                             icon = PhosphorIcons.Bold.Clock,
                             modifier = Modifier.weight(1f)
                         )
 
                         StatsCard(
                             title = stringResource("dashboard.apps_blocked"),
-                            value = stringResource("dashboard.apps_blocked_value"),
-                            subtitle = stringResource("dashboard.apps_blocked_status"),
+                            value = if (uiState.isLoading) "..." else "${uiState.blockedAppsCount}",
+                            subtitle = if (uiState.blockedAppsCount > 0) stringResource("dashboard.apps_blocked_status") else "No apps blocked",
                             icon = PhosphorIcons.Bold.Prohibit,
                             modifier = Modifier.weight(1f),
                             useGradient = false
@@ -134,8 +139,8 @@ fun DashboardContent() {
                 item {
                     StatsCard(
                         title = stringResource("dashboard.most_used_today"),
-                        value = stringResource("dashboard.most_used_app"),
-                        subtitle = stringResource("dashboard.most_used_time"),
+                        value = if (uiState.isLoading) "..." else (uiState.mostUsedApp?.appName ?: "No data"),
+                        subtitle = if (uiState.isLoading) "" else (uiState.mostUsedApp?.totalTime?.toHoursMinutesString() ?: ""),
                         icon = PhosphorIcons.Bold.SquaresFour,
                         useGradient = true
                     )
