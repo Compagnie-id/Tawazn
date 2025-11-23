@@ -35,6 +35,9 @@ kotlinx-datetime = "0.7.1"
 # Logging
 kermit = "2.0.4"
 
+# Notifications
+kmpnotifier = "1.2.0"
+
 # Icons
 phosphor-icons = "1.0.0"
 
@@ -108,6 +111,9 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 
 # Logging
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
+
+# Notifications - KMPNotifier
+kmpnotifier = { module = "io.github.mirzemehdi:kmpnotifier", version.ref = "kmpnotifier" }
 
 # Icons - Phosphor (Bold style for neubrutalism)
 phosphor-icons = { module = "com.adamglin:phosphor-icon", version.ref = "phosphor-icons" }
