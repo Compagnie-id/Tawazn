@@ -10,7 +10,6 @@ import id.compagnie.tawazn.domain.repository.BlockedAppRepository
 import id.compagnie.tawazn.domain.repository.UsageRepository
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.koin.core.component.KoinComponent
@@ -45,7 +44,7 @@ class DashboardScreenModel : ScreenModel, KoinComponent {
             try {
                 _uiState.update { it.copy(isLoading = true, error = null) }
 
-                val now = Clock.System.now()
+                val now = kotlin.time.Clock.System.now()
                 val today = now.toLocalDateTime(TimeZone.currentSystemDefault()).date
 
                 // Get today's usage

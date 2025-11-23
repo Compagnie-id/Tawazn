@@ -57,6 +57,9 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.composeViewModel)
+
+            // Logging
+            implementation(libs.kermit)
         }
 
         androidMain.dependencies {
