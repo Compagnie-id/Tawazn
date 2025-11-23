@@ -10,7 +10,9 @@ import id.compagnie.tawazn.domain.repository.BlockedAppRepository
 import id.compagnie.tawazn.domain.repository.UsageRepository
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.minus
 import kotlinx.datetime.toLocalDateTime
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -58,13 +60,12 @@ class DashboardScreenModel : ScreenModel, KoinComponent {
                 // Get most used app today
                 val mostUsedApp = usageRepository.getTopUsedApps(today, today, 1).firstOrNull()
 
-                // Calculate change from yesterday (placeholder for now)
-                // TODO: Implement actual comparison with yesterday
-                val screenTimeChange = if (todayTotalTime.inWholeMinutes > 0) {
-                    "-12% from yesterday" // Placeholder
-                } else {
-                    "No data"
-                }
+                // Calculate change from yesterday
+                val yesterday = today.minus(1, DateTimeUnit.DAY)
+                val yesterdayUsageList = usageRepository.getTodayUsage(yesterday).first()
+                val yesterdayTotalTime = yesterdayUsageList.sumOf { it.totalTimeInForeground.inWholeMinutes }.minutes
+
+                val screenTimeChange = calculateScreenTimeChange(todayTotalTime, yesterdayTotalTime)
 
                 logger.i { "Dashboard loaded: ScreenTime=$todayTotalTime, BlockedApps=$blockedAppsCount, MostUsed=${mostUsedApp?.appName}" }
 
@@ -91,6 +92,25 @@ class DashboardScreenModel : ScreenModel, KoinComponent {
 
     fun refresh() {
         loadDashboardData()
+    }
+
+    private fun calculateScreenTimeChange(today: Duration, yesterday: Duration): String {
+        if (yesterday.inWholeMinutes == 0L) {
+            return if (today.inWholeMinutes > 0) {
+                "First day of tracking"
+            } else {
+                "No data yet"
+            }
+        }
+
+        val change = today.inWholeMinutes - yesterday.inWholeMinutes
+        val percentChange = ((change.toFloat() / yesterday.inWholeMinutes) * 100).toInt()
+
+        return when {
+            percentChange > 0 -> "+$percentChange% from yesterday"
+            percentChange < 0 -> "$percentChange% from yesterday"
+            else -> "Same as yesterday"
+        }
     }
 }
 
