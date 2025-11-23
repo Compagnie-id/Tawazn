@@ -411,6 +411,16 @@ fun SettingsContent(
                     )
                 }
 
+                // Developer Tools Section (Testing)
+                item {
+                    SettingsItem(
+                        icon = PhosphorIcons.Bold.Bell,
+                        title = "Test Notifications",
+                        subtitle = "Test all notification types",
+                        onClick = { navigator?.push(NotificationTestScreen()) }
+                    )
+                }
+
                 // Spacer at the bottom
                 item {
                     Spacer(modifier = Modifier.height(32.dp))
