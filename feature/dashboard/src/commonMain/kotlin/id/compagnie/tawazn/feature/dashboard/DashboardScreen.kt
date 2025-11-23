@@ -4,13 +4,15 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.koin.koinScreenModel
 import id.compagnie.tawazn.design.component.GlassCard
 import id.compagnie.tawazn.design.component.GradientButton
 import id.compagnie.tawazn.design.component.StatsCard
@@ -52,7 +54,7 @@ class DashboardScreen : Screen {
 fun DashboardContent() {
     val navigation = LocalDashboardNavigation.current
     val userProfileRepository: UserProfileRepository = koinInject()
-    val screenModel = getScreenModel<DashboardScreenModel>()
+    val screenModel = koinScreenModel<DashboardScreenModel>()
 
     val uiState by screenModel.uiState.collectAsState()
     var userName by remember { mutableStateOf<String?>(null) }
