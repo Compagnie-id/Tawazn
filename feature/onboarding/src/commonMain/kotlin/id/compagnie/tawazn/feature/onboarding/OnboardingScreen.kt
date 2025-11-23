@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -52,6 +53,8 @@ import com.adamglin.phosphoricons.bold.Translate
 import com.adamglin.phosphoricons.bold.CaretUp
 import com.adamglin.phosphoricons.bold.CaretDown
 import com.adamglin.phosphoricons.bold.Bell
+import id.compagnie.tawazn.design.component.NeuButton
+import id.compagnie.tawazn.design.theme.Primary
 import id.compagnie.tawazn.design.theme.TawaznTheme
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
@@ -468,9 +471,8 @@ fun PermissionPage(
                 text = stringResource("onboarding.permissions.grant_button"),
                 onClick = onRequestPermissions,
                 modifier = Modifier.fillMaxWidth(),
-                backgroundColor = TawaznTheme.colors.primary,
+                backgroundColor = Primary,
                 textColor = Color.White,
-                icon = PhosphorIcons.Bold.Shield
             )
         }
 
