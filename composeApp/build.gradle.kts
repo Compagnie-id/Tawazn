@@ -7,6 +7,10 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
+
+    // Uncomment after adding google-services.json and GoogleService-Info.plist
+    // See core/notification/FIREBASE_SETUP.md for setup instructions
+    // alias(libs.plugins.googleServices)
 }
 
 kotlin {

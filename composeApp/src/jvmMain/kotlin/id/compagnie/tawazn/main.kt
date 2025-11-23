@@ -10,7 +10,7 @@ fun main() = application {
     NotificationManager.initialize(
         configuration = DesktopNotificationConfig.create(
             showPushNotification = false, // Desktop only supports local notifications
-            notificationIconPath = null // TODO: Add notification icon path
+            notificationIconPath = DesktopNotificationConfig.getDefaultIconPath()
         )
     )
 

@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
         NotificationManager.initialize(
             configuration = AndroidNotificationConfig.create(
                 context = applicationContext,
-                notificationIconResId = null // TODO: Add notification icon resource
+                notificationIconResId = R.drawable.ic_notification
             )
         )
 
