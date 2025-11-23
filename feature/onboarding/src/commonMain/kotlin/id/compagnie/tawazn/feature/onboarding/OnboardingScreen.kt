@@ -67,6 +67,7 @@ class OnboardingScreen : Screen {
 fun OnboardingContent(screenModel: OnboardingScreenModel) {
     var currentPage by remember { mutableStateOf(0) }
     val permissionState by screenModel.permissionState.collectAsState()
+    val platformInfo by screenModel.platformInfo.collectAsState()
 
     Box(
         modifier = Modifier
@@ -138,6 +139,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                         11 -> TimeLimitConfigPage(screenModel)
                         12 -> ReadyPage(
                             permissionState = permissionState,
+                            platformInfo = platformInfo,
                             onStartServices = { screenModel.startBackgroundServices() }
                         )
                     }
@@ -509,6 +511,7 @@ fun PermissionPage(
 @Composable
 fun ReadyPage(
     permissionState: PermissionState,
+    platformInfo: Map<String, String>,
     onStartServices: () -> Unit
 ) {
     // Start background services when page is shown
@@ -590,6 +593,11 @@ fun ReadyPage(
                     }
                 }
             }
+        }
+
+        // Platform Information
+        if (platformInfo.isNotEmpty()) {
+            PlatformInfoCard(platformInfo = platformInfo)
         }
     }
 }
@@ -971,7 +979,7 @@ fun ScreenTimeRevealPage(screenModel: OnboardingScreenModel) {
     val userAge by screenModel.userAge.collectAsState()
     val userName by screenModel.userName.collectAsState()
 
-    val yearlyHours = (dailyHours ?: 0) * 365
+    val yearlyHours = screenModel.calculateYearlyHours()
     val yearlyDays = yearlyHours / 24
     val lifetimeYears = screenModel.calculateLifetimeProjection()
     val remainingYears = 80 - (userAge ?: 0)
