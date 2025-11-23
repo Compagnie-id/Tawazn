@@ -12,7 +12,7 @@ Complete cross-platform notification system for Tawazn using KMPNotifier, with p
 ## ✅ Implementation Checklist
 
 ### Core Features
-- [x] KMPNotifier integration (v1.2.0)
+- [x] KMPNotifier integration (v1.6.0)
 - [x] Cross-platform support (Android, iOS, Desktop)
 - [x] Local notifications on all platforms
 - [x] Push notification support (Android/iOS via Firebase)

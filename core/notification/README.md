@@ -310,7 +310,7 @@ fun testNotification() = runTest {
 
 ## Dependencies
 
-- **KMPNotifier** `1.2.0` - Core notification library
+- **KMPNotifier** `1.6.0` - Core notification library
 - **Koin** - Dependency injection
 - **Kermit** - Logging
 

@@ -67,7 +67,7 @@ dependencyResolutionManagement {
 In `gradle/libs.versions.toml`:
 ```toml
 [versions]
-kmpnotifier = "1.2.0"  # Check latest version
+kmpnotifier = "1.6.0"  # Latest stable version
 
 [libraries]
 kmpnotifier = { module = "io.github.mirzemehdi:kmpnotifier", version.ref = "kmpnotifier" }
