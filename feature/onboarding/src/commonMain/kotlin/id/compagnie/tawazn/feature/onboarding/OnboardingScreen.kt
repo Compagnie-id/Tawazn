@@ -50,6 +50,7 @@ import com.adamglin.phosphoricons.bold.Check
 import com.adamglin.phosphoricons.bold.Translate
 import com.adamglin.phosphoricons.bold.CaretUp
 import com.adamglin.phosphoricons.bold.CaretDown
+import com.adamglin.phosphoricons.bold.Bell
 import id.compagnie.tawazn.design.theme.TawaznTheme
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
