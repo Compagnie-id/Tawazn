@@ -17,19 +17,19 @@ import com.adamglin.PhosphorIcons
 import com.adamglin.phosphoricons.Bold
 import com.adamglin.phosphoricons.bold.Check
 import com.adamglin.phosphoricons.bold.Warning
+import com.adamglin.phosphoricons.bold.X
 import id.compagnie.tawazn.design.theme.NeuBlack
 import id.compagnie.tawazn.design.theme.TawaznTheme
 
 /**
- * Permission card component for displaying permission requests
+ * Permission card component for displaying permission status
  * Neubrutalism style with bold borders and hard shadows
  *
  * @param title Permission title (e.g., "Usage Stats Permission")
  * @param description Permission description
  * @param icon Icon to display
- * @param isGranted Whether the permission is granted
- * @param isRequired Whether this permission is required
- * @param onRequestClick Callback when request button is clicked
+ * @param isGranted Whether the permission is granted (shows checkmark if true, X if false)
+ * @param isRequired Whether this permission is required (shows "Required" badge)
  * @param modifier Modifier for the card
  */
 @Composable
@@ -39,7 +39,6 @@ fun PermissionCard(
     icon: ImageVector,
     isGranted: Boolean,
     isRequired: Boolean = true,
-    onRequestClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val cardColor = if (isGranted) {
@@ -131,35 +130,27 @@ fun PermissionCard(
                 )
             }
 
-            // Status/Action Button
-            if (isGranted) {
-                Box(
-                    modifier = Modifier
-                        .size(32.dp)
-                        .clip(RoundedCornerShape(6.dp))
-                        .background(TawaznTheme.colors.success)
-                        .border(
-                            width = 2.dp,
-                            color = NeuBlack,
-                            shape = RoundedCornerShape(6.dp)
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = PhosphorIcons.Bold.Check,
-                        contentDescription = "Granted",
-                        tint = Color.White,
-                        modifier = Modifier.size(18.dp)
+            // Status Indicator
+            Box(
+                modifier = Modifier
+                    .size(32.dp)
+                    .clip(RoundedCornerShape(6.dp))
+                    .background(
+                        if (isGranted) TawaznTheme.colors.success
+                        else TawaznTheme.colors.error
                     )
-                }
-            } else {
-                NeuButton(
-                    text = "Grant",
-                    onClick = onRequestClick,
-                    backgroundColor = TawaznTheme.colors.warning,
-                    textColor = NeuBlack,
-                    cornerRadius = 8.dp,
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+                    .border(
+                        width = 2.dp,
+                        color = NeuBlack,
+                        shape = RoundedCornerShape(6.dp)
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = if (isGranted) PhosphorIcons.Bold.Check else PhosphorIcons.Bold.X,
+                    contentDescription = if (isGranted) "Granted" else "Not Granted",
+                    tint = Color.White,
+                    modifier = Modifier.size(18.dp)
                 )
             }
         }

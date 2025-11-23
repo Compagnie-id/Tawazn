@@ -133,7 +133,6 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                         8 -> FeaturePage()
                         9 -> PermissionPage(
                             permissionState = permissionState,
-                            onRequestPermissions = { screenModel.requestPermissions() },
                             onCheckPermissions = { screenModel.checkPermissions() }
                         )
                         10 -> DistractingAppsPage(screenModel)
@@ -378,7 +377,6 @@ fun FeaturePage() {
 @Composable
 fun PermissionPage(
     permissionState: PermissionState,
-    onRequestPermissions: () -> Unit,
     onCheckPermissions: () -> Unit
 ) {
     Column(
@@ -443,8 +441,7 @@ fun PermissionPage(
             description = stringResource("onboarding.permissions.screen_time.description"),
             icon = PhosphorIcons.Bold.DeviceMobile,
             isGranted = permissionState.hasUsageStatsPermission,
-            isRequired = true,
-            onRequestClick = onRequestPermissions
+            isRequired = true
         )
 
         PermissionCard(
@@ -452,8 +449,7 @@ fun PermissionPage(
             description = stringResource("onboarding.permissions.app_blocking.description"),
             icon = PhosphorIcons.Bold.User,
             isGranted = permissionState.hasAccessibilityPermission,
-            isRequired = false,
-            onRequestClick = onRequestPermissions
+            isRequired = false
         )
 
         PermissionCard(
@@ -461,8 +457,7 @@ fun PermissionPage(
             description = stringResource("onboarding.permissions.notifications.description"),
             icon = PhosphorIcons.Bold.Bell,
             isGranted = permissionState.hasNotificationPermission,
-            isRequired = true,
-            onRequestClick = onRequestPermissions
+            isRequired = true
         )
 
         // Loading indicator
