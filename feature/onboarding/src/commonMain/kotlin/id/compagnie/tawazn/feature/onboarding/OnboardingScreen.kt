@@ -385,21 +385,28 @@ fun PermissionPage(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        Icon(
-            imageVector = PhosphorIcons.Bold.Shield,
-            contentDescription = "Permissions",
-            modifier = Modifier.size(80.dp),
-            tint = TawaznTheme.colors.gradientMiddle
-        )
+        // Header section - centered
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Icon(
+                imageVector = PhosphorIcons.Bold.Shield,
+                contentDescription = "Permissions",
+                modifier = Modifier.size(80.dp),
+                tint = TawaznTheme.colors.gradientMiddle
+            )
 
-        Text(
-            text = stringResource("onboarding.permissions.title"),
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold
-        )
+            Text(
+                text = stringResource("onboarding.permissions.title"),
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold
+            )
+        }
 
         // Status Banner
         if (permissionState.hasAllPermissions) {
@@ -408,7 +415,9 @@ fun PermissionPage(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Row(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -459,8 +468,10 @@ fun PermissionPage(
         // Loading indicator
         if (permissionState.isRequesting) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.Start),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 CircularProgressIndicator(
@@ -490,8 +501,10 @@ fun PermissionPage(
 
         // Privacy note
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.Start),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
