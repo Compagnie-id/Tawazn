@@ -23,7 +23,7 @@ import kotlin.concurrent.Volatile
 class StringProviderImpl(
     private val dataStore: DataStore<Preferences>,
     private val translationsProvider: TranslationsProvider,
-    private val systemLocaleProvider: SystemLocaleProvider
+    systemLocaleProvider: SystemLocaleProvider // Used in init block only, not stored as property
 ) : StringProvider {
 
     private val _currentLanguage: MutableStateFlow<Language>

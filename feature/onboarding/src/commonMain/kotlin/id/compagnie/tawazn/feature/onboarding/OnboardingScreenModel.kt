@@ -32,9 +32,11 @@ class OnboardingScreenModel : ScreenModel, KoinComponent {
     val permissionState: StateFlow<PermissionState> = _permissionState.asStateFlow()
 
     private val _platformInfo = MutableStateFlow<Map<String, String>>(emptyMap())
+    @Suppress("unused") // Reserved for future platform info display
     val platformInfo: StateFlow<Map<String, String>> = _platformInfo.asStateFlow()
 
     private val _onboardingCompleted = MutableStateFlow(false)
+    @Suppress("unused") // Reserved for observing onboarding completion
     val onboardingCompleted: StateFlow<Boolean> = _onboardingCompleted.asStateFlow()
 
     // User profile states
@@ -344,6 +346,7 @@ class OnboardingScreenModel : ScreenModel, KoinComponent {
     /**
      * Calculate yearly hours based on daily screen time
      */
+    @Suppress("unused") // Reserved for future calculations
     fun calculateYearlyHours(): Int {
         val dailyHours = _dailyScreenTimeHours.value ?: 0
         return dailyHours * 365
