@@ -146,7 +146,7 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
 
                 // Navigation Buttons
                 Column(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     GradientButton(
@@ -168,18 +168,6 @@ fun OnboardingContent(screenModel: OnboardingScreenModel) {
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Text(stringResource("common.back"))
-                        }
-                    }
-
-                    if (currentPage < 12) {
-                        TextButton(
-                            onClick = {
-                                // Skip onboarding - App.kt will automatically show the main app
-                                screenModel.completeOnboarding()
-                            },
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text(stringResource("common.skip"), color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     }
                 }
@@ -653,9 +641,11 @@ fun QuickTip(text: String) {
 
 @Composable
 fun UserProfilePage(screenModel: OnboardingScreenModel) {
-    var name by remember { mutableStateOf("") }
-    var age by remember { mutableStateOf("") }
     val userName by screenModel.userName.collectAsState()
+    val userAge by screenModel.userAge.collectAsState()
+
+    var name by remember(userName) { mutableStateOf(userName) }
+    var age by remember(userAge) { mutableStateOf(userAge?.toString() ?: "") }
 
     Column(
         modifier = Modifier
@@ -731,8 +721,10 @@ fun UserProfilePage(screenModel: OnboardingScreenModel) {
 
 @Composable
 fun ScreenTimeInputPage(screenModel: OnboardingScreenModel) {
-    var selectedHours by remember { mutableStateOf(4) }
     val userName by screenModel.userName.collectAsState()
+    val dailyScreenTimeHours by screenModel.dailyScreenTimeHours.collectAsState()
+
+    var selectedHours by remember(dailyScreenTimeHours) { mutableStateOf(dailyScreenTimeHours ?: 8) }
 
     Column(
         modifier = Modifier
@@ -775,8 +767,8 @@ fun ScreenTimeInputPage(screenModel: OnboardingScreenModel) {
 
         // Hours display
         Text(
-            text = if (selectedHours <= 16) "$selectedHours ${stringResource("onboarding.screentime.hours_suffix")}"
-                  else stringResource("onboarding.screentime.16plus"),
+            text = if (selectedHours <= 20) "$selectedHours ${stringResource("onboarding.screentime.hours_suffix")}"
+                  else stringResource("onboarding.screentime.20plus"),
             style = MaterialTheme.typography.displayMedium,
             fontWeight = FontWeight.Bold,
             color = TawaznTheme.colors.gradientMiddle
@@ -786,13 +778,13 @@ fun ScreenTimeInputPage(screenModel: OnboardingScreenModel) {
         Slider(
             value = selectedHours.toFloat(),
             onValueChange = { selectedHours = it.toInt() },
-            valueRange = 1f..17f,
-            steps = 15,
+            valueRange = 1f..21f,
+            steps = 19,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
         )
 
         LaunchedEffect(selectedHours) {
-            val hours = if (selectedHours > 16) 16 else selectedHours
+            val hours = if (selectedHours > 20) 20 else selectedHours
             screenModel.saveDailyScreenTime(hours)
         }
     }
@@ -895,8 +887,12 @@ fun HabitOption(
 
 @Composable
 fun GuessScreenTimePage(screenModel: OnboardingScreenModel) {
-    var guessedDays by remember { mutableStateOf(100f) }
     val userName by screenModel.userName.collectAsState()
+    val guessedYearlyHours by screenModel.guessedYearlyHours.collectAsState()
+
+    var guessedDays by remember(guessedYearlyHours) {
+        mutableStateOf(guessedYearlyHours?.let { it / 24f } ?: 14f)
+    }
 
     Column(
         modifier = Modifier
@@ -944,12 +940,11 @@ fun GuessScreenTimePage(screenModel: OnboardingScreenModel) {
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
-        // Slider (range 0-365 days, step by 10)
         Slider(
             value = guessedDays,
             onValueChange = { guessedDays = it },
-            valueRange = 0f..365f,
-            steps = 36,
+            valueRange = 0f..100f,
+            steps = 50,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
         )
 

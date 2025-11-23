@@ -73,7 +73,7 @@ fun getEnglishTranslations(): Map<String, String> = mapOf(
     "onboarding.screentime.description" to "how much time do you typically spend on your phone each day?",
     "onboarding.screentime.hours_label" to "Hours per day",
     "onboarding.screentime.hours_suffix" to "hours",
-    "onboarding.screentime.16plus" to "16+ hours",
+    "onboarding.screentime.20plus" to "20+ hours",
 
     // Onboarding - Habit Change
     "onboarding.habits.title" to "What Would You Like to Change?",
@@ -505,7 +505,7 @@ fun getIndonesianTranslations(): Map<String, String> = mapOf(
     "onboarding.screentime.description" to "biasanya kamu pakai HP berapa lama sih setiap hari?",
     "onboarding.screentime.hours_label" to "Jam per hari",
     "onboarding.screentime.hours_suffix" to "jam",
-    "onboarding.screentime.16plus" to "16+ jam",
+    "onboarding.screentime.20plus" to "20+ jam",
 
     // Onboarding - Habit Change
     "onboarding.habits.title" to "Apa yang Pengen Kamu Ubah?",
@@ -937,7 +937,7 @@ fun getArabicTranslations(): Map<String, String> = mapOf(
     "onboarding.screentime.description" to "كم من الوقت تقضيه عادةً على هاتفك كل يوم؟",
     "onboarding.screentime.hours_label" to "ساعات في اليوم",
     "onboarding.screentime.hours_suffix" to "ساعات",
-    "onboarding.screentime.16plus" to "16+ ساعة",
+    "onboarding.screentime.20plus" to "20+ ساعة",
 
     // Onboarding - Habit Change
     "onboarding.habits.title" to "ما الذي تود تغييره؟",
